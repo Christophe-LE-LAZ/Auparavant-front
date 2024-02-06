@@ -16,7 +16,7 @@ export default function Header() {
       
       */}
 
-      <h1>O' mais Y'avait quoi avant ? </h1>
+      <h1>Y'avait quoi avant ? </h1>
       <Navbar />
     </div>
   )
