@@ -3,8 +3,25 @@
     border-radius: 9999px;
 }
 
-.input {
-    height: 2rem/* 32px */;
+.navigation {
+    display: flex;
+}
+
+.navbar-top {
+    display: none;
+    align-items: center;
+    padding: var(--navbar-padding, 0.5rem/* 8px */);
+    min-height: 4rem/* 64px */;
+    width: 100%;
+}
+.searchbar {
+    display: flex;
+    justify-content: center;
+}
+
+.search-input {
+    width: 100vw;
+    height: 3rem/* 48px */;
     padding-left: 1rem/* 16px */;
     padding-right: 1rem/* 16px */;
     font-size: 0.875rem/* 14px */;
@@ -12,7 +29,19 @@
     line-height: 1.25rem/* 20px */;
     line-height: 2;
     line-height: 1.5rem/* 24px */;
-    border-radius: 0.5rem/* 8px */;
+    border-radius: var(--rounded-btn, 0.5rem/* 8px */);
     border-width: 1px;
-    border-color: grey
+    border-color: var(--fallback-bc,oklch(var(--bc)/0.2));
+}
+
+@media (min-width: 720px) {
+    .navbar-top {
+        display: flex;
+    }
+    .searchbar {
+        width: auto;
+    }
+    .search-input {
+        width: auto;
+    }
 }
