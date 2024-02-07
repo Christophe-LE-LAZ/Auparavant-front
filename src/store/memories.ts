@@ -6,12 +6,12 @@ import {
 
   import axios from 'axios';
 
-  import { Memory } from '../types/memory';
+  import { IMemory } from '../types/memory';
   import data from '../data';
 
   
   interface MemoriesState {
-    list: Memory[];
+    list: IMemory[];
     loading: boolean;
     error: null | string;
   }

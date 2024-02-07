@@ -1,9 +1,15 @@
-import React from 'react'
+import React from 'react';
+import { IMemory } from '../../types/memory';
 
-export default function Memory() {
+interface Props {
+  memory: IMemory;
+}
+
+
+export default function Memory({ memory }: Props) {
+  console.log(memory)
   return (
-    <div>
-      Memory
-    </div>
-  )
+  <li>{memory.title} - {memory.content}</li>
+  );
+  
 }

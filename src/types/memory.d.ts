@@ -1,4 +1,4 @@
-export interface Memory {
+export interface IMemory {
     memory_id: number
     title: string
     content: string
