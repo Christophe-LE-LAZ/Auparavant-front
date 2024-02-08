@@ -10,19 +10,19 @@ export default function Navbar() {
       {/* Navbar version Desktop */}
       <div className="navbar justify-evenly">
         <NavLink
-          className="h-12 rounded-lg p-3 hover:bg-gray-200 hidden sm:flex"
+          className="h-12 rounded-lg p-3 hover:bg-base-200 hidden sm:flex"
           to="/"
         >
           Accueil
         </NavLink>
         <NavLink
-          className="h-12 rounded-lg p-3 hover:bg-gray-200 hidden sm:flex"
+          className="h-12 rounded-lg p-3 hover:bg-base-200 hidden sm:flex"
           to="/memories"
         >
           <p>Voir les souvenirs</p>
         </NavLink>
         <NavLink
-          className="h-12 rounded-lg p-3 hover:bg-gray-200 hidden sm:flex"
+          className="h-12 rounded-lg p-3 hover:bg-base-200 hidden sm:flex"
           to="/memories/create"
         >
           Partager un souvenir
@@ -38,7 +38,8 @@ export default function Navbar() {
       </div>
 
       {/* Navbar version mobile  */}
-      <div className="flex flex-row justify-evenly w-screen fixed bottom-0 left-0 p-3 border-t sm:hidden">
+      {/* Position fixed, z-index 50 afin de passer au dessus du reste du contenu*/}
+      <div className="flex flex-row justify-evenly w-screen h-24 fixed bottom-0 left-0 z-50 p-3 bg-white border-t sm:hidden">
         <NavLink className="flex flex-col items-center w-20" to="/">
           <img alt="logo-voir" src={Home} className="w-12" />
           <p className="text-center">Accueil</p>

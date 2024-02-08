@@ -15,7 +15,7 @@ export default function Header() {
           <img alt="Logo" src={Logo} className="ml-10 mt-2 w-20 sm:w-40" />
         </Link>
         {/* Avatar d'utilisateur connecté avec menu déroulant */}
-        <div className="dropdown dropdown-end fixed right-10 top-6">
+        <div className="dropdown dropdown-end absolute right-10 top-6">
           <div
             tabIndex={0}
             role="button"
