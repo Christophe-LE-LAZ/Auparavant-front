@@ -8,19 +8,20 @@ import { Link } from 'react-router-dom';
 export default function Header() {
   return (
     <div>
+      {/* Mobile : logo à gauche - Desktop : logo centré */}
       <div className="flex justify-start sm:justify-center">
-        {/* Logo avec lien vers la page d'accueil */}
+        {/* Logo avec lien vers la page d'accueil - Mobile : petit - Desktop : + grand */}
         <Link to="/">
-          <img alt="Logo" src={Logo} className="w-28 ml-3 sm:w-40" />
+          <img alt="Logo" src={Logo} className="ml-10 mt-2 w-20 sm:w-40" />
         </Link>
         {/* Avatar d'utilisateur connecté avec menu déroulant */}
-        <div className="dropdown dropdown-end fixed right-3 top-6">
+        <div className="dropdown dropdown-end fixed right-10 top-6">
           <div
             tabIndex={0}
             role="button"
             className="btn btn-ghost btn-circle avatar"
           >
-            <div className="w-40 rounded-full">
+            <div className="rounded-full">
               <img alt="Avatar" src={Avatar} />
             </div>
           </div>
