@@ -1,6 +1,7 @@
 import React from 'react'
 import Slider from '../Slider/Slider';
 import Map from '../Map/Map';
+import Card from '../../components/Card/Card'
 import './Home.scss';
 
 export default function Home() {
@@ -9,11 +10,12 @@ export default function Home() {
       <div className=''>
         <h1 className='flex justify-center py-4' >O' Mais y'avait quoi avant</h1>
         <p className='py-4 w-3/4 mx-auto text-center text-xs'>
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Illum harum iusto et dolorem tempore enim, placeat explicabo quis iure quae eligendi voluptate consequuntur cupiditate reiciendis magnam quaerat delectus qui magni minima veniam possimus repellendus. Perspiciatis accusantium repellat repellendus, quaerat odio dicta optio nostrum molestias voluptas iure doloribus dolor fugit ad!
+        Nos villes évoluent, et par conséquent nos quartiers, nos lieux préférés également... Saurions nous dire ce qu'il y avait avant à tel endroit ? Probablement que non. Après avoir constaté cela, on s'interroge, existe-t-il des ressources sur le web nous permettant facilement d'accéder à la donnée ?
         </p>
       </div>
       <Slider />
       <Map />
+      <Card />
     </div>
 
   )
