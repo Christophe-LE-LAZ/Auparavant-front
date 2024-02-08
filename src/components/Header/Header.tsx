@@ -8,19 +8,19 @@ import { Link } from 'react-router-dom';
 export default function Header() {
   return (
     <div>
-      <div className="header">
+      <div className="flex justify-start sm:justify-center">
         {/* Logo avec lien vers la page d'accueil */}
         <Link to="/">
-          <img alt="Logo" src={Logo} className="logo" />
+          <img alt="Logo" src={Logo} className="w-28 ml-3 sm:w-40" />
         </Link>
         {/* Avatar d'utilisateur connecté avec menu déroulant */}
-        <div className="dropdown dropdown-end fixed right-2 top-2">
+        <div className="dropdown dropdown-end fixed right-3 top-6">
           <div
             tabIndex={0}
             role="button"
             className="btn btn-ghost btn-circle avatar"
           >
-            <div className="w-10 rounded-full">
+            <div className="w-40 rounded-full">
               <img alt="Avatar" src={Avatar} />
             </div>
           </div>

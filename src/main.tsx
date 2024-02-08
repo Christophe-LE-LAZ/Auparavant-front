@@ -24,7 +24,9 @@ import Update from './components/Update/Update';
 import { Provider } from 'react-redux';
 import store from './store';
 
+// Styles
 import 'tailwindcss/tailwind.css';
+import './styles/index.scss'
 
 // Router 
 import {
