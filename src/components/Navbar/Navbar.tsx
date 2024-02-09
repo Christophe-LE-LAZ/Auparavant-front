@@ -6,9 +6,9 @@ import Share from '../../assets/Share.png';
 
 export default function Navbar() {
   return (
-    <div>
+    <nav className="flex justify-center">
       {/* Navbar version Desktop */}
-      <div className="navbar justify-evenly">
+      <div className="navbar justify-evenly sm:max-w-5xl">
         <NavLink
           className="h-12 rounded-lg p-3 hover:bg-base-200 hidden sm:flex"
           to="/"
@@ -39,23 +39,23 @@ export default function Navbar() {
 
       {/* Navbar version mobile  */}
       {/* Position fixed, z-index 50 afin de passer au dessus du reste du contenu*/}
-      <div className="flex flex-row justify-evenly w-screen h-24 fixed bottom-0 left-0 z-50 p-3 bg-white border-t sm:hidden">
+      <div className="flex flex-row justify-evenly w-screen h-20 fixed bottom-0 left-0 z-50 p-3 bg-white border-t sm:hidden">
         <NavLink className="flex flex-col items-center w-20" to="/">
-          <img alt="logo-voir" src={Home} className="w-12" />
+          <img alt="logo-voir" src={Home} className="w-9" />
           <p className="text-center">Accueil</p>
         </NavLink>
         <NavLink className="flex flex-col items-center w-20" to="/memories">
-          <img alt="logo-voir" src={See} className="w-12" />
+          <img alt="logo-voir" src={See} className="w-9" />
           <p className="text-center">Voir</p>
         </NavLink>
         <NavLink
           className="flex flex-col items-center w-20"
           to="/memories/create"
         >
-          <img alt="logo-voir" src={Share} className="w-12" />
+          <img alt="logo-voir" src={Share} className="w-9" />
           <p className="text-center">Partager</p>
         </NavLink>
       </div>
-    </div>
+    </nav>
   );
 }

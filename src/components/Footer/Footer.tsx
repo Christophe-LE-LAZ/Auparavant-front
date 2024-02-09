@@ -2,11 +2,10 @@ import { NavLink } from 'react-router-dom';
 
 export default function Footer() {
   return (
-    // Footer, position relative en version mobile correspondant à la hauteur de la navbar
-    <footer className="footer footer-center p-6 bg-base-200 text-base-content rounded relative bottom-24 sm:static">
-      <nav className="grid grid-cols-2 gap-5 sm:grid-flow-col">
-        <NavLink to="/about-us" className="link link-hover">
-          A propos de nous
+    <footer className="grid text-xs place-items-center text-center w-screen gap-y-4 p-6 mt-5 bg-base-200 text-base-content rounded sm:static">
+      <nav className="grid grid-cols-2 gap-y-3 gap-x-10 mb-2 sm:grid-flow-col sm:gap-6">
+        <NavLink to="/about-us" className="link link-hover row-start-1">
+          A propos
         </NavLink>
         <NavLink to="/contact" className="link link-hover">
           Contact
@@ -15,7 +14,7 @@ export default function Footer() {
           Mentions légales
         </NavLink>
         <NavLink to="/faq" className="link link-hover">
-          Foire aux Questions
+          FAQ
         </NavLink>
       </nav>
       <nav>

@@ -3,6 +3,7 @@ import React from 'react';
 export default function FAQ() {
   return (
     <>
+      <div>COUCOU</div>
       <div>FAQ</div>
       <div>FAQ</div>
       <div>FAQ</div>
@@ -37,8 +38,7 @@ export default function FAQ() {
       <div>FAQ</div>
       <div>FAQ</div>
       <div>FAQ</div>
-      <div>FAQ</div>
-      <div>FAB</div>
+      <div>COUCOU</div>
     </>
   );
 }
