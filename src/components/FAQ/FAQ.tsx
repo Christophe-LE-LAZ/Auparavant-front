@@ -32,12 +32,6 @@ export default function FAQ() {
       <div>FAQ</div>
       <div>FAQ</div>
       <div>FAQ</div>
-      <div>FAQ</div>
-      <div>FAQ</div>
-      <div>FAQ</div>
-      <div>FAQ</div>
-      <div>FAQ</div>
-      <div>FAQ</div>
       <div>COUCOU</div>
     </>
   );

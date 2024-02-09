@@ -5,9 +5,9 @@ import { Outlet } from 'react-router-dom';
 
 export default function Layout() {
   return (
-    <div className="absolute h-screen w-screen">
+    <div className="relative">
       <Header />
-      <div className='absolute inset-y-40'>
+      <div className='relative pt-40 pb-20 sm:pt-0 sm:pb-0'>
         <main>
           <Outlet />
         </main>
