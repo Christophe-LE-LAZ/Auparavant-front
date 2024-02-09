@@ -3,6 +3,7 @@ import Slider from '../Slider/Slider';
 import Map from '../Map/Map';
 import Card from '../../components/Card/Card'
 import './Home.scss';
+import data from '../../data'
 
 export default function Home() {
   return (
@@ -15,7 +16,11 @@ export default function Home() {
       </div>
       <Slider />
       <Map />
-      <Card />
+      <div className='lg:flex flex-row'>
+      {data.map((memory)=> 
+          <Card key={memory.memory_id} memory={memory}/>
+      )}
+      </div>
     </div>
 
   )
