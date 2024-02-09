@@ -8,8 +8,8 @@ export default function Home() {
   return (
     <div className=''>
       <div className=''>
-        <h1 className='flex justify-center py-4' >O' Mais y'avait quoi avant</h1>
-        <p className='py-4 w-3/4 mx-auto text-center text-xs'>
+        <h1 className='flex justify-center py-3 text-lg' >O' Mais y'avait quoi avant</h1>
+        <p className='pb-3 w-3/4 mx-auto text-center text-sm lg:text-base '>
         Nos villes évoluent, et par conséquent nos quartiers, nos lieux préférés également... Saurions nous dire ce qu'il y avait avant à tel endroit ? Probablement que non. Après avoir constaté cela, on s'interroge, existe-t-il des ressources sur le web nous permettant facilement d'accéder à la donnée ?
         </p>
       </div>
