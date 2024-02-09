@@ -2,7 +2,7 @@ import { NavLink } from 'react-router-dom';
 
 export default function Footer() {
   return (
-    <footer className="grid text-xs place-items-center text-center w-screen gap-y-4 p-6 mt-5 bg-base-200 text-base-content rounded sm:static">
+    <footer className="grid text-xs place-items-center text-center w-screen gap-y-4 p-6 mt-5 bg-base-200 text-base-content rounded">
       <nav className="grid grid-cols-2 gap-y-3 gap-x-10 mb-2 sm:grid-flow-col sm:gap-6">
         <NavLink to="/about-us" className="link link-hover row-start-1">
           A propos
