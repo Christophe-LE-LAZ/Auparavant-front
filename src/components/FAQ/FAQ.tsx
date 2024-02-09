@@ -1,9 +1,38 @@
-import React from 'react'
+import React from 'react';
 
 export default function FAQ() {
   return (
-    <div>
-      FAQ
-    </div>
-  )
+    <>
+      <div>COUCOU</div>
+      <div>FAQ</div>
+      <div>FAQ</div>
+      <div>FAQ</div>
+      <div>FAQ</div>
+      <div>FAQ</div>
+      <div>FAQ</div>
+      <div>FAQ</div>
+      <div>FAQ</div>
+      <div>FAQ</div>
+      <div>FAQ</div>
+      <div>FAQ</div>
+      <div>FAQ</div>
+      <div>FAQ</div>
+      <div>FAQ</div>
+      <div>FAQ</div>
+      <div>FAQ</div>
+      <div>FAQ</div>
+      <div>FAQ</div>
+      <div>FAQ</div>
+      <div>FAQ</div>
+      <div>FAQ</div>
+      <div>FAQ</div>
+      <div>FAQ</div>
+      <div>FAQ</div>
+      <div>FAQ</div>
+      <div>FAQ</div>
+      <div>FAQ</div>
+      <div>FAQ</div>
+      <div>COUCOU</div>
+    </>
+  );
 }

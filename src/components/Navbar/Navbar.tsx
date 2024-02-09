@@ -6,23 +6,23 @@ import Share from '../../assets/Share.png';
 
 export default function Navbar() {
   return (
-    <div>
+    <nav className="flex justify-center">
       {/* Navbar version Desktop */}
-      <div className="navbar justify-evenly">
+      <div className="navbar justify-evenly sm:max-w-5xl">
         <NavLink
-          className="h-12 rounded-lg p-3 hover:bg-gray-200 hidden sm:flex"
+          className="h-12 rounded-lg p-3 hover:bg-base-200 hidden sm:flex"
           to="/"
         >
           Accueil
         </NavLink>
         <NavLink
-          className="h-12 rounded-lg p-3 hover:bg-gray-200 hidden sm:flex"
+          className="h-12 rounded-lg p-3 hover:bg-base-200 hidden sm:flex"
           to="/memories"
         >
           <p>Voir les souvenirs</p>
         </NavLink>
         <NavLink
-          className="h-12 rounded-lg p-3 hover:bg-gray-200 hidden sm:flex"
+          className="h-12 rounded-lg p-3 hover:bg-base-200 hidden sm:flex"
           to="/memories/create"
         >
           Partager un souvenir
@@ -36,25 +36,6 @@ export default function Navbar() {
           />
         </div>
       </div>
-
-      {/* Navbar version mobile  */}
-      <div className="flex flex-row justify-evenly w-screen fixed bottom-0 left-0 p-3 border-t sm:hidden">
-        <NavLink className="flex flex-col items-center w-20" to="/">
-          <img alt="logo-voir" src={Home} className="w-12" />
-          <p className="text-center">Accueil</p>
-        </NavLink>
-        <NavLink className="flex flex-col items-center w-20" to="/memories">
-          <img alt="logo-voir" src={See} className="w-12" />
-          <p className="text-center">Voir</p>
-        </NavLink>
-        <NavLink
-          className="flex flex-col items-center w-20"
-          to="/memories/create"
-        >
-          <img alt="logo-voir" src={Share} className="w-12" />
-          <p className="text-center">Partager</p>
-        </NavLink>
-      </div>
-    </div>
+    </nav>
   );
 }

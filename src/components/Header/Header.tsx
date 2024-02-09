@@ -7,15 +7,15 @@ import { Link } from 'react-router-dom';
 
 export default function Header() {
   return (
-    <div>
+    <header className='fixed bg-base-100 z-50 sm:static'>
       {/* Mobile : logo à gauche - Desktop : logo centré */}
       <div className="flex justify-start sm:justify-center">
         {/* Logo avec lien vers la page d'accueil - Mobile : petit - Desktop : + grand */}
         <Link to="/">
-          <img alt="Logo" src={Logo} className="ml-10 mt-2 w-20 sm:w-40" />
+          <img alt="Logo" src={Logo} className="ml-10 w-20 sm:w-40" />
         </Link>
         {/* Avatar d'utilisateur connecté avec menu déroulant */}
-        <div className="dropdown dropdown-end fixed right-10 top-6">
+        <div className="dropdown dropdown-end absolute right-10 top-4">
           <div
             tabIndex={0}
             role="button"
@@ -41,7 +41,7 @@ export default function Header() {
           </ul>
         </div>
       </div>
-      <Navbar />
-    </div>
+     <Navbar />
+    </header>
   );
 }
