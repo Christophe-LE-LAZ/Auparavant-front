@@ -1,11 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit';
 import memoriesReducer from './memories'
+import userReducer from './user';
 
 // Création du store et définition des différents states et de leurs reducers associés
 
 const store = configureStore({
   reducer: {
     memories : memoriesReducer,
+    user: userReducer
   },
 });
 
