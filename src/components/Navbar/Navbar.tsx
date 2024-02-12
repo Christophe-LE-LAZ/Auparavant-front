@@ -36,6 +36,23 @@ export default function Navbar() {
           />
         </div>
       </div>
+
+      {/* Navbar version Mobile  */}
+      {/* TODO : voir comment enlever la classe active pour /memories quand on est sur /memories/create*/}
+      <div className="btm-nav sm:hidden">
+        <NavLink to="/">
+          <img alt="Home-logo" src={Home} className="w-6" />
+          <span className="btm-nav-label">Accueil</span>
+        </NavLink>
+        <NavLink to="/memories">
+          <img alt="See-logo" src={See} className="w-6" />
+          <span className="btm-nav-label">Voir</span>
+        </NavLink>
+        <NavLink to="/memories/create">
+          <img alt="Share-logo" src={Share} className="w-6" />
+          <span className="btm-nav-label">Partager</span>
+        </NavLink>
+      </div>
     </nav>
   );
 }

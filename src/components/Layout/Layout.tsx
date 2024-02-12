@@ -5,10 +5,10 @@ import { Outlet } from 'react-router-dom';
 
 export default function Layout() {
   return (
-    <div className="relative">
+    <div className="relative m-auto w-auto max-w-6xl">
       <Header />
-      <div className='relative pt-40 pb-20 sm:pt-0 sm:pb-0'>
-        <main>
+      <div className='relative pt-40 pb-16 sm:pt-0 sm:pb-0 '>
+        <main className='shadow-lg pb-2'>
           <Outlet />
         </main>
         <Footer />

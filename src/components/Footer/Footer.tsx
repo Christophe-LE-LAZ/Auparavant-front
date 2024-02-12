@@ -6,7 +6,7 @@ import Share from '../../assets/Share.png';
 export default function Footer() {
   return (
     <>
-    <footer className="grid text-xs place-items-center text-center w-screen gap-y-4 p-6 mt-5 bg-base-200 text-base-content rounded">
+    <footer className="grid text-xs place-items-center text-center gap-y-4 p-6 mt-5 bg-base-200 text-base-content rounded">
       <nav className="grid  gap-y-3 gap-x-10 mb-2 grid-flow-col sm:gap-6">
         <NavLink to="/about-us" className="link link-hover row-start-1">
           A propos
@@ -62,26 +62,6 @@ export default function Footer() {
         <p>Copyright © 2024 - Tous droits réservés</p>
       </aside>
     </footer>
-
-      {/* Navbar version mobile  */}
-      {/* Position fixed, z-index 50 afin de passer au dessus du reste du contenu*/}
-      <div className="flex flex-row justify-evenly w-screen h-20 fixed bottom-0 left-0 z-50 p-3 bg-white border-t sm:hidden">
-        <NavLink className="flex flex-col items-center w-20" to="/">
-          <img alt="logo-voir" src={Home} className="w-9" />
-          <p className="text-center">Accueil</p>
-        </NavLink>
-        <NavLink className="flex flex-col items-center w-20" to="/memories">
-          <img alt="logo-voir" src={See} className="w-9" />
-          <p className="text-center">Voir</p>
-        </NavLink>
-        <NavLink
-          className="flex flex-col items-center w-20"
-          to="/memories/create"
-        >
-          <img alt="logo-voir" src={Share} className="w-9" />
-          <p className="text-center">Partager</p>
-        </NavLink>
-      </div>
       </>
   );
 }
