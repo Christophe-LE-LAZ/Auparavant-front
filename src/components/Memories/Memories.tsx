@@ -7,16 +7,16 @@ export default function Memories() {
 
 const memoriesList = useAppSelector((state)=> state.memories.list);
 
-console.log(memoriesList)
-
   return (
     <div>
-      <h2>Liste des souvenirs</h2>
-      <ul>
-        {memoriesList.map((memory) => (
-          <Memory key={memory.memory_id} memory={memory} />
-        ))}
-      </ul>
+      <h2 className='text-center text-2xl pb-10'>Liste des souvenirs</h2>
+      <div>
+        <ul className='flex flex-wrap'>
+          {memoriesList.map((memory) => (
+            <Memory key={memory.memory_id} memory={memory} />
+         ))}
+       </ul>
+      </div>
     </div>
   )
 }
