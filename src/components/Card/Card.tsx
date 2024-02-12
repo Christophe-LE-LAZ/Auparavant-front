@@ -7,6 +7,9 @@ interface Props {
 
 export default function Card({ memory }: Props) {
   return (
+
+    
+
     <div className='lg:flex flex-row'>
       <div className="card w-3/4 bg-red-100 shadow-xl mx-auto mb-20 lg:mx-8">
   <figure className="px-10 pt-10">
