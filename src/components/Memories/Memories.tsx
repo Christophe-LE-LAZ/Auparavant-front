@@ -1,11 +1,10 @@
-import React from 'react'
+import React from 'react';
+import { Link } from 'react-router-dom';
 import { useAppSelector } from '../../hooks';
-import Memory from '../Memory/Memory';
+import Card from '../../components/Card/Card';
 
-
-export default function Memories() {
-
-const memoriesList = useAppSelector((state)=> state.memories.list);
+const Memories = () => {
+  const memoriesList = useAppSelector((state)=> state.memories.list);
 
   return (
     <div>
@@ -13,10 +12,16 @@ const memoriesList = useAppSelector((state)=> state.memories.list);
       <div>
         <ul className='flex flex-wrap'>
           {memoriesList.map((memory) => (
-            <Memory key={memory.memory_id} memory={memory} />
-         ))}
+            <li key={memory.memory_id}>
+              <Link to={`/memories/${memory.memory_id}`}>
+                <Card memory={memory} />
+              </Link>
+            </li>
+          ))}
        </ul>
       </div>
     </div>
-  )
-}
+  );
+};
+
+export default Memories;

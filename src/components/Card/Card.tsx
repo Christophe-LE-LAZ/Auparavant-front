@@ -1,5 +1,6 @@
 import React from 'react'
 import { IMemory } from '../../types/memory';
+import { Link } from 'react-router-dom';
 
 interface Props {
   memory : IMemory;
@@ -8,22 +9,25 @@ interface Props {
 export default function Card({ memory }: Props) {
   return (
 
-    
+    <div className="text-center max-w-lg mx-auto">
+      <div className="card w-4/4 bg-gray-100 shadow-xl mx-auto mb-10 lg:mx-8">
+        <h2 className="text-sm lg:text-xl pt-4">{memory.title} </h2>
+        <figure className="px-10 pt-4">
+          <img
+            src="https://images.unsplash.com/photo-1523435324848-a7a613898152?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWgelHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1769&q=80"
+            alt=""
+            className="rounded-xl"
+          />
+        </figure>
+        <div className="card-body items-center text-center">
+          <p className="my-2">{memory.published_at}</p>
+          <p className="text-sm">{memory.content}</p>
+          <p>Ville</p>
+        </div>
+        <Link to={`/memories/${memory.memory_id}`}>
+              </Link>
 
-    <div className='lg:flex flex-row'>
-      <div className="card w-3/4 bg-red-100 shadow-xl mx-auto mb-20 lg:mx-8">
-  <figure className="px-10 pt-10">
-    <img src="https://images.unsplash.com/photo-1523435324848-a7a613898152?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWgelHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1769&q=80" alt="Shoes" className="rounded-xl" />
-  </figure>
-  <div className="card-body items-center text-center">
-    <h2 className="card-title text-base lg:text-xl">{memory.title} </h2>
-    <p className='text-sm'>{memory.content}</p>
-    <div className="card-actions">
-      <button className="btn btn-primary text-xs" >Voir +</button>
-    </div>
-  </div>
-</div>
-
+      </div>
     </div>
   )
 }
