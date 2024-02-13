@@ -1,17 +1,21 @@
+import { ChangeEvent, useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { changeFieldState, login } from '../../store/user';
 import { TInputName } from '../../types/inputName';
+import { Navigate } from 'react-router-dom';
 
 export default function Login() {
+  const logged = useAppSelector((state) => state.user.logged);
+
   const dispatch = useAppDispatch();
 
-  const handleChange = (e) => {
-    const inputValue : string = e.target.value;
-    const inputName : TInputName = e.target.name;
-    dispatch(changeFieldState({inputValue, inputName}));
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const inputValue = e.target.value as string;
+    const inputName = e.target.name as TInputName;
+    dispatch(changeFieldState({ inputValue, inputName }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     dispatch(login());
   };
@@ -37,7 +41,7 @@ export default function Login() {
             className="input input-bordered w-full max-w-xs"
             onChange={handleChange}
             value={email}
-            name='username'
+            name="username"
           />
         </label>
         {/* Champ Password */}
@@ -51,7 +55,7 @@ export default function Login() {
             className="input input-bordered w-full max-w-xs"
             onChange={handleChange}
             value={password}
-            name='password'
+            name="password"
           />
         </label>
         <div className="flex content-center mt-6">

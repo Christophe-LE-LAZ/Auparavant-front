@@ -16,7 +16,7 @@ interface UserState {
 export const initialState: UserState = {
     logged: false,
     id: null,
-    username:'prénom',
+    username:'',
     credentials: {
         username: '',
         password: '',

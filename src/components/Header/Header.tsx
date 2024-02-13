@@ -4,11 +4,19 @@ import Logo from '../../assets/Logo.png';
 import Avatar from '../../assets/Avatar.png';
 import './Header.scss';
 import { Link, NavLink } from 'react-router-dom';
-import { useAppSelector } from '../../hooks';
+import { useAppSelector, useAppDispatch } from '../../hooks';
+import { logout } from '../../store/user';
 
 export default function Header() {
   const username = useAppSelector((state) => state.user.username);
   const logged = useAppSelector((state) => state.user.logged);
+
+  const dispatch = useAppDispatch();
+
+  // Gestion du click sur Déconnexion
+  const handleClick = () => {
+    dispatch(logout());
+  }
 
   return (
     <header className="fixed bg-base-100 z-50 sm:static">
@@ -57,7 +65,7 @@ export default function Header() {
                 <Link to="/contributions">Mes contributions</Link>
               </li>
               <li>
-                <a>Déconnexion</a>
+                <Link to='' onClick={handleClick}>Déconnexion</Link>
               </li>
             </ul>
           </div>
