@@ -11,14 +11,14 @@ import {
 
   
   interface MemoriesState {
-    list: IMemory[];
+    list: IMemory[] | []
     loading: boolean;
     error: null | string;
   }
 
   // Déclaration de l'état initial 
   export const initialState: MemoriesState = {
-    list: data,
+    list: [],
     loading: false,
     error: null
   };
@@ -27,13 +27,13 @@ import {
   export const fetchMemories = createAsyncThunk(
     'memories/fetchMemories',
     async () => {
-      const { data } = await axios.get(`URL-API`);
+      const { data } = await axios.get(`http://aurelien-rouchette-maret.vpnuser.lan/apotheosis/what-did-there-use-to-be-back/public/api/memories`);
       return data;
     }
   );
   
 
-  const recipesReducer = createReducer(initialState, (builder) => {
+  const memoriesReducer = createReducer(initialState, (builder) => {
     builder
       .addCase(fetchMemories.pending, (state, action) => {
         state.error = null;
@@ -49,5 +49,5 @@ import {
       });
   });
   
-  export default recipesReducer;
+  export default memoriesReducer;
   
