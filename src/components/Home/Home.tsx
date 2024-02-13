@@ -51,7 +51,7 @@ export default function Home() {
       <h2 className='text-center mt-5 mb-5 text-xl sm:text-2xl lg:text-3xl'>Chercher sur la carte</h2>
       <Map />
       <h2 className='text-center mt-5 mb-10 text-xl sm:text-2xl lg:text-3xl'>Les derniers souvenirs ajoutés</h2>
-      <div className="lg:flex flex-row">
+      <div className="lg:grid grid-cols-3 flex-row ">
         {memoriesList.slice(0, 3).map((memory) => (
           <Card key={memory.id} memory={memory} />
         ))}
