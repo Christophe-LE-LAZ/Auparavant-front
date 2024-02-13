@@ -1,9 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 
-import Root from './components/Root/Root';
 import Layout from './components/Layout/Layout';
-import Header from './components/Header/Header';
 import NotFound from './components/NotFound/NotFound';
 import Disclaimer from './components/Disclaimer/Disclaimer';
 import Register from './components/Register/Register';

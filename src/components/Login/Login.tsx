@@ -1,15 +1,14 @@
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { changeEmail, changePassword, login } from '../../store/user';
+import { changeFieldState, login } from '../../store/user';
+import { TInputName } from '../../types/inputName';
 
 export default function Login() {
   const dispatch = useAppDispatch();
 
-  const handleChangeEmail = (e) => {
-    dispatch(changeEmail(e.target.value));
-  };
-
-  const handleChangePassword = (e) => {
-    dispatch(changePassword(e.target.value));
+  const handleChange = (e) => {
+    const inputValue : string = e.target.value;
+    const inputName : TInputName = e.target.name;
+    dispatch(changeFieldState({inputValue, inputName}));
   };
 
   const handleSubmit = (e) => {
@@ -36,8 +35,9 @@ export default function Login() {
             type="text"
             placeholder="Entrez votre email"
             className="input input-bordered w-full max-w-xs"
-            onChange={handleChangeEmail}
+            onChange={handleChange}
             value={email}
+            name='username'
           />
         </label>
         {/* Champ Password */}
@@ -49,8 +49,9 @@ export default function Login() {
             type="text"
             placeholder="Entrez votre mot de passe"
             className="input input-bordered w-full max-w-xs"
-            onChange={handleChangePassword}
+            onChange={handleChange}
             value={password}
+            name='password'
           />
         </label>
         <div className="flex content-center mt-6">

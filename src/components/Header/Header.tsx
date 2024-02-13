@@ -7,7 +7,7 @@ import { Link, NavLink } from 'react-router-dom';
 import { useAppSelector } from '../../hooks';
 
 export default function Header() {
-  const firstname = useAppSelector((state) => state.user.firstname);
+  const username = useAppSelector((state) => state.user.username);
   const logged = useAppSelector((state) => state.user.logged);
 
   return (
@@ -32,7 +32,7 @@ export default function Header() {
         )}
         {/* Message si utilisateur connecté */}
         {logged && (
-          <div className="absolute right-28 top-7">Bonjour {firstname}</div>
+          <div className="absolute right-28 top-7">Bonjour {username}</div>
         )}
         {/* Avatar d'utilisateur connecté avec menu déroulant */}
         {logged && (
