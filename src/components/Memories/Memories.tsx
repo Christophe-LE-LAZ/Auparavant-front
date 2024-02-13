@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { useAppSelector } from '../../hooks';
 import Card from '../../components/Card/Card';
 
-const Memories = () => {
+const Memories= () => {
   const memoriesList = useAppSelector((state)=> state.memories.list);
 
   return (
@@ -12,7 +12,7 @@ const Memories = () => {
       <div>
         <ul className='flex flex-wrap'>
           {memoriesList.map((memory) => (
-            <li key={memory.memory_id}>
+            <li className='mx-auto' key={memory.memory_id}>
               <Link to={`/memories/${memory.memory_id}`}>
                 <Card memory={memory} />
               </Link>
