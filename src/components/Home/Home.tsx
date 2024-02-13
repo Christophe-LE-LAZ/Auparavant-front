@@ -1,11 +1,21 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Slider from '../Slider/Slider';
 import Map from '../Map/Map';
 import Card from '../../components/Card/Card';
 import './Home.scss';
 import data from '../../data';
+import { useAppSelector, useAppDispatch } from '../../hooks';
+import { fetchMemories } from '../../store/memories';
 
 export default function Home() {
+
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    dispatch(fetchMemories());
+  }, []);
+
+  const memoriesList = useAppSelector((state)=> state.memories.list);
+
   return (
     <div className="">
       <div className="">
@@ -42,8 +52,8 @@ export default function Home() {
       <Map />
       <h2 className='text-center mt-5 mb-10 text-xl sm:text-2xl lg:text-3xl'>Les derniers souvenirs ajoutés</h2>
       <div className="lg:flex flex-row">
-        {data.slice(0, 3).map((memory) => (
-          <Card key={memory.memory_id} memory={memory} />
+        {memoriesList.slice(0, 3).map((memory) => (
+          <Card key={memory.id} memory={memory} />
         ))}
       </div>
     </div>

@@ -14,17 +14,16 @@ export default function Card({ memory }: Props) {
         <h2 className="text-sm lg:text-xl pt-4">{memory.title} </h2>
         <figure className="px-10 pt-4">
           <img
-            src="https://images.unsplash.com/photo-1523435324848-a7a613898152?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWgelHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1769&q=80"
+            src={memory.main_picture}
             alt=""
             className="rounded-xl"
           />
         </figure>
         <div className="card-body items-center text-center">
-          <p className="my-2">{memory.published_at}</p>
           <p className="text-sm">{memory.content}</p>
           <p>Ville</p>
         </div>
-        <Link to={`/memories/${memory.memory_id}`}>
+        <Link to={`/memories/${memory.id}`}>
               </Link>
 
       </div>
