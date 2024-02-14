@@ -54,7 +54,7 @@ export default function Create() {
     <div>
       <h2 className="text-center text-2xl">Partager un souvenir</h2>
 
-      <form>
+      <form className="">
         <fieldset className="mt-10">
           <legend className="text-lg mb-5">Votre souvenir</legend>
           {memoryInputs.map(({ label, name, required }) => (
