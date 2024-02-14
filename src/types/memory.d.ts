@@ -1,40 +1,30 @@
-import { IUser } from "./user"
+export interface IMemoryToCreate {
+  memory : IMemory
+  location : ILocation 
+  place : IPlace
+}
 
-export interface IMemoryCreate {
+export interface IMemory {
   title: string
   content: string
   picture_date: string
   main_picture: string
   additionnal_pictures: string[] | []
-  location : ILocationCreate
-  place : IPlaceCreate
 }
 
-export interface IMemory extends IMemoryCreate {
-    id: number
-    user : IUser
-  }
-  
-export interface ILocationCreate {
+export interface ILocation {
   area : string
   department: string
   district: string
   street : string
   city : string
-  zipcode : number
+  zipcode : number | null
   latitude : string
   longitude : string
 }
 
-export interface ILocation extends ILocationCreate {
-  id: number
-}
-export interface IPlaceCreate {
+export interface IPlace {
   name : string
   type : string
-}
-
-export interface IPlace extends IPlaceCreate {
-  id : number
 }
 

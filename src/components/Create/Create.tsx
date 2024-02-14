@@ -1,46 +1,61 @@
 import React from 'react';
-import { useAppDispatch } from '../../hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 import { ChangeEvent } from 'react';
 import { TInputNameMemo } from '../../types/inputName';
+import { changeFieldState } from '../../store/memory';
 
 export default function Create() {
+
+// Lecture des states du User reducer
+const title = useAppSelector((state) => state.memory.memory.title);
+const content = useAppSelector((state) => state.memory.memory.content);
+const pictureDate = useAppSelector((state) => state.memory.memory.picture_date);
+
+// Caractéristiques des inputs à mapper
   const memoryInputs = [
-    { label: 'Titre du souvenir', name: 'memory.title', required: true },
+    { label: 'Titre du souvenir', name: 'memory.title', type: 'text', required: true, value: title },
     {
       label: 'Description du souvenir',
       name: 'memory.content',
+      type: 'text',
       required: true,
+      value : content
     },
-    { label: 'Date du souvenir', name: 'memory.picture_date', required: true },
+    { label: 'Date du souvenir', name: 'memory.picture_date', type : 'date', required: true, value: pictureDate },
   ];
   const photosInputs = [
     {
       label: 'Photographie principale',
       name: 'memory.main_picture',
+      type: 'url',
+      placeholder: 'URL',
       required: true,
     },
     {
-      label: 'Photographies supplémentaires',
+      label: 'Photographie supplémentaire',
       name: 'memory.additionnal_pictures',
+      type: 'url',
+      placeholder: 'URL',
       required: false,
     },
   ];
 
   const placeInputs = [
-    { label: "Nom de l'endroit", name: 'place.name', required: true },
-    { label: "Type d'endroit", name: 'place.type', required: true },
+    { label: "Nom de l'endroit", name: 'place.name', type: 'text', required: false },
+    { label: "Type d'endroit", name: 'place.type', type: 'text', required: true },
   ];
 
   const locationInputs = [
     { label: 'Région', name: 'location.area', required: true },
     { label: 'Département', name: 'location.department', required: true },
-    { label: 'Quartier', name: 'location.district', required: false },
-    { label: 'Adresse', name: 'location.street', required: true },
-    { label: 'Ville', name: 'location.city', required: true },
-    { label: 'Code postal', name: 'location.zipcode', required: true },
-    { label: 'Latitude', name: 'location.latitude', required: true },
-    { label: 'Longitude', name: 'location.longitude', required: true },
+    { label: 'Quartier', name: 'location.district', type: 'text', required: false },
+    { label: 'Adresse', name: 'location.street',type: 'text', required: true },
+    { label: 'Ville', name: 'location.city', type: 'text', required: true },
+    { label: 'Code postal', name: 'location.zipcode', type:'number', required: true },
+    { label: 'Latitude', name: 'location.latitude', type: 'text', required: true },
+    { label: 'Longitude', name: 'location.longitude', type: 'text', required: true },
   ];
+
 
   const dispatch = useAppDispatch();
 
@@ -52,70 +67,82 @@ export default function Create() {
 
   return (
     <div>
-      <h2 className="text-center text-2xl">Partager un souvenir</h2>
 
-      <form className="">
-        <fieldset className="mt-10">
+      <h2 className="text-center text-2xl">Partager un souvenir</h2>
+      <p className="text-center text-xs mt-5">* champs obligatoires</p>
+
+      <form className="flex flex-col items-center">
+
+        {/* Le souvenir */}
+        <fieldset className="mt-10 p-5 border rounded-lg">
           <legend className="text-lg mb-5">Votre souvenir</legend>
-          {memoryInputs.map(({ label, name, required }) => (
-            <label className="form-control w-full max-w-xs">
+          {memoryInputs.map(({ label, name, type, value, required }) => (
+            <label key={name} className="form-control w-full max-w-xs">
               <div className="label">
                 <span className="label-text">
                   {label} {required && '*'}{' '}
                 </span>
               </div>
               <input
-                type="text"
+                type={type}
                 className="input input-bordered w-full max-w-xs"
                 name={name}
                 required={required}
+                value={value}
+                onChange={handleChange}
               />
             </label>
           ))}
         </fieldset>
 
-        <fieldset className="mt-10">
+        {/* Les photographies */}
+        <fieldset className="mt-10 p-5 border rounded-lg">
           <legend className="text-lg mb-5">Les photographies</legend>
-          {photosInputs.map(({ label, name, required }) => (
-            <label className="form-control w-full max-w-xs">
+          {photosInputs.map(({ label, name, type, placeholder, required }) => (
+            <label key={name} className="form-control w-full max-w-xs">
               <div className="label">
                 <span className="label-text">
                   {label} {required && '*'}
                 </span>
               </div>
               <input
-                type="file"
-                className="file-input file-input-ghost w-full max-w-xs"
+                type={type}
+                className="input input-bordered w-full max-w-xs"
+                placeholder={placeholder}
                 name={name}
                 required={required}
+                onChange={handleChange}
               />
             </label>
           ))}
         </fieldset>
 
-        <fieldset className="mt-10">
+        {/* Le lieu */}
+        <fieldset className="mt-10 p-5 border rounded-lg">
           <legend className="text-lg mb-5">Le lieu</legend>
-          {placeInputs.map(({ label, name, required }) => (
-            <label className="form-control w-full max-w-xs">
+          {placeInputs.map(({ label, name, type, required }) => (
+            <label key={name} className="form-control w-full max-w-xs">
               <div className="label">
                 <span className="label-text">
                   {label} {required && '*'}
                 </span>
               </div>
               <input
-                type="text"
+                type={type}
                 className="input input-bordered w-full max-w-xs"
                 name={name}
                 required={required}
+                onChange={handleChange}
               />
             </label>
           ))}
         </fieldset>
 
-        <fieldset className="mt-10">
+        {/* Sa localisation */}
+        <fieldset className="mt-10 p-5 border rounded-lg">
           <legend className="text-lg mb-5">Sa localisation</legend>
           {locationInputs.map(({ label, name, required }) => (
-            <label className="form-control w-full max-w-xs">
+            <label key={name} className="form-control w-full max-w-xs">
               <div className="label">
                 <span className="label-text">
                   {label}
@@ -127,6 +154,7 @@ export default function Create() {
                 className="input input-bordered w-full max-w-xs"
                 name={name}
                 required={required}
+                onChange={handleChange}
               />
             </label>
           ))}

@@ -7,7 +7,6 @@ import {
   import axios from 'axios';
 
   import { IMemory } from '../types/memory';
-  import data from '../data';
 
   
   interface MemoriesState {
@@ -31,7 +30,6 @@ import {
       return data;
     }
   );
-  
 
   const memoriesReducer = createReducer(initialState, (builder) => {
     builder
@@ -46,7 +44,7 @@ import {
       .addCase(fetchMemories.fulfilled, (state, action) => {
         state.loading = false;
         state.list = action.payload;
-      });
+      })
   });
   
   export default memoriesReducer;
