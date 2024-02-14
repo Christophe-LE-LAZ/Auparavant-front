@@ -11,6 +11,7 @@ const Memories= () => {
     dispatch(fetchMemories());
   }, []);
 
+  
   const memoriesList = useAppSelector((state)=> state.memories.list);
 
   return (
