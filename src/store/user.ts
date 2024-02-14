@@ -2,7 +2,7 @@ import {createReducer, createAsyncThunk, createAction} from '@reduxjs/toolkit';
 import { ICredentials } from '../types/credentials'
 import axios from 'axios';
 import { RootState } from '.';
-import { TInputName } from '../types/inputName';
+import { TInputNameCred } from '../types/inputName';
 
 interface UserState {
     logged: boolean;
@@ -27,7 +27,7 @@ export const initialState: UserState = {
 
 export const changeFieldState = createAction<{
   inputValue : string;
-  inputName: TInputName;
+  inputName: TInputNameCred;
 }>('user/changeFieldState');
 
 export const login = createAsyncThunk('user/login', async (_, thunkAPI) => {

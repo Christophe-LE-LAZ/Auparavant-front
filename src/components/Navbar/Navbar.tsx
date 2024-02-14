@@ -23,7 +23,7 @@ export default function Navbar() {
         </NavLink>
         <NavLink
           className="h-12 rounded-lg p-3 hover:bg-base-200 hidden sm:flex"
-          to="/memories/create"
+          to="/create"
         >
           Partager un souvenir
         </NavLink>

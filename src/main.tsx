@@ -41,9 +41,9 @@ const router = createBrowserRouter(
       <Route path='/' loader={Loader} element={<Layout />}>
         <Route index loader={Loader} element={<Home />} />
         <Route path='/memories' loader={Loader} element={<Memories />}/>
-        <Route path='/memories/create' element={<Create />}/>
         <Route path='/memories/:id' element={<Memory />}/>
         <Route path='/memories/:id/update' element={<Update />} />
+        <Route path='/create' element={<Create />}/>
         <Route path='/register' element={<Register />}/>
         <Route path='/login' element={<Login />}/>
         <Route path='/profile' element={<Profile />}/>

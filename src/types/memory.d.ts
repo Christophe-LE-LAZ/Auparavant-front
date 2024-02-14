@@ -1,16 +1,21 @@
-export interface IMemory {
+import { IUser } from "./user"
+
+export interface IMemoryCreate {
+  title: string
+  content: string
+  picture_date: string
+  main_picture: string
+  additionnal_pictures: string[] | []
+  location : ILocationCreate
+  place : IPlaceCreate
+}
+
+export interface IMemory extends IMemoryCreate {
     id: number
-    title: string
-    content: string
-    picture_date: string
-    main_picture: string
-    location : ILocation
     user : IUser
-    place : IPlace
   }
   
-export interface ILocation {
-  id: number
+export interface ILocationCreate {
   area : string
   department: string
   district: string
@@ -21,17 +26,15 @@ export interface ILocation {
   longitude : string
 }
 
-export interface IUser {
-  id : number
-  firstname : string
-  lastname : string
-  email : string
-  roles : string[]
+export interface ILocation extends ILocationCreate {
+  id: number
 }
-
-export interface IPlace {
-  id : number
+export interface IPlaceCreate {
   name : string
   type : string
+}
+
+export interface IPlace extends IPlaceCreate {
+  id : number
 }
 
