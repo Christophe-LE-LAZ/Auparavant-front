@@ -1,16 +1,15 @@
 import {
-    createAction,
     createAsyncThunk,
     createReducer,
   } from '@reduxjs/toolkit';
 
   import axios from 'axios';
 
-  import { IMemory } from '../types/memory';
+  import { IDataCreated } from '../types/memory';
 
   
   interface MemoriesState {
-    list: IMemory[] | []
+    list: IDataCreated[] | []
     loading: boolean;
     error: null | string;
   }
@@ -44,6 +43,7 @@ import {
       .addCase(fetchMemories.fulfilled, (state, action) => {
         state.loading = false;
         state.list = action.payload;
+        console.log(action.payload)
       })
   });
   

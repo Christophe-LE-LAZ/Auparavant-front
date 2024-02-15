@@ -1,17 +1,18 @@
 import { createAction, createAsyncThunk, createReducer } from "@reduxjs/toolkit";
-import { TInputNameLocation, TInputNameMemory, TInputNamePlace } from "../types/inputName";
 import axios from "axios";
-import { ILocation, IMemory, IPlace } from "../types/memory";
+import { TInputNameLocation, TInputNameMemory, TInputNamePlace } from "../types/inputName";
+import { ILocationToCreate, IMemoryToCreate, IPlaceToCreate } from "../types/memory";
 import { RootState } from ".";
 
 export interface MemoryState {
   memoryData : { 
-    memory : IMemory
-    location : ILocation
-    place : IPlace
+    memory : IMemoryToCreate
+    location : ILocationToCreate
+    place : IPlaceToCreate
   }
   loading: boolean
   error: string | null
+  message: string
 }
 
   // Déclaration de l'état initial du souvenir à créer
@@ -22,7 +23,7 @@ export interface MemoryState {
         content: "",
         picture_date: "",
         main_picture: "",
-        additionnal_pictures: [],
+        additionnal_pictures: undefined,
       },
       location : {
         area : "",
@@ -30,7 +31,7 @@ export interface MemoryState {
         district: "",
         street : "",
         city : "",
-        zipcode : null,
+        zipcode : undefined,
         latitude : "",
         longitude : ""
       },
@@ -40,29 +41,31 @@ export interface MemoryState {
       },
     },
     loading : false,
-    error : null
+    error : null,
+    message: ""
+
   };
 
-  // Modification des valeurs du State -> Memory
+  // Création d'une action pour la modification des valeurs du State -> Memory
   export const changeFieldStateMemory = createAction<{
-    inputValueM : any;
+    inputValueM : string & (string[] | undefined);
     inputNameM: TInputNameMemory;
     }>('memory/changeFieldStateMemory');
 
-    // Modification des valeurs du State -> Place
+  // Création d'une action pour la modification des valeurs du State -> Place
   export const changeFieldStatePlace = createAction<{
-    inputValueP : any;
+    inputValueP : string;
     inputNameP : TInputNamePlace;
   }>('memory/changeFieldStatePlace');
 
-      // Modification des valeurs du State -> Place
+  // Création d'une action pour la modification des valeurs du State -> Location
   export const changeFieldStateLocation = createAction<{
-    inputValueL : any;
+    inputValueL : string & (number| undefined);
     inputNameL : TInputNameLocation;
   }>('memory/changeFieldStateLocation');
 
 
-  // Création d'un souvenir en BD
+  // Création d'un souvenir en BDD
   export const createMemory = createAsyncThunk(
     'memory/createMemory',
     async (_, thunkAPI) => {
@@ -75,16 +78,21 @@ export interface MemoryState {
   )
 
   const memoryReducer = createReducer(initialState, (builder) => {
+    // Modification du state suite à une nouvelle inputValue dans le fieldset memory
     builder.addCase(changeFieldStateMemory, (state, action) => {
         const { inputNameM, inputValueM } = action.payload;
         state.memoryData.memory[inputNameM] = inputValueM;
       })
+    // Modification du state suite à une nouvelle inputValue dans le fieldset place
       .addCase(changeFieldStatePlace, (state, action) => {
         const { inputNameP, inputValueP } = action.payload;
+        console.log(inputValueP)
         state.memoryData.place[inputNameP] = inputValueP;
       })
+    // Modification du state suite à une nouvelle inputValue dans le fieldset location
       .addCase(changeFieldStateLocation, (state, action) => {
         const { inputNameL, inputValueL } = action.payload;
+        console.log(inputValueL)
         state.memoryData.location[inputNameL] = inputValueL;
       })
       // Gestion du cas "pending" de la création d'un souvenir 

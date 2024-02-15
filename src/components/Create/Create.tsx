@@ -17,7 +17,9 @@ export default function Create() {
   // Lecture des states du reducer Memory
   const { title, content, picture_date, main_picture, additionnal_pictures } =
     useAppSelector((state) => state.memory.memoryData.memory);
-  const { name, type } = useAppSelector((state) => state.memory.memoryData.place);
+  const { name, type } = useAppSelector(
+    (state) => state.memory.memoryData.place
+  );
   const {
     area,
     department,
@@ -28,6 +30,7 @@ export default function Create() {
     latitude,
     longitude,
   } = useAppSelector((state) => state.memory.memoryData.location);
+  const { error, loading } = useAppSelector((state) => state.memory);
 
   // Caractéristiques des inputs à mapper
   const memoryInputs = [
@@ -50,7 +53,7 @@ export default function Create() {
       name: 'picture_date',
       type: 'date',
       required: true,
-      value: picture_date.substring(0,10),
+      value: picture_date.substring(0, 10),
     },
     {
       label: 'Photographie principale',
@@ -87,10 +90,10 @@ export default function Create() {
   ];
 
   const locationInputs = [
-    { label: 'Région', name: 'location.area', required: true, value: area },
+    { label: 'Région', name: 'area', required: true, value: area },
     {
       label: 'Département',
-      name: 'location.department',
+      name: 'department',
       required: true,
       value: department,
     },
@@ -103,14 +106,14 @@ export default function Create() {
     },
     {
       label: 'Adresse',
-      name: 'location.street',
+      name: 'street',
       type: 'text',
       required: true,
       value: street,
     },
     {
       label: 'Ville',
-      name: 'location.city',
+      name: 'city',
       type: 'text',
       required: true,
       value: city,
@@ -142,32 +145,25 @@ export default function Create() {
 
   // Envoi des valeurs entrées dans la partie Souvenir vers le state
   const handleBlurMemory = (e: ChangeEvent<HTMLInputElement>) => {
-    // Transfomation du format de la date pour correspondre au format de la BDD
-    // if (e.target.type === 'date') {
-    //   const inputDate = e.target.value
-    //   e.target.value = inputDate + "T00:00:00+00:00"
-    //   return e.target.value
-    // }
-    const inputValueM = e.target.value as any;
+    const inputValueM = e.target.value as string & (string[] | undefined);
     const inputNameM = e.target.name as TInputNameMemory;
-    console.log(inputValueM)
+    console.log(inputValueM);
     dispatch(changeFieldStateMemory({ inputValueM, inputNameM }));
   };
 
   // Envoi des valeurs entrées dans la partie Lieu vers le state
   const handleBlurPlace = (e: ChangeEvent<HTMLInputElement>) => {
-    const inputValueP = e.target.value as any;
+    const inputValueP = e.target.value as string;
     const inputNameP = e.target.name as TInputNamePlace;
     dispatch(changeFieldStatePlace({ inputValueP, inputNameP }));
   };
 
   // Envoi des valeurs entrées dans la partie Localisation vers le state
   const handleBlurLocation = (e: ChangeEvent<HTMLInputElement>) => {
-    const inputValueL = e.target.value as any;
+    const inputValueL = e.target.value as string & (number | undefined);
     const inputNameL = e.target.name as TInputNameLocation;
     dispatch(changeFieldStateLocation({ inputValueL, inputNameL }));
   };
-
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -183,24 +179,26 @@ export default function Create() {
         {/* Le souvenir */}
         <fieldset className="mt-10 p-5 border rounded-lg">
           <legend className="text-lg mb-5">Votre souvenir</legend>
-          {memoryInputs.map(({ label, name, type, value, placeholder, required }) => (
-            <label key={name} className="form-control w-full max-w-xs">
-              <div className="label">
-                <span className="label-text">
-                  {label} {required && '*'}{' '}
-                </span>
-              </div>
-              <input
-                type={type}
-                className="input input-bordered w-full max-w-xs"
-                name={name}
-                required={required}
-                defaultValue={value}
-                placeholder={placeholder}
-                onBlur={handleBlurMemory}
-              />
-            </label>
-          ))}
+          {memoryInputs.map(
+            ({ label, name, type, value, placeholder, required }) => (
+              <label key={name} className="form-control w-full max-w-xs">
+                <div className="label">
+                  <span className="label-text">
+                    {label} {required && '*'}{' '}
+                  </span>
+                </div>
+                <input
+                  type={type}
+                  className="input input-bordered w-full max-w-xs"
+                  name={name}
+                  required={required}
+                  defaultValue={value}
+                  placeholder={placeholder}
+                  onBlur={handleBlurMemory}
+                />
+              </label>
+            )
+          )}
         </fieldset>
 
         {/* Le lieu */}
@@ -248,14 +246,28 @@ export default function Create() {
           ))}
         </fieldset>
 
-        {/* Bouton de soumission du formulaire */}
-        <button
-          type="submit"
-          className="h-12 rounded-lg p-3 bg-base-200 text-sm mt-5 mb-10"
-        >
-          Soumettre
-        </button>
+        <div className="flex content-center mt-6">
+          {/* Bouton de soumission du formulaire */}
+          <button
+            type="submit"
+            className="h-12 rounded-lg p-3 bg-base-200 text-sm"
+          >
+            Soumettre
+          </button>
+
+          {/* Affichage d'un loader pendant le loading */}
+          {loading && (
+            <span className="loading loading-spinner loading-md ml-5"></span>
+          )}
+        </div>
       </form>
+
+      {/* Affichage d'un message d'erreur */}
+      {error && (
+        <div role="alert" className="alert alert-error max-w-xs">
+          <span>{error}</span>
+        </div>
+      )}
     </div>
   );
 }

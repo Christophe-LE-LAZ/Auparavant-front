@@ -3,7 +3,6 @@ import Slider from '../Slider/Slider';
 import Map from '../Map/Map';
 import Card from '../../components/Card/Card';
 import './Home.scss';
-import data from '../../data';
 import { useAppSelector, useAppDispatch } from '../../hooks';
 import { fetchMemories } from '../../store/memories';
 
