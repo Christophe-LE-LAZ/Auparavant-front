@@ -25,7 +25,7 @@ import {
   export const fetchMemories = createAsyncThunk(
     'memories/fetchMemories',
     async () => {
-      const { data } = await axios.get(`http://aurelien-rouchette-maret.vpnuser.lan/apotheosis/what-did-there-use-to-be-back/public/api/memories`);
+      const { data } = await axios.get(`http://13.60.26.88/api/memories`);
       return data;
     }
   );

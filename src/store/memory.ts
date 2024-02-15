@@ -72,7 +72,7 @@ export interface MemoryState {
         // Récupération du state via la thunkAPI
         const state = thunkAPI.getState() as RootState;
         // Envoi de la requête en POST avec le state.memory dans le body
-        const { data } = await axios.post(`http://aurelien-rouchette-maret.vpnuser.lan/apotheosis/what-did-there-use-to-be-back/public/api/secure/create/memory-and-location-and-place`, state.memory.memoryData);
+        const { data } = await axios.post(`http://13.60.26.88/api/secure/create/memory-and-location-and-place`, state.memory.memoryData);
         return data;
     }
   )
