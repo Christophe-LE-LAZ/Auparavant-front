@@ -8,22 +8,27 @@ interface UserState {
     logged: boolean;
     id: number | null
     username: string;
+    email: string;
+    lastname: string;
     credentials : ICredentials;
     loading: boolean;
     error: null | string;
 }
 
 export const initialState: UserState = {
-    logged: false,
-    id: null,
-    username:'',
-    credentials: {
-        username: '',
-        password: '',
-    },
-    loading: false,
-    error: null
+  logged: false,
+  id: null,
+  username:'',
+  email: '',
+  lastname: '',
+  credentials: {
+      username: '',
+      password: '',
+  },
+  loading: false,
+  error: null
 }
+
 
 export const changeFieldState = createAction<{
   inputValue : string;
@@ -64,16 +69,22 @@ const userReducer = createReducer(initialState, (builder) => {
       })
       // Gestion du cas "fullfilled" de la connexion
       .addCase(login.fulfilled, (state, action) => {
-        const { id, username } = action.payload;
+        const { id, username, email, lastname } = action.payload;
         console.log(id);
         console.log(username)
+        console.log(action.payload);
+        
         state.loading = false;
         state.id = id;
         state.username = username;
+        state.email = email;
+        state.lastname = lastname;
         state.logged = true;
         state.credentials.username = '';
         state.credentials.password = '';
-      })
+    })
+    
+    
       // Gestion de la déconnexion
       .addCase(logout, (state) => {
         state.id = null
