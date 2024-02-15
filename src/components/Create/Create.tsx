@@ -142,7 +142,6 @@ export default function Create() {
   ];
 
   const dispatch = useAppDispatch();
-
   // Envoi des valeurs entrées dans la partie Souvenir vers le state
   const handleBlurMemory = (e: ChangeEvent<HTMLInputElement>) => {
     const inputValueM = e.target.value as string & (string[] | undefined);
@@ -174,7 +173,6 @@ export default function Create() {
     <div>
       <h2 className="text-center text-2xl">Partager un souvenir</h2>
       <p className="text-center text-xs mt-5">* champs obligatoires</p>
-
       <form className="flex flex-col items-center" onSubmit={handleSubmit}>
         {/* Le souvenir */}
         <fieldset className="mt-10 p-5 border rounded-lg">
@@ -222,7 +220,7 @@ export default function Create() {
             </label>
           ))}
         </fieldset>
-
+        
         {/* Sa localisation */}
         <fieldset className="mt-10 p-5 border rounded-lg">
           <legend className="text-lg mb-5">Sa localisation</legend>
@@ -245,7 +243,6 @@ export default function Create() {
             </label>
           ))}
         </fieldset>
-
         <div className="flex content-center mt-6">
           {/* Bouton de soumission du formulaire */}
           <button
