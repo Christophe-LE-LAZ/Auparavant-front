@@ -8,7 +8,7 @@ export default function Layout() {
     <div className="relative m-auto w-auto max-w-6xl">
       <Header />
       <div className='relative pt-40 pb-16 sm:pt-0 sm:pb-0'>
-        <main className='shadow-lg pb-2'>
+        <main className='shadow-lg pb-5 mt-5 sm:mt-10'>
           <Outlet />
         </main>
         <Footer />
