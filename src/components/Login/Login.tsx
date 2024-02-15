@@ -5,6 +5,11 @@ import { TInputNameCred } from '../../types/inputName';
 import { Navigate } from 'react-router-dom';
 
 export default function Login() {
+
+    // Lecture des states du User reducer
+    const { logged, loading, error } = useAppSelector((state) => state.user);
+    const { username, password } = useAppSelector((state) => state.user.credentials);
+
   const dispatch = useAppDispatch();
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -17,13 +22,6 @@ export default function Login() {
     e.preventDefault();
     dispatch(login());
   };
-
-  // Lecture des states du User reducer
-  const logged = useAppSelector((state) => state.user.logged);
-  const loading = useAppSelector((state) => state.user.loading);
-  const error = useAppSelector((state) => state.user.error);
-  const email = useAppSelector((state) => state.user.credentials.username);
-  const password = useAppSelector((state) => state.user.credentials.password);
 
   return (
     <div className="flex flex-col items-center m-10 gap-5 sm:m-20">
@@ -45,7 +43,7 @@ export default function Login() {
             placeholder="Entrez votre email"
             className="grow"
             onChange={handleChange}
-            value={email}
+            value={username}
             name="username"
           />
         </label>

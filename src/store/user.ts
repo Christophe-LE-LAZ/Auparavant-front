@@ -64,9 +64,8 @@ const userReducer = createReducer(initialState, (builder) => {
       })
       // Gestion du cas "fullfilled" de la connexion
       .addCase(login.fulfilled, (state, action) => {
+        console.log(action.payload)
         const { id, username } = action.payload;
-        console.log(id);
-        console.log(username)
         state.loading = false;
         state.id = id;
         state.username = username;

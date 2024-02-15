@@ -1,39 +1,68 @@
 import React from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { ChangeEvent } from 'react';
-import { TInputNameMemo } from '../../types/inputName';
-import { changeFieldState } from '../../store/memory';
+import {
+  TInputNameLocation,
+  TInputNameMemory,
+  TInputNamePlace,
+} from '../../types/inputName';
+import {
+  changeFieldStateMemory,
+  changeFieldStatePlace,
+  changeFieldStateLocation,
+  createMemory,
+} from '../../store/memory';
 
 export default function Create() {
+  // Lecture des states du reducer Memory
+  const { title, content, picture_date, main_picture, additionnal_pictures } =
+    useAppSelector((state) => state.memory.memoryData.memory);
+  const { name, type } = useAppSelector((state) => state.memory.memoryData.place);
+  const {
+    area,
+    department,
+    district,
+    street,
+    city,
+    zipcode,
+    latitude,
+    longitude,
+  } = useAppSelector((state) => state.memory.memoryData.location);
 
-// Lecture des states du User reducer
-const title = useAppSelector((state) => state.memory.memory.title);
-const content = useAppSelector((state) => state.memory.memory.content);
-const pictureDate = useAppSelector((state) => state.memory.memory.picture_date);
-
-// Caractéristiques des inputs à mapper
+  // Caractéristiques des inputs à mapper
   const memoryInputs = [
-    { label: 'Titre du souvenir', name: 'memory.title', type: 'text', required: true, value: title },
     {
-      label: 'Description du souvenir',
-      name: 'memory.content',
+      label: 'Titre du souvenir',
+      name: 'title',
       type: 'text',
       required: true,
-      value : content
+      value: title,
     },
-    { label: 'Date du souvenir', name: 'memory.picture_date', type : 'date', required: true, value: pictureDate },
-  ];
-  const photosInputs = [
+    {
+      label: 'Description du souvenir',
+      name: 'content',
+      type: 'text',
+      required: true,
+      value: content,
+    },
+    {
+      label: 'Date du souvenir',
+      name: 'picture_date',
+      type: 'date',
+      required: true,
+      value: picture_date.substring(0,10),
+    },
     {
       label: 'Photographie principale',
-      name: 'memory.main_picture',
+      name: 'main_picture',
       type: 'url',
       placeholder: 'URL',
       required: true,
+      value: main_picture,
     },
     {
       label: 'Photographie supplémentaire',
-      name: 'memory.additionnal_pictures',
+      name: 'additionnal_pictures',
       type: 'url',
       placeholder: 'URL',
       required: false,
@@ -41,42 +70,120 @@ const pictureDate = useAppSelector((state) => state.memory.memory.picture_date);
   ];
 
   const placeInputs = [
-    { label: "Nom de l'endroit", name: 'place.name', type: 'text', required: false },
-    { label: "Type d'endroit", name: 'place.type', type: 'text', required: true },
+    {
+      label: "Nom de l'endroit",
+      name: 'name',
+      type: 'text',
+      required: false,
+      value: name,
+    },
+    {
+      label: "Type d'endroit",
+      name: 'type',
+      type: 'text',
+      required: true,
+      value: type,
+    },
   ];
 
   const locationInputs = [
-    { label: 'Région', name: 'location.area', required: true },
-    { label: 'Département', name: 'location.department', required: true },
-    { label: 'Quartier', name: 'location.district', type: 'text', required: false },
-    { label: 'Adresse', name: 'location.street',type: 'text', required: true },
-    { label: 'Ville', name: 'location.city', type: 'text', required: true },
-    { label: 'Code postal', name: 'location.zipcode', type:'number', required: true },
-    { label: 'Latitude', name: 'location.latitude', type: 'text', required: true },
-    { label: 'Longitude', name: 'location.longitude', type: 'text', required: true },
+    { label: 'Région', name: 'location.area', required: true, value: area },
+    {
+      label: 'Département',
+      name: 'location.department',
+      required: true,
+      value: department,
+    },
+    {
+      label: 'Quartier',
+      name: 'district',
+      type: 'text',
+      required: false,
+      value: district,
+    },
+    {
+      label: 'Adresse',
+      name: 'location.street',
+      type: 'text',
+      required: true,
+      value: street,
+    },
+    {
+      label: 'Ville',
+      name: 'location.city',
+      type: 'text',
+      required: true,
+      value: city,
+    },
+    {
+      label: 'Code postal',
+      name: 'zipcode',
+      type: 'number',
+      required: true,
+      value: zipcode,
+    },
+    {
+      label: 'Latitude',
+      name: 'latitude',
+      type: 'text',
+      required: true,
+      value: latitude,
+    },
+    {
+      label: 'Longitude',
+      name: 'longitude',
+      type: 'text',
+      required: true,
+      value: longitude,
+    },
   ];
-
 
   const dispatch = useAppDispatch();
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const inputValue = e.target.value as string;
-    const inputName = e.target.name as TInputNameMemo;
-    dispatch(changeFieldState({ inputValue, inputName }));
+  // Envoi des valeurs entrées dans la partie Souvenir vers le state
+  const handleBlurMemory = (e: ChangeEvent<HTMLInputElement>) => {
+    // Transfomation du format de la date pour correspondre au format de la BDD
+    // if (e.target.type === 'date') {
+    //   const inputDate = e.target.value
+    //   e.target.value = inputDate + "T00:00:00+00:00"
+    //   return e.target.value
+    // }
+    const inputValueM = e.target.value as any;
+    const inputNameM = e.target.name as TInputNameMemory;
+    console.log(inputValueM)
+    dispatch(changeFieldStateMemory({ inputValueM, inputNameM }));
+  };
+
+  // Envoi des valeurs entrées dans la partie Lieu vers le state
+  const handleBlurPlace = (e: ChangeEvent<HTMLInputElement>) => {
+    const inputValueP = e.target.value as any;
+    const inputNameP = e.target.name as TInputNamePlace;
+    dispatch(changeFieldStatePlace({ inputValueP, inputNameP }));
+  };
+
+  // Envoi des valeurs entrées dans la partie Localisation vers le state
+  const handleBlurLocation = (e: ChangeEvent<HTMLInputElement>) => {
+    const inputValueL = e.target.value as any;
+    const inputNameL = e.target.name as TInputNameLocation;
+    dispatch(changeFieldStateLocation({ inputValueL, inputNameL }));
+  };
+
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    dispatch(createMemory());
   };
 
   return (
     <div>
-
       <h2 className="text-center text-2xl">Partager un souvenir</h2>
       <p className="text-center text-xs mt-5">* champs obligatoires</p>
 
-      <form className="flex flex-col items-center">
-
+      <form className="flex flex-col items-center" onSubmit={handleSubmit}>
         {/* Le souvenir */}
         <fieldset className="mt-10 p-5 border rounded-lg">
           <legend className="text-lg mb-5">Votre souvenir</legend>
-          {memoryInputs.map(({ label, name, type, value, required }) => (
+          {memoryInputs.map(({ label, name, type, value, placeholder, required }) => (
             <label key={name} className="form-control w-full max-w-xs">
               <div className="label">
                 <span className="label-text">
@@ -88,30 +195,9 @@ const pictureDate = useAppSelector((state) => state.memory.memory.picture_date);
                 className="input input-bordered w-full max-w-xs"
                 name={name}
                 required={required}
-                value={value}
-                onChange={handleChange}
-              />
-            </label>
-          ))}
-        </fieldset>
-
-        {/* Les photographies */}
-        <fieldset className="mt-10 p-5 border rounded-lg">
-          <legend className="text-lg mb-5">Les photographies</legend>
-          {photosInputs.map(({ label, name, type, placeholder, required }) => (
-            <label key={name} className="form-control w-full max-w-xs">
-              <div className="label">
-                <span className="label-text">
-                  {label} {required && '*'}
-                </span>
-              </div>
-              <input
-                type={type}
-                className="input input-bordered w-full max-w-xs"
+                defaultValue={value}
                 placeholder={placeholder}
-                name={name}
-                required={required}
-                onChange={handleChange}
+                onBlur={handleBlurMemory}
               />
             </label>
           ))}
@@ -120,7 +206,7 @@ const pictureDate = useAppSelector((state) => state.memory.memory.picture_date);
         {/* Le lieu */}
         <fieldset className="mt-10 p-5 border rounded-lg">
           <legend className="text-lg mb-5">Le lieu</legend>
-          {placeInputs.map(({ label, name, type, required }) => (
+          {placeInputs.map(({ label, name, type, value, required }) => (
             <label key={name} className="form-control w-full max-w-xs">
               <div className="label">
                 <span className="label-text">
@@ -132,7 +218,8 @@ const pictureDate = useAppSelector((state) => state.memory.memory.picture_date);
                 className="input input-bordered w-full max-w-xs"
                 name={name}
                 required={required}
-                onChange={handleChange}
+                defaultValue={value}
+                onBlur={handleBlurPlace}
               />
             </label>
           ))}
@@ -141,7 +228,7 @@ const pictureDate = useAppSelector((state) => state.memory.memory.picture_date);
         {/* Sa localisation */}
         <fieldset className="mt-10 p-5 border rounded-lg">
           <legend className="text-lg mb-5">Sa localisation</legend>
-          {locationInputs.map(({ label, name, required }) => (
+          {locationInputs.map(({ label, name, type, value, required }) => (
             <label key={name} className="form-control w-full max-w-xs">
               <div className="label">
                 <span className="label-text">
@@ -150,11 +237,12 @@ const pictureDate = useAppSelector((state) => state.memory.memory.picture_date);
                 </span>
               </div>
               <input
-                type="text"
+                type={type}
                 className="input input-bordered w-full max-w-xs"
                 name={name}
                 required={required}
-                onChange={handleChange}
+                defaultValue={value}
+                onBlur={handleBlurLocation}
               />
             </label>
           ))}

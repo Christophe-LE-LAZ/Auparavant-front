@@ -19,7 +19,7 @@ export default function Home() {
   return (
     <div className="">
       <div className="">
-        <h1 className="flex justify-center text-2xl py-5 sm:text-3xl sm:py-10 lg:text-4xl lg:py-14">
+        <h1 className="flex justify-center text-2xl pb-5 sm:text-3xl sm:pb-10 lg:text-4xl lg:pb-14">
           O'mais y'avait quoi avant ?
         </h1>
         <p className="pb-3 w-4/5 mx-auto text-center text-sm lg:text-base lg:leading-relaxed lg:hidden">
