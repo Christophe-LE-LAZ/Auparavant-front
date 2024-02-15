@@ -1,17 +1,15 @@
 import {
-    createAction,
     createAsyncThunk,
     createReducer,
   } from '@reduxjs/toolkit';
 
   import axios from 'axios';
 
-  import { IMemory } from '../types/memory';
-  import data from '../data';
+  import { IDataCreated } from '../types/memory';
 
   
   interface MemoriesState {
-    list: IMemory[] | []
+    list: IDataCreated[] | []
     loading: boolean;
     error: null | string;
   }
@@ -27,11 +25,10 @@ import {
   export const fetchMemories = createAsyncThunk(
     'memories/fetchMemories',
     async () => {
-      const { data } = await axios.get(`http://aurelien-rouchette-maret.vpnuser.lan/apotheosis/what-did-there-use-to-be-back/public/api/memories`);
+      const { data } = await axios.get(`http://13.60.26.88/api/memories`);
       return data;
     }
   );
-  
 
   const memoriesReducer = createReducer(initialState, (builder) => {
     builder
@@ -46,7 +43,8 @@ import {
       .addCase(fetchMemories.fulfilled, (state, action) => {
         state.loading = false;
         state.list = action.payload;
-      });
+        console.log(action.payload)
+      })
   });
   
   export default memoriesReducer;

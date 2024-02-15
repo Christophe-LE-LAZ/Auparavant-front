@@ -2,7 +2,7 @@ import {createReducer, createAsyncThunk, createAction} from '@reduxjs/toolkit';
 import { ICredentials } from '../types/credentials'
 import axios from 'axios';
 import { RootState } from '.';
-import { TInputName } from '../types/inputName';
+import { TInputNameCred } from '../types/inputName';
 
 interface UserState {
     logged: boolean;
@@ -27,7 +27,7 @@ export const initialState: UserState = {
 
 export const changeFieldState = createAction<{
   inputValue : string;
-  inputName: TInputName;
+  inputName: TInputNameCred;
 }>('user/changeFieldState');
 
 export const login = createAsyncThunk('user/login', async (_, thunkAPI) => {
@@ -36,7 +36,7 @@ export const login = createAsyncThunk('user/login', async (_, thunkAPI) => {
     // Récupération des valeurs contenues dans credentials
     const credentials = state.user.credentials as ICredentials;
     // Envoi des credentials
-    const { data } = await axios.post('http://aurelien-rouchette-maret.vpnuser.lan/apotheosis/what-did-there-use-to-be-back/public/api/login_check', credentials);
+    const { data } = await axios.post('http://13.60.26.88/api/login_check', credentials);
     // Configuration de l'instance d'axios avec le token reçu
     axios.defaults.headers.common = { Authorization: `Bearer ${data.token}` };
     return data.data;
@@ -64,9 +64,8 @@ const userReducer = createReducer(initialState, (builder) => {
       })
       // Gestion du cas "fullfilled" de la connexion
       .addCase(login.fulfilled, (state, action) => {
+        console.log(action.payload)
         const { id, username } = action.payload;
-        console.log(id);
-        console.log(username)
         state.loading = false;
         state.id = id;
         state.username = username;

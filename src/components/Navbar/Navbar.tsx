@@ -23,7 +23,7 @@ export default function Navbar() {
         </NavLink>
         <NavLink
           className="h-12 rounded-lg p-3 hover:bg-base-200 hidden sm:flex"
-          to="/memories/create"
+          to="/create"
         >
           Partager un souvenir
         </NavLink>
@@ -48,7 +48,7 @@ export default function Navbar() {
           <img alt="See-logo" src={See} className="w-6" />
           <span className="btm-nav-label">Voir</span>
         </NavLink>
-        <NavLink to="/memories/create">
+        <NavLink to="/create">
           <img alt="Share-logo" src={Share} className="w-6" />
           <span className="btm-nav-label">Partager</span>
         </NavLink>
