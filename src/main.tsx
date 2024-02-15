@@ -17,6 +17,7 @@ import Login from './components/Login/Login';
 import Profile from './components/Profile/Profile';
 import Create from './components/Create/Create';
 import Update from './components/Update/Update';
+import PrivateRoute from './components/PrivateRoutes';
 
 // Store redux
 import { Provider } from 'react-redux';
@@ -43,10 +44,10 @@ const router = createBrowserRouter(
         <Route path='/memories' loader={Loader} element={<Memories />}/>
         <Route path='/memories/:id' element={<Memory />}/>
         <Route path='/memories/:id/update' element={<Update />} />
-        <Route path='/create' element={<Create />}/>
+        <Route path='/create' element={<PrivateRoute><Create /></PrivateRoute>}/>
         <Route path='/register' element={<Register />}/>
         <Route path='/login' element={<Login />}/>
-        <Route path='/profile' element={<Profile />}/>
+        <Route path='/profile' element={<PrivateRoute><Profile /></PrivateRoute>}/>
         <Route path='/contributions' element={<Contributions />}/>
         <Route path='/contact' element={<Contact />}/>
         <Route path='/about-us' element={<AboutUs />}/>
