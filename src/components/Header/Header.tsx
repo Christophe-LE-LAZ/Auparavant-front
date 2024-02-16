@@ -5,10 +5,10 @@ import Avatar from '../../assets/Avatar.png';
 import './Header.scss';
 import { Link, NavLink } from 'react-router-dom';
 import { useAppSelector, useAppDispatch } from '../../hooks';
-import { logout } from '../../store/user';
+import { logout } from '../../store/userReducer';
 
 export default function Header() {
-  const username = useAppSelector((state) => state.user.username);
+  const firstname = useAppSelector((state) => state.user.firstname);
   const logged = useAppSelector((state) => state.user.logged);
 
   const dispatch = useAppDispatch();
@@ -16,7 +16,7 @@ export default function Header() {
   // Gestion du click sur Déconnexion
   const handleClick = () => {
     dispatch(logout());
-  }
+  };
 
   return (
     <header className="fixed bg-base-100 z-50 sm:static">
@@ -40,7 +40,7 @@ export default function Header() {
         )}
         {/* Message si utilisateur connecté */}
         {logged && (
-          <div className="absolute right-28 top-7">Bonjour {username}</div>
+          <div className="absolute right-28 top-7">Bonjour {firstname}</div>
         )}
         {/* Avatar d'utilisateur connecté avec menu déroulant */}
         {logged && (
@@ -65,7 +65,9 @@ export default function Header() {
                 <Link to="/contributions">Mes contributions</Link>
               </li>
               <li>
-                <Link to='' onClick={handleClick}>Déconnexion</Link>
+                <Link to="" onClick={handleClick}>
+                  Déconnexion
+                </Link>
               </li>
             </ul>
           </div>

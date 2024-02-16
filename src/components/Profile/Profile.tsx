@@ -1,64 +1,80 @@
-import React from 'react';
-import { useAppSelector, useAppDispatch } from '../../hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+
+import { deleteUser } from '../../store/userReducer';
 
 export default function Profile() {
-  const { username, email, lastname } = useAppSelector((state) => state.user);
+  const { firstname, email, lastname, id } = useAppSelector((state) => state.user);
+  
+  const dispatch = useAppDispatch();
+
+  // TODO : modale de vérification de l'intention de l'utilisateur
+  const handleClickDelete = (e : React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    dispatch(deleteUser());
+  }
 
   return (
-    <div className=''>
-      <div className="avatar flex flex-col mb-28 items-center ">
-        <div className="w-24 rounded-full">
+    <div className="mt-10 p-5 border rounded-lg max-w-2xl m-auto">
+      <div className="avatar flex flex-col my-4 items-center">
+        <div className="w-24 rounded-full mb-3">
           <img src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg" />
         </div>
-        <button className="text-sm bg-gray-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded mt-4">
+        <button className="text-sm bg-gray-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded ">
           Modifier
         </button>
-        <h1 className='pt-12'>Bienvenue {username} sur votre profil</h1>
+        <h1 className="py-8">Bienvenue sur votre profil, {firstname}.</h1>
       </div>
 
-
-      <div className='flex justify-between border-t-2 border-b-2 border-grey'>
-        <div>
-        <h2 className='pb-2'>Nom</h2>
-        <p>{lastname}</p>
+      <div className="flex justify-between border-t-2 border-b border-grey p-5">
+        <div className="">
+          <strong>Nom</strong> : {lastname}
         </div>
         <div>
-        <button className="text-sm bg-gray-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded mt-4">
-          Modifier
-        </button>
+          <button className="text-sm bg-gray-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded">
+            Modifier
+          </button>
         </div>
       </div>
-      <div className='flex justify-between border-t-2 border-b-2 border-grey'>
-        <div>
-        <h2 className='pb-2'>Prénom</h2>
-        <p>{username}</p>
+      <div className="flex justify-between border-y border-grey p-5">
+        <div className="">
+          <strong>Prénom</strong> : {firstname}
         </div>
         <div>
-        <button className="text-sm bg-gray-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded mt-4">
-          Modifier
-        </button>
-        </div>
-      </div>
-      <div className='flex justify-between border-t-2 border-b-2 border-grey'>
-        <div>
-        <h2 className='pb-2'>E-mail</h2>
-        <p>{email}</p>
-        </div>
-        <div>
-        <button className="text-sm bg-gray-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded mt-4">
-          Modifier
-        </button>
+          <button className="text-sm bg-gray-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded ">
+            Modifier
+          </button>
         </div>
       </div>
-      <div className='flex justify-between border-t-2 border-b-2 border-grey'>
-        <div>
-        <h2 className='pb-2'>Mot</h2>
-        <p>{username}</p>
+      <div className="flex justify-between border-y border-grey p-5">
+        <div className="">
+          <strong>Email</strong> : {email}
         </div>
         <div>
-        <button className="text-sm bg-gray-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded mt-4">
-          Modifier 
-        </button>
+          <button className="text-sm bg-gray-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded">
+            Modifier
+          </button>
+        </div>
+      </div>
+      <div className="flex justify-between border-t border-b-2 border-grey p-5">
+        <div className="">
+          <strong>Mot de passe</strong> : *****
+        </div>
+        <div>
+          <button className="text-sm bg-gray-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded">
+            Modifier
+          </button>
+        </div>
+      </div>
+      <div className="flex justify-between border-t border-b-2 border-grey p-5">
+        <div className="">
+          <strong>Supprimer mon compte</strong>
+        </div>
+        <div>
+          <button
+            className="text-sm bg-gray-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded"
+            onClick={handleClickDelete}
+          >
+            Supprimer
+          </button>
         </div>
       </div>
     </div>

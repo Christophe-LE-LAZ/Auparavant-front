@@ -1,7 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
-import memoriesReducer from './memories'
-import userReducer from './user';
-import memoryReducer from './memory';
+import memoriesReducer from './memoriesReducer'
+import userReducer from './userReducer';
+import memoryReducer from './memoryReducer';
 
 // Création du store et définition des différents states et de leurs reducers associés
 

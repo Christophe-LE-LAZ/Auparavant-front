@@ -11,7 +11,7 @@ import {
   changeFieldStatePlace,
   changeFieldStateLocation,
   createMemory,
-} from '../../store/memory';
+} from '../../store/memoryReducer';
 
 export default function Create() {
   // Lecture des states du reducer Memory
@@ -142,6 +142,7 @@ export default function Create() {
   ];
 
   const dispatch = useAppDispatch();
+  
   // Envoi des valeurs entrées dans la partie Souvenir vers le state
   const handleBlurMemory = (e: ChangeEvent<HTMLInputElement>) => {
     const inputValueM = e.target.value as string & (string[] | undefined);
@@ -220,7 +221,7 @@ export default function Create() {
             </label>
           ))}
         </fieldset>
-        
+
         {/* Sa localisation */}
         <fieldset className="mt-10 p-5 border rounded-lg">
           <legend className="text-lg mb-5">Sa localisation</legend>
