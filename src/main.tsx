@@ -17,7 +17,9 @@ import Login from './components/Login/Login';
 import Profile from './components/Profile/Profile';
 import Create from './components/Create/Create';
 import Update from './components/Update/Update';
-import PrivateRoute from './components/PrivateRoutes';
+import Unlogged_to_login from './components/Redirections/Unlogged_to_login';
+import Logged_to_home from './components/Redirections/Logged_to_home';
+import Registered_to_login from './components/Redirections/Registered_to_login';
 
 // Store redux
 import { Provider } from 'react-redux';
@@ -25,35 +27,62 @@ import store from './store';
 
 // Styles
 import 'tailwindcss/tailwind.css';
-import './styles/index.scss'
+import './styles/index.scss';
 
-// Router 
+// Router
 import {
   createBrowserRouter,
   createRoutesFromElements,
   RouterProvider,
-  Route
+  Route,
 } from 'react-router-dom';
-
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <>
-      <Route path='/' loader={Loader} element={<Layout />}>
+      <Route path="/" loader={Loader} element={<Layout />}>
         <Route index loader={Loader} element={<Home />} />
-        <Route path='/memories' loader={Loader} element={<Memories />}/>
-        <Route path='/memories/:id' element={<Memory />}/>
-        <Route path='/memories/:id/update' element={<Update />} />
-        <Route path='/create' element={<PrivateRoute><Create /></PrivateRoute>}/>
-        <Route path='/register' element={<Register />}/>
-        <Route path='/login' element={<Login />}/>
-        <Route path='/profile' element={<PrivateRoute><Profile /></PrivateRoute>}/>
-        <Route path='/contributions' element={<Contributions />}/>
-        <Route path='/contact' element={<Contact />}/>
-        <Route path='/about-us' element={<AboutUs />}/>
-        <Route path='/disclaimer' element={<Disclaimer />}/>
-        <Route path='/faq' element={<FAQ />}/>
-        <Route path="*" element={<NotFound />}/>
+        <Route path="/memories" loader={Loader} element={<Memories />} />
+        <Route path="/memories/:id" element={<Memory />} />
+        <Route path="/memories/:id/update" element={<Update />} />
+        <Route
+          path="/create"
+          element={
+            <Unlogged_to_login>
+              <Create />
+            </Unlogged_to_login>
+          }
+        />
+        <Route
+          path="/register"
+          element={
+            <Registered_to_login>
+              <Register />
+            </Registered_to_login>
+          }
+        />
+        <Route
+          path="/login"
+          element={
+            <Logged_to_home>
+              <Login />
+            </Logged_to_home>
+          }
+        />
+        <Route
+          path="/profile"
+          element={
+            <Unlogged_to_login>
+              <Profile />
+            </Unlogged_to_login>
+          }
+        />
+        <Route path="/contributions" element={<Contributions />} />
+        <Route path="/contact" element={<Contact />} />
+        <Route path="/about-us" element={<AboutUs />} />
+        <Route path="/disclaimer" element={<Disclaimer />} />
+        <Route path="/faq" element={<FAQ />} />
+        <Route path="*" element={<NotFound />} />
       </Route>
     </>
   )
@@ -61,11 +90,8 @@ const router = createBrowserRouter(
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
-      <Provider store={store}>  
-          <RouterProvider router={router} />
-       </Provider> 
+    <Provider store={store}>
+      <RouterProvider router={router} />
+    </Provider>
   </React.StrictMode>
 );
-
-
-

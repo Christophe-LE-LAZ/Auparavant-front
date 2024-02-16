@@ -8,7 +8,7 @@ import { useAppSelector, useAppDispatch } from '../../hooks';
 import { logout } from '../../store/user';
 
 export default function Header() {
-  const username = useAppSelector((state) => state.user.username);
+  const firstname = useAppSelector((state) => state.user.firstname);
   const logged = useAppSelector((state) => state.user.logged);
 
   const dispatch = useAppDispatch();
@@ -40,7 +40,7 @@ export default function Header() {
         )}
         {/* Message si utilisateur connecté */}
         {logged && (
-          <div className="absolute right-28 top-7">Bonjour {username}</div>
+          <div className="absolute right-28 top-7">Bonjour {firstname}</div>
         )}
         {/* Avatar d'utilisateur connecté avec menu déroulant */}
         {logged && (

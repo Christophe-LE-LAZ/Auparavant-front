@@ -1,8 +1,7 @@
-import React from 'react';
-import { useAppSelector, useAppDispatch } from '../../hooks';
+import { useAppSelector } from '../../hooks';
 
 export default function Profile() {
-  const { username, email, lastname } = useAppSelector((state) => state.user);
+  const { firstname, email, lastname } = useAppSelector((state) => state.user);
 
   return (
     <div className=''>
@@ -13,7 +12,7 @@ export default function Profile() {
         <button className="text-sm bg-gray-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded mt-4">
           Modifier
         </button>
-        <h1 className='pt-12'>Bienvenue {username} sur votre profil</h1>
+        <h1 className='pt-12'>Bienvenue sur votre profil, {firstname}.</h1>
       </div>
 
 
@@ -31,7 +30,7 @@ export default function Profile() {
       <div className='flex justify-between border-t-2 border-b-2 border-grey'>
         <div>
         <h2 className='pb-2'>Prénom</h2>
-        <p>{username}</p>
+        <p>{firstname}</p>
         </div>
         <div>
         <button className="text-sm bg-gray-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded mt-4">
@@ -52,8 +51,8 @@ export default function Profile() {
       </div>
       <div className='flex justify-between border-t-2 border-b-2 border-grey'>
         <div>
-        <h2 className='pb-2'>Mot</h2>
-        <p>{username}</p>
+        <h2 className='pb-2'>Mot de passe</h2>
+        <p>******</p>
         </div>
         <div>
         <button className="text-sm bg-gray-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded mt-4">
