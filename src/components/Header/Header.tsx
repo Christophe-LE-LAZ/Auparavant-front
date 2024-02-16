@@ -5,7 +5,7 @@ import Avatar from '../../assets/Avatar.png';
 import './Header.scss';
 import { Link, NavLink } from 'react-router-dom';
 import { useAppSelector, useAppDispatch } from '../../hooks';
-import { logout } from '../../store/user';
+import { logout } from '../../store/userReducer';
 
 export default function Header() {
   const firstname = useAppSelector((state) => state.user.firstname);
@@ -16,7 +16,7 @@ export default function Header() {
   // Gestion du click sur Déconnexion
   const handleClick = () => {
     dispatch(logout());
-  }
+  };
 
   return (
     <header className="fixed bg-base-100 z-50 sm:static">
@@ -65,7 +65,9 @@ export default function Header() {
                 <Link to="/contributions">Mes contributions</Link>
               </li>
               <li>
-                <Link to='' onClick={handleClick}>Déconnexion</Link>
+                <Link to="" onClick={handleClick}>
+                  Déconnexion
+                </Link>
               </li>
             </ul>
           </div>

@@ -13,10 +13,11 @@ interface UserState {
   credentials : ICredentials;
   password_check : string
   logged: boolean;
-  just_registered: boolean;
   loading: boolean;
   error: null | string;
   message : string;
+  just_registered: boolean;
+  just_deleted : boolean;
 }
 
 export const initialState: UserState = {
@@ -31,24 +32,24 @@ export const initialState: UserState = {
   },
   password_check: '',
   logged: false,
-  just_registered: false,
   loading: false,
   error: null,
-  message: ""
+  message: "",
+  just_registered: false,
+  just_deleted: false
+
 }
 
-export const passwordCheck = createAction<string>('user/changeFieldState');
+// Register : création d'une action : vérification du mot de passe
+export const passwordCheck = createAction<string>('user/passwordCheck');
 
-export const changeFieldStateCred = createAction<{
-  inputValue : string;
-  inputName: TInputNameCred;
-}>('user/changeFieldStateCred');
-
+// Register : creation d'une action : inputs -> valeurs du state
 export const changeFieldStateRegister = createAction<{
   inputValue : string;
   inputName: TInputNameRegister;
 }>('user/changeFieldStateRegister');
 
+// Register : création d'une AsyncThunk : création d'un utilisateur
 export const register = createAsyncThunk('user/register', async (_, thunkAPI) => {
   // Récupération de la valeur du state via la thunkAPI
   const state = thunkAPI.getState() as RootState;
@@ -63,21 +64,39 @@ export const register = createAsyncThunk('user/register', async (_, thunkAPI) =>
   return data;
 });
 
-export const login = createAsyncThunk('user/login', async (_, thunkAPI) => {
-    // Récupération de la valeur du state via la thunkAPI
-    const state = thunkAPI.getState() as RootState;
-    // Récupération des valeurs contenues dans credentials
-    const credentials = state.user.credentials as ICredentials;
-    // Envoi des credentials
-    const { data } = await axios.post('http://13.60.26.88/api/login_check', credentials);
-    // Configuration de l'instance d'axios avec le token reçu
-    axios.defaults.headers.common = { Authorization: `Bearer ${data.token}` };
-    return data.data;
-  });
-  
+// Login : création d'une action : inputs -> valeurs du state
+export const changeFieldStateCred = createAction<{
+  inputValue : string;
+  inputName: TInputNameCred;
+}>('user/changeFieldStateCred');
 
+// Login : création d'une AsyncThunk : identification de l'utilisateur
+export const login = createAsyncThunk('user/login', async (_, thunkAPI) => {
+  // Récupération de la valeur du state via la thunkAPI
+  const state = thunkAPI.getState() as RootState;
+  // Récupération des valeurs contenues dans credentials
+  const credentials = state.user.credentials as ICredentials;
+  // Envoi des credentials
+  const { data } = await axios.post('http://13.60.26.88/api/login_check', credentials);
+  // Configuration de l'instance d'axios avec le token reçu
+  axios.defaults.headers.common = { Authorization: `Bearer ${data.token}` };
+  return data.data;
+});
+  
+// Logout : création d'une action : déconnexion de l'utilisateur
 export const logout = createAction('user/logout');
 
+// Delete : creation d'une AsyncThunk : suppression de l'utilisateur
+export const deleteUser = createAsyncThunk('user/deleteUser', async (_, thunkAPI) => {
+  // Récupération de la valeur du state via la thunkAPI
+  const state = thunkAPI.getState() as RootState;
+  // Récupération de l'ID de l'utilisateur connecté
+  const userID = state.user.id;
+  const { data } = await axios.delete(`http://13.60.26.88/api/secure/delete/user/${userID}`);
+  return data;
+});
+
+// Création du reducer 
 
 const userReducer = createReducer(initialState, (builder) => {
 
@@ -129,9 +148,9 @@ const userReducer = createReducer(initialState, (builder) => {
 
     // Login : gestion du cas "pending" 
     .addCase(login.pending, (state) => {
-        state.error = null;
-        state.loading = true;
-      })
+      state.error = null;
+      state.loading = true;
+    })
     // Login : gestion du cas "rejected"
     .addCase(login.rejected, (state, action) => {
       state.loading = false;
@@ -139,7 +158,6 @@ const userReducer = createReducer(initialState, (builder) => {
       })
     // Login : gestion du cas "fullfilled" 
     .addCase(login.fulfilled, (state, action) => {
-      console.log(action.payload)
       const { id, username, lastname, email } = action.payload;
       state.loading = false;
       state.error = "";
@@ -153,7 +171,7 @@ const userReducer = createReducer(initialState, (builder) => {
       state.logged = true;
     })
     
-    // Gestion de la déconnexion
+    // Logout : gestion de la déconnexion
     .addCase(logout, (state) => {
       state.id = null
       state.firstname = '';
@@ -163,7 +181,27 @@ const userReducer = createReducer(initialState, (builder) => {
       // Suppression du token des headers de l'instance axios
       axios.defaults.headers.common = {};
     })
+
+    // Delete : gestion du cas "pending"
+    .addCase(deleteUser.pending, (state) => {
+      state.error = null;
+      state.loading = true;
+    })
+    // Delete : gestion du cas "rejected"
+    .addCase(deleteUser.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.error.message as string;
+    })
+    // Delete : gestion du cas "fullfilled" 
+    .addCase(deleteUser.fulfilled, (state, action) => {
+      state.loading = false;
+      state.firstname = '';
+      state.lastname = '';
+      state.email = '';
+      state.logged = false;
+      state.just_deleted = true;
+      state.message = "Votre compte a bien été supprimé."
+  })
   });
-  
+
   export default userReducer;
-  

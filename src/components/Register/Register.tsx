@@ -4,7 +4,7 @@ import {
   changeFieldStateRegister,
   register,
   passwordCheck,
-} from '../../store/user';
+} from '../../store/userReducer';
 import { TInputNameRegister } from '../../types/inputName';
 import { Link } from 'react-router-dom';
 
@@ -42,7 +42,6 @@ export default function Register() {
     <div className="flex flex-col items-center m-10 gap-5 sm:m-10">
       <h2 className="text-xl">Inscrivez-vous</h2>
       <form onSubmit={handleSubmit}>
-        
         {/* Champ Prénom  */}
         <label className="input input-bordered flex items-center gap-2 mb-5">
           <svg
@@ -160,10 +159,7 @@ export default function Register() {
             </button>
           )}
           {!error && (
-            <button
-              type="submit"
-              className="btn"
-            >
+            <button type="submit" className="btn">
               Soumettre
             </button>
           )}

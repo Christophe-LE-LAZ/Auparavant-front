@@ -1,7 +1,8 @@
 import { Navigate } from 'react-router-dom';
 import { useAppSelector } from '../../hooks/redux';
 
-// Création d'un wrapper permettant de rediriger l'utilisateur vers la page d'accueil s'il n'est pas connecté
+// Création d'un wrapper permettant de rediriger l'utilisateur 
+// vers la page de connexion s'il vient de s'inscrire
 
 interface PageProps {
   children: React.ReactNode;
