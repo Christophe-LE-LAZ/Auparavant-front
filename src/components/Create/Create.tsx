@@ -300,76 +300,90 @@ export default function Create() {
           className="flex flex-col items-center"
           onSubmit={handleSubmitExistingLocation}
         >
-          {/* Le souvenir */}
-          <fieldset className="mt-10 p-5 border rounded-lg">
-            <legend className="text-lg mb-5">Votre souvenir</legend>
-            {memoryInputs.map(
-              ({ label, name, type, value, placeholder, required }) => (
-                <label key={name} className="form-control w-full max-w-xs">
-                  <div className="label">
-                    <span className="label-text">
-                      {label} {required && '*'}{' '}
-                    </span>
-                  </div>
-                  <input
-                    type={type}
-                    className="input input-bordered w-full max-w-xs"
-                    name={name}
-                    required={required}
-                    defaultValue={value}
-                    placeholder={placeholder}
-                    onBlur={handleBlurMemory}
-                  />
-                </label>
-              )
-            )}
-          </fieldset>
+          <div className="sm:flex gap-6">
+            <div>
+              {/* Le souvenir */}
+              <fieldset className="mt-10 p-5 border rounded-lg">
+                <legend className="text-lg mb-5">Votre souvenir</legend>
+                {memoryInputs.map(
+                  ({ label, name, type, value, placeholder, required }) => (
+                    <label key={name} className="form-control w-full max-w-xs">
+                      <div className="label">
+                        <span className="label-text">
+                          {label} {required && '*'}{' '}
+                        </span>
+                      </div>
+                      <input
+                        type={type}
+                        className="input input-bordered w-full max-w-xs"
+                        name={name}
+                        required={required}
+                        defaultValue={value}
+                        placeholder={placeholder}
+                        onBlur={handleBlurMemory}
+                      />
+                    </label>
+                  )
+                )}
+              </fieldset>
 
-          {/* Le lieu */}
-          <fieldset className="mt-10 p-5 border rounded-lg">
-            <legend className="text-lg mb-5">Le lieu</legend>
-            {placeInputs.map(({ label, name, type, value, required }) => (
-              <label key={name} className="form-control w-full max-w-xs">
-                <div className="label">
-                  <span className="label-text">
-                    {label} {required && '*'}
-                  </span>
-                </div>
-                <input
-                  type={type}
-                  className="input input-bordered w-full max-w-xs"
-                  name={name}
-                  required={required}
-                  defaultValue={value}
-                  onBlur={handleBlurPlace}
-                />
-              </label>
-            ))}
-          </fieldset>
+              {/* Le lieu */}
+              <fieldset className="mt-10 p-5 border rounded-lg">
+                <legend className="text-lg mb-5">Le lieu</legend>
+                {placeInputs.map(({ label, name, type, value, required }) => (
+                  <label key={name} className="form-control w-full max-w-xs">
+                    <div className="label">
+                      <span className="label-text">
+                        {label} {required && '*'}
+                      </span>
+                    </div>
+                    <input
+                      type={type}
+                      className="input input-bordered w-full max-w-xs"
+                      name={name}
+                      required={required}
+                      defaultValue={value}
+                      onBlur={handleBlurPlace}
+                    />
+                  </label>
+                ))}
+              </fieldset>
+            </div>
 
-          {/* Sa localisation */}
-          <fieldset className="mt-10 p-5 border rounded-lg">
-            <legend className="text-lg mb-5">Sa localisation</legend>
-            {locationInputsExistingLoc.map(({ label, name, type, value, required, readOnly, disabled }) => (
-              <label key={name} className="form-control w-full max-w-xs">
-                <div className="label">
-                  <span className="label-text">
-                    {label}
-                    {required && '*'}
-                  </span>
-                </div>
-                <input
-                  type={type}
-                  className="input input-bordered w-full max-w-xs"
-                  name={name}
-                  required={required}
-                  value={value}
-                  readOnly={readOnly}
-                  disabled={disabled}
-                />
-              </label>
-            ))}
-          </fieldset>
+            {/* Sa localisation */}
+            <fieldset className="mt-10 p-5 border rounded-lg">
+              <legend className="text-lg mb-5">Sa localisation</legend>
+              {locationInputsExistingLoc.map(
+                ({
+                  label,
+                  name,
+                  type,
+                  value,
+                  required,
+                  readOnly,
+                  disabled,
+                }) => (
+                  <label key={name} className="form-control w-full max-w-xs">
+                    <div className="label">
+                      <span className="label-text">
+                        {label}
+                        {required && '*'}
+                      </span>
+                    </div>
+                    <input
+                      type={type}
+                      className="input input-bordered w-full max-w-xs"
+                      name={name}
+                      required={required}
+                      value={value}
+                      readOnly={readOnly}
+                      disabled={disabled}
+                    />
+                  </label>
+                )
+              )}
+            </fieldset>
+          </div>
 
           <div className="flex content-center mt-6">
             {/* Bouton de soumission du formulaire */}
@@ -394,78 +408,91 @@ export default function Create() {
           className="flex flex-col items-center"
           onSubmit={handleSubmitLocationToCreate}
         >
-          {/* Le souvenir */}
-          <fieldset className="mt-10 p-5 border rounded-lg">
-            <legend className="text-lg mb-5">Votre souvenir</legend>
-            {memoryInputs.map(
-              ({ label, name, type, value, placeholder, required }) => (
-                <label key={name} className="form-control w-full max-w-xs">
-                  <div className="label">
-                    <span className="label-text">
-                      {label} {required && '*'}{' '}
-                    </span>
-                  </div>
-                  <input
-                    type={type}
-                    className="input input-bordered w-full max-w-xs"
-                    name={name}
-                    required={required}
-                    defaultValue={value}
-                    placeholder={placeholder}
-                    onBlur={handleBlurMemory}
-                  />
-                </label>
-              )
-            )}
-          </fieldset>
+          <div className="sm:flex gap-6">
+            <div>
+              {/* Le souvenir */}
+              <fieldset className="mt-10 p-5 border rounded-lg">
+                <legend className="text-lg mb-5">Votre souvenir</legend>
+                {memoryInputs.map(
+                  ({ label, name, type, value, placeholder, required }) => (
+                    <label key={name} className="form-control w-full max-w-xs">
+                      <div className="label">
+                        <span className="label-text">
+                          {label} {required && '*'}{' '}
+                        </span>
+                      </div>
+                      <input
+                        type={type}
+                        className="input input-bordered w-full max-w-xs"
+                        name={name}
+                        required={required}
+                        defaultValue={value}
+                        placeholder={placeholder}
+                        onBlur={handleBlurMemory}
+                      />
+                    </label>
+                  )
+                )}
+              </fieldset>
 
-          {/* Le lieu */}
-          <fieldset className="mt-10 p-5 border rounded-lg">
-            <legend className="text-lg mb-5">Le lieu</legend>
-            {placeInputs.map(({ label, name, type, value, required }) => (
-              <label key={name} className="form-control w-full max-w-xs">
-                <div className="label">
-                  <span className="label-text">
-                    {label} {required && '*'}
-                  </span>
-                </div>
-                <input
-                  type={type}
-                  className="input input-bordered w-full max-w-xs"
-                  name={name}
-                  required={required}
-                  defaultValue={value}
-                  onBlur={handleBlurPlace}
-                />
-              </label>
-            ))}
-          </fieldset>
+              {/* Le lieu */}
+              <fieldset className="mt-10 p-5 border rounded-lg">
+                <legend className="text-lg mb-5">Le lieu</legend>
+                {placeInputs.map(({ label, name, type, value, required }) => (
+                  <label key={name} className="form-control w-full max-w-xs">
+                    <div className="label">
+                      <span className="label-text">
+                        {label} {required && '*'}
+                      </span>
+                    </div>
+                    <input
+                      type={type}
+                      className="input input-bordered w-full max-w-xs"
+                      name={name}
+                      required={required}
+                      defaultValue={value}
+                      onBlur={handleBlurPlace}
+                    />
+                  </label>
+                ))}
+              </fieldset>
+            </div>
 
-          {/* Sa localisation */}
-          <fieldset className="mt-10 p-5 border rounded-lg">
-            <legend className="text-lg mb-5">Sa localisation</legend>
-            {locationInputsLocToCreate.map(({ label, name, type, value, required, readOnly, disabled }) => (
-              <label key={name} className="form-control w-full max-w-xs">
-                <div className="label">
-                  <span className="label-text">
-                    {label}
-                    {required && '*'}
-                  </span>
-                </div>
-                <input
-                  type={type}
-                  className="input input-bordered w-full max-w-xs"
-                  name={name}
-                  required={required}
-                  onBlur={handleBlurLocation}
-                  defaultValue={value}
-                  readOnly={readOnly}
-                  disabled={disabled}
-                />
-              </label>
-            ))}
-          </fieldset>
-
+            {/* Sa localisation */}
+            <fieldset className="mt-10 p-5 border rounded-lg">
+              <legend className="text-lg mb-5">Sa localisation</legend>
+              {locationInputsLocToCreate.map(
+                ({
+                  label,
+                  name,
+                  type,
+                  value,
+                  required,
+                  readOnly,
+                  disabled,
+                }) => (
+                  <label key={name} className="form-control w-full max-w-xs">
+                    <div className="label">
+                      <span className="label-text">
+                        {label}
+                        {required && '*'}
+                      </span>
+                    </div>
+                    <input
+                      type={type}
+                      className="input input-bordered w-full max-w-xs"
+                      name={name}
+                      required={required}
+                      onBlur={handleBlurLocation}
+                      defaultValue={value}
+                      readOnly={readOnly}
+                      disabled={disabled}
+                    />
+                  </label>
+                )
+              )}
+            </fieldset>
+          </div>
           <div className="flex content-center mt-6">
             {/* Bouton de soumission du formulaire */}
             <button
