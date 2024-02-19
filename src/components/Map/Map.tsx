@@ -6,7 +6,11 @@ import {
   Marker,
   Popup,
 } from 'react-leaflet';
-import { LeafletMouseEvent } from 'leaflet';
+import {
+  LeafletKeyboardEventHandlerFn,
+  LeafletMouseEvent,
+  LeafletMouseEventHandlerFn,
+} from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import './Map.scss';
 import { useAppDispatch, useAppSelector } from '../../hooks';
@@ -15,7 +19,6 @@ import { fetchMemories } from '../../store/memoriesReducer';
 import { Link } from 'react-router-dom';
 
 export default function Map() {
-  
   // Récupération des locations depuis l'API
   const dispatch = useAppDispatch();
   useEffect(() => {
@@ -31,8 +34,6 @@ export default function Map() {
   const locationsList = useAppSelector((state) => state.location.list);
 
   const memoriesList = useAppSelector((state) => state.memories.list);
-  console.log(memoriesList);
-  
 
   // Composant pour gérer les événements de clic sur la carte
   function MapClickHandler({
@@ -58,6 +59,10 @@ export default function Map() {
     // Vous pouvez également stocker les coordonnées dans l'état du composant ou effectuer d'autres actions
   }, []);
 
+  const handleClickPopup = (event) => {
+    console.log(event.sourceTarget.options.location);
+  };
+
   return (
     <div className="p-5 m-auto">
       <MapContainer center={[48.8566, 2.3522]} zoom={13}>
@@ -67,14 +72,27 @@ export default function Map() {
         />
         {/* On mappe sur la liste des locations pour afficher un marqueur pour chacune */}
         {locationsList.map((location) => (
-          <Marker position={[Number(location.latitude), Number(location.longitude)]} key={location.id}>
+          <div key={location.id}>
+          <Marker
+            location={location}
+            position={[Number(location.latitude), Number(location.longitude)]}
+            eventHandlers={{ click: handleClickPopup }}
+          >
             {/* On mappe sur la liste des souvenirs pour afficher le titre du souvenir s'ils correspondent à la bonne location */}
-            <Popup>{memoriesList.map((memory) => {
-            if (location.id === memory.location.id) {
-              return <Link to={`/memories/${memory.id}`}><p key={memory.id}>{memory.title}</p></Link>
-            }
-            })}</Popup>
+
+            <Popup>
+              {memoriesList.map((memory) => {
+                if (location.id === memory.location.id) {
+                  return (
+                    <Link to={`/memories/${memory.id}`} key={memory.id}>
+                      <p>{memory.title}</p>
+                    </Link>
+                  );
+                }
+              })}
+            </Popup>
           </Marker>
+          </div>
         ))}
 
         <MapClickHandler onClick={handleMapClick} />

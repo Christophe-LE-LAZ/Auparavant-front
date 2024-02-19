@@ -12,8 +12,21 @@ import {
   changeFieldStateLocation,
   createMemory,
 } from '../../store/memoryReducer';
+import Map from '../Map/Map';
 
 export default function Create() {
+
+  // Map 
+
+  // Récupération des données d'une location existante en BDD
+
+  // Récupération des données d'une nouvelle location
+
+
+
+
+
+
   // Lecture des states du reducer Memory
   const { title, content, picture_date, main_picture, additionnal_pictures } =
     useAppSelector((state) => state.memory.memoryData.memory);
@@ -174,6 +187,13 @@ export default function Create() {
     <div>
       <h2 className="text-center text-2xl">Partager un souvenir</h2>
       <p className="text-center text-xs mt-5">* champs obligatoires</p>
+
+      <div>
+        <Map />
+      </div>
+
+
+      
       <form className="flex flex-col items-center" onSubmit={handleSubmit}>
         {/* Le souvenir */}
         <fieldset className="mt-10 p-5 border rounded-lg">
