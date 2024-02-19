@@ -1,7 +1,8 @@
 import { createAction, createAsyncThunk, createReducer } from "@reduxjs/toolkit";
 import axios from "axios";
 import { TInputNameLocation, TInputNameMemory, TInputNamePlace } from "../types/inputName";
-import { ILocationToCreate, IMemoryToCreate, IPlaceToCreate } from "../types/memory";
+import { IMemoryToCreate, IPlaceToCreate } from "../types/memory";
+import { ILocationToCreate } from "../types/location";
 import { RootState } from ".";
 
 export interface MemoryState {

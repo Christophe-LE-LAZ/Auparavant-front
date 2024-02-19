@@ -43,7 +43,6 @@ import {
       .addCase(fetchMemories.fulfilled, (state, action) => {
         state.loading = false;
         state.list = action.payload;
-        console.log(action.payload)
       })
   });
   

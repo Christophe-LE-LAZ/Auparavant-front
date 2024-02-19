@@ -15,7 +15,6 @@ export default function Home() {
 
   // Récupération des valeurs du state
   const memoriesList = useAppSelector((state) => state.memories.list);
-  const { just_deleted, message } = useAppSelector((state) => state.user);
 
   return (
     <div className="">
