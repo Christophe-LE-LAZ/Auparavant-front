@@ -5,12 +5,11 @@ export interface ILocationToCreate {
     district: string
     street : string
     city : string
-    zipcode : number | undefined
+    zipcode : number | null
     latitude : string
     longitude : string
   }
   
 export interface ILocationCreated extends ILocationToCreate {
-    location: any
-    id : number
+    id : number | null
   }

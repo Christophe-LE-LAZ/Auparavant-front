@@ -32,7 +32,7 @@ export interface MemoryState {
         district: "",
         street : "",
         city : "",
-        zipcode : undefined,
+        zipcode : null,
         latitude : "",
         longitude : ""
       },
