@@ -1,5 +1,6 @@
 import { ICredentials } from "./credentials";
-import { ILocationToCreate, IMemoryToCreate, IPlaceToCreate} from "./memory";
+import { IMemoryToCreate, IPlaceToCreate} from "./memory";
+import { ILocationToCreate } from "./location";
 import { IUserToCreate } from "./user";
 
 // Typage d'inputName comme étant une clé de l'interface ICredentials
