@@ -19,9 +19,7 @@ const Memories = () => {
         <ul className="flex flex-wrap">
           {memoriesList.map((memory) => (
             <li className="mx-auto" key={memory.id}>
-              <Link to={`/memories/${memory.id}`}>
                 <Card memory={memory} />
-              </Link>
             </li>
           ))}
         </ul>

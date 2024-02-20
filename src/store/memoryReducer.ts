@@ -12,6 +12,7 @@ export interface MemoryState {
   location : ILocationToCreate
   existingLocation : boolean
   locationId: number | null
+  just_deleted : boolean
   loading: boolean
   error: string | null
   message: string
@@ -42,6 +43,7 @@ export interface MemoryState {
     },
     existingLocation : false,
     locationId : null,
+    just_deleted : false,
     loading : false,
     error : null,
     message: ""
@@ -110,6 +112,17 @@ export interface MemoryState {
       }
     )
 
+    // Suppression d'un souvenir
+    export const deleteMemory = createAsyncThunk(
+      'memory/deleteMemory',
+      async (memoryID : number, thunkAPI) => {
+        // Récupération du state via la thunkAPI
+        const state = thunkAPI.getState() as RootState;
+        // Envoi de la requête en DELETE avec l'ID du souvenir en endpoint'
+        const { data } = await axios.delete(`https://auparavant.fr/api/secure/delete/memory/${memoryID}`);
+        return data;
+      }
+        )
   const memoryReducer = createReducer(initialState, (builder) => {
     // Modification du state suite à une nouvelle inputValue dans le fieldset memory
     builder.addCase(changeFieldStateMemory, (state, action) => {
@@ -187,6 +200,24 @@ export interface MemoryState {
       .addCase(createMemoryWithoutLocation.fulfilled, (state, action) => {
         // const { id, username } = action.payload;
         state.loading = false;
+        console.log('success !');
+      })
+      // Gestion du cas "pending" de la suppression d'un souvenir
+      .addCase(deleteMemory.pending, (state) => {
+        state.error = null;
+        state.loading = true;
+      })
+      // Gestion du cas "rejected" de la suppression d'un souvenir
+      .addCase(deleteMemory.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message as string;
+      })
+      // Gestion du cas "fullfilled" de la suppression d'un souvenir
+      .addCase(deleteMemory.fulfilled, (state, action) => {
+        // const { id, username } = action.payload;
+        state.loading = false;
+        state.just_deleted = true;
+        state.message = "Le souvenir a bien été supprimé."
         console.log('success !');
       })
   });
