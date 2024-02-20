@@ -96,6 +96,24 @@ export const deleteUser = createAsyncThunk('user/deleteUser', async (_, thunkAPI
   return data;
 });
 
+//Update : modifier le profil de l'utilisateur
+
+export const updateUserProfile = createAsyncThunk(
+  'user/updateUserProfile',
+  async (_, thunkAPI) => {
+    // Récupération de la valeur du state via la thunkAPI
+    const state = thunkAPI.getState() as RootState;
+    // Récupération des valeurs contenues dans le state
+    const { id, firstname, lastname, email, password } = state.user;
+    const userData = { id, firstname, lastname, email, password };
+    // Envoi des données
+    const { data } = await axios.put(`http://13.60.26.88/api/secure/update/user/${id}`, userData);
+    return data;
+  }
+);
+
+
+
 // Création du reducer 
 
 const userReducer = createReducer(initialState, (builder) => {
@@ -202,6 +220,17 @@ const userReducer = createReducer(initialState, (builder) => {
       state.just_deleted = true;
       state.message = "Votre compte a bien été supprimé."
   })
+
+    // nouvelle donnée de l'utilisateur 
+    .addCase(updateUserProfile.fulfilled, (state, action) => {
+      const { id, firstname, lastname, email } = action.payload;
+      state.id = id;
+      state.firstname = firstname;
+      state.lastname = lastname;
+      state.email = email;
+    })
+
+
   });
 
   export default userReducer;
