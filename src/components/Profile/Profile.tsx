@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 
 import { deleteUser } from '../../store/userReducer';
@@ -7,10 +8,26 @@ export default function Profile() {
   
   const dispatch = useAppDispatch();
 
-  // TODO : modale de vérification de l'intention de l'utilisateur
-  const handleClickDelete = (e : React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  const [showConfirmation, setShowConfirmation] = useState(false);
+
+  // gestion de la suppression
+  const handleClickDelete = () => {
+    setShowConfirmation(true);
+  }
+
+  // confirmer la suppression
+  const handleConfirmDelete = () => {
+    setShowConfirmation(false);
     dispatch(deleteUser());
   }
+
+  // annuler la suppression
+  const handleCancelDelete = () => {
+    setShowConfirmation(false);
+  }
+
+  // modifier le profil
+  
 
   return (
     <div className="mt-10 p-5 border rounded-lg max-w-2xl m-auto">
@@ -77,6 +94,28 @@ export default function Profile() {
           </button>
         </div>
       </div>
+      
+      {showConfirmation && (
+        <div className="fixed inset-0 flex justify-center items-center bg-gray-700 bg-opacity-70">
+          <div className="bg-white p-8 rounded-lg">
+            <p className="mb-4">Etes-vous sûr de vouloir supprimer votre compte ?</p>
+            <div className="flex justify-end">
+              <button
+                className="mr-4 text-sm bg-gray-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded"
+                onClick={handleCancelDelete}
+              >
+                Annuler
+              </button>
+              <button
+                className="text-sm bg-gray-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded"
+                onClick={handleConfirmDelete}
+              >
+                Confirmer
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
