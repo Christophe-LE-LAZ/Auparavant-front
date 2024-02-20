@@ -2,10 +2,13 @@ import React from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { useAppSelector } from '../../hooks';
 import NotFound from '../NotFound/NotFound';
+import Delete from '../../assets/Delete.png'
+import Edit from '../../assets/Edit.png'
 
 const MemoryPage = () => {
   const { id } = useParams<{ id: string }>();
   const memoriesList = useAppSelector((state) => state.memories.list);
+  const userId = useAppSelector((state) => state.user.id);
   const memory = memoriesList.find((memory) => memory.id.toString() === id);
 
   if (!memory) {
@@ -23,9 +26,18 @@ const MemoryPage = () => {
 
   return (
     <>
-      <Link to="/memories" className="link ml-5">
-        Retour à la liste des souvenirs
-      </Link>
+      <div className="flex justify-between">
+        <Link to="/memories" className="link ml-10">
+          Retour à la liste des souvenirs
+        </Link>
+        <div className='flex mr-10 gap-4'>{memory.user.id === userId && 
+        <>
+        <img alt='edit' src={Edit} className='w-10'/>
+        <img alt='delete' src={Delete} className='w-10'/>
+        </>
+        
+      }</div>
+      </div>
       <div className="max-w-lg mx-auto">
         {/* Titre */}
         <h1 className="text-center text-xl font-bold lg:text-2xl pt-10 pb-5">
