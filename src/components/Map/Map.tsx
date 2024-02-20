@@ -13,8 +13,7 @@ import { useAppDispatch, useAppSelector } from '../../hooks';
 import { fetchLocations } from '../../store/locationsReducer';
 import { fetchMemories } from '../../store/memoriesReducer';
 import { Link } from 'react-router-dom';
-import { setCoordState, setLocationState } from '../../store/locationReducer';
-import { ILocationCreated } from '../../types/location';
+import { setCoordState, setLocationState } from '../../store/memoryReducer';
 
 export default function Map() {
   // Récupération des locations depuis l'API

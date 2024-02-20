@@ -16,18 +16,10 @@ import {
 import Map from '../Map/Map';
 
 export default function Create() {
-  // Map
-
-  // Récupération des données d'une location existante en BDD
-
-  // Récupération des données d'une nouvelle location
-
   // Lecture des states du reducer Memory
   const { title, content, picture_date, main_picture, additionnal_pictures } =
-    useAppSelector((state) => state.memory.memoryData.memory);
-  const { name, type } = useAppSelector(
-    (state) => state.memory.memoryData.place
-  );
+    useAppSelector((state) => state.memory.memory);
+  const { name, type } = useAppSelector((state) => state.memory.place);
   const {
     area,
     department,
@@ -37,9 +29,9 @@ export default function Create() {
     zipcode,
     latitude,
     longitude,
-  } = useAppSelector((state) => state.location.location);
+  } = useAppSelector((state) => state.memory.location);
   const existingLocation = useAppSelector(
-    (state) => state.location.existingLocation
+    (state) => state.memory.existingLocation
   );
   const { error, loading } = useAppSelector((state) => state.memory);
 
@@ -289,7 +281,8 @@ export default function Create() {
     <div>
       <h2 className="text-center text-2xl">Partager un souvenir</h2>
       <p className="text-center text-xs mt-5">* champs obligatoires</p>
-
+      <p className="text-center text-xs mt-5">Si un pointeur est déjà présent sur la carte à l'emplacement de votre souvenir, cliquez dessus : sa localisation sera pré-remplie. </p>
+      <p className="text-center text-xs">Dans le cas contraire, cliquez sur la carte : seules les coordonnées géographiques seront pré-remplies.</p>
       {/* Carte  */}
       <div>
         <Map />
