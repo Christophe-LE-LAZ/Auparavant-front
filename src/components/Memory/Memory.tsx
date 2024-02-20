@@ -1,15 +1,16 @@
-import React from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { useAppSelector } from '../../hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 import NotFound from '../NotFound/NotFound';
-import Delete from '../../assets/Delete.png'
-import Edit from '../../assets/Edit.png'
+import Delete from '../../assets/Delete.png';
+import Edit from '../../assets/Edit.png';
+import { deleteMemory } from '../../store/memoryReducer';
 
 const MemoryPage = () => {
   const { id } = useParams<{ id: string }>();
   const memoriesList = useAppSelector((state) => state.memories.list);
   const userId = useAppSelector((state) => state.user.id);
   const memory = memoriesList.find((memory) => memory.id.toString() === id);
+  const dispatch = useAppDispatch();
 
   if (!memory) {
     return <NotFound />;
@@ -24,19 +25,31 @@ const MemoryPage = () => {
     day: '2-digit',
   });
 
+  // Gestion du click sur Edit
+  const handleDelete = () => {
+    const memoryID = memory.id
+    console.log(memory.id);
+    dispatch(deleteMemory(memoryID));
+  };
+  
   return (
     <>
       <div className="flex justify-between">
         <Link to="/memories" className="link ml-10">
           Retour à la liste des souvenirs
         </Link>
-        <div className='flex mr-10 gap-4'>{memory.user.id === userId && 
-        <>
-        <img alt='edit' src={Edit} className='w-10'/>
-        <img alt='delete' src={Delete} className='w-10'/>
-        </>
-        
-      }</div>
+        <div className="flex mr-10 gap-4 ">
+          {memory.user.id === userId && (
+            <>
+            <div className='btn btn-ghost btn-circle avatar'>
+              <img alt="edit" src={Edit} className="w-10 rounded-full"/>
+            </div>
+            <div className='btn btn-ghost btn-circle avatar'>
+              <img alt="delete" src={Delete} className="w-10 rounded-full" onClick={handleDelete} />
+            </div>
+            </>
+          )}
+        </div>
       </div>
       <div className="max-w-lg mx-auto">
         {/* Titre */}
