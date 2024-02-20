@@ -66,17 +66,34 @@ export interface MemoryState {
   }>('memory/changeFieldStateLocation');
 
 
-  // Création d'un souvenir en BDD
-  export const createMemory = createAsyncThunk(
-    'memory/createMemory',
+  // Création d'un souvenir en BDD : memory + place + location
+  export const createMemoryWithLocation = createAsyncThunk(
+    'memory/createMemoryWithLocation',
     async (_, thunkAPI) => {
         // Récupération du state via la thunkAPI
         const state = thunkAPI.getState() as RootState;
+        const memoryData1 = state.memory.memoryData;
         // Envoi de la requête en POST avec le state.memory dans le body
-        const { data } = await axios.post(`http://13.60.26.88/api/secure/create/memory-and-location-and-place`, state.memory.memoryData);
+        const { data } = await axios.post(`http://auparavant.fr/api/secure/create/memory-and-location-and-place`, memoryData1);
         return data;
     }
   )
+
+    // Création d'un souvenir en BDD : memory + place
+    export const createMemoryWithoutLocation = createAsyncThunk(
+      'memory/createMemoryWithoutLocation',
+      async (_, thunkAPI) => {
+          // Récupération du state via la thunkAPI
+          const state = thunkAPI.getState() as RootState;
+          // Création du body de la requête
+          const memoryObj = state.memory.memoryData.memory;
+          const placeObj = state.memory.memoryData.place;
+          const memoryData2 = {memoryObj, placeObj};
+          // Envoi de la requête en POST avec le state.memory dans le body
+          const { data } = await axios.post(`http://auparavant.fr/api/secure/create/memory-and-place`, memoryData2);
+          return data;
+      }
+    )
 
   const memoryReducer = createReducer(initialState, (builder) => {
     // Modification du state suite à une nouvelle inputValue dans le fieldset memory
@@ -97,17 +114,17 @@ export interface MemoryState {
         state.memoryData.location[inputNameL] = inputValueL;
       })
       // Gestion du cas "pending" de la création d'un souvenir 
-      .addCase(createMemory.pending, (state) => {
+      .addCase(createMemoryWithLocation.pending, (state) => {
         state.error = null;
         state.loading = true;
       })
       // Gestion du cas "rejected" de la création d'un souvenir 
-      .addCase(createMemory.rejected, (state, action) => {
+      .addCase(createMemoryWithLocation.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message as string;
       })
       // Gestion du cas "fullfilled" de la création d'un souvenir 
-      .addCase(createMemory.fulfilled, (state, action) => {
+      .addCase(createMemoryWithLocation.fulfilled, (state, action) => {
         // const { id, username } = action.payload;
         state.loading = false;
         console.log('success !')

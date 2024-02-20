@@ -10,7 +10,8 @@ import {
   changeFieldStateMemory,
   changeFieldStatePlace,
   changeFieldStateLocation,
-  createMemory,
+  createMemoryWithLocation,
+  createMemoryWithoutLocation,
 } from '../../store/memoryReducer';
 import Map from '../Map/Map';
 
@@ -273,7 +274,7 @@ export default function Create() {
     e: React.FormEvent<HTMLFormElement>
   ) => {
     e.preventDefault();
-    dispatch(createMemory());
+    dispatch(createMemoryWithLocation());
   };
 
   // Dispatch pour la création d'un souvenir + place
@@ -281,7 +282,7 @@ export default function Create() {
     e: React.FormEvent<HTMLFormElement>
   ) => {
     e.preventDefault();
-    dispatch(createMemory());
+    dispatch(createMemoryWithoutLocation());
   };
 
   return (
