@@ -73,8 +73,10 @@ export interface MemoryState {
         // Récupération du state via la thunkAPI
         const state = thunkAPI.getState() as RootState;
         const memoryData1 = state.memory.memoryData;
+        console.log(memoryData1);
+        
         // Envoi de la requête en POST avec le state.memory dans le body
-        const { data } = await axios.post(`http://auparavant.fr/api/secure/create/memory-and-location-and-place`, memoryData1);
+        const { data } = await axios.post(`https://auparavant.fr/api/secure/create/memory-and-location-and-place`, memoryData1);
         return data;
     }
   )
@@ -90,7 +92,7 @@ export interface MemoryState {
           const placeObj = state.memory.memoryData.place;
           const memoryData2 = {memoryObj, placeObj};
           // Envoi de la requête en POST avec le state.memory dans le body
-          const { data } = await axios.post(`http://auparavant.fr/api/secure/create/memory-and-place`, memoryData2);
+          const { data } = await axios.post(`https://13.60.26.88/api/secure/create/memory-and-place`, memoryData2);
           return data;
       }
     )
