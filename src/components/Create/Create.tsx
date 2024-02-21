@@ -15,6 +15,7 @@ import {
 } from '../../store/memoryReducer';
 import Map from '../Map/Map';
 import { useNavigate } from 'react-router-dom';
+import { setMessage } from '../../store/messageReducer';
 
 export default function Create() {
   // Lecture des states du reducer Memory
@@ -287,20 +288,15 @@ export default function Create() {
 
   const [showConfirmation, setShowConfirmation] = useState(false);
 
-  // Si le souvenir a été créé avec succès, affichage d'une modale
+  // Si le souvenir a été créé avec succès, enregistrement d'un message et redirection vers la liste
+  const navigate = useNavigate();
   useEffect(() => {
     if (just_created) {
-      setShowConfirmation(true);
+      dispatch(setMessage("Votre souvenir a été créé avec succès."));
+      navigate('/memories')
     }
     }, [just_created]);
 
-    // Au clic sur OK, fermeture de la modale et redirection vers la liste des souvenirs
-    const navigate = useNavigate();
-    const handleClickOK = () => {
-      setShowConfirmation(false);
-      navigate('/memories')
-    }
-  
   return (
     <div>
       <h2 className="text-center text-2xl">Partager un souvenir</h2>

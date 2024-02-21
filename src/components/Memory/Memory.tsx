@@ -5,6 +5,7 @@ import Delete from '../../assets/Delete.png';
 import Edit from '../../assets/Edit.png';
 import { deleteMemory } from '../../store/memoryReducer';
 import { useEffect, useState } from 'react';
+import { setMessage } from '../../store/messageReducer';
 
 const MemoryPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -46,11 +47,12 @@ const MemoryPage = () => {
     setShowConfirmation(false);
   }
 
-  // Redirection si le souvenir a bien été supprimé
+  // Redirection si le souvenir a bien été supprimé et enregistrement d'un message
   const navigate = useNavigate();
   useEffect(() => {
     if (just_deleted) {
       navigate('/memories');
+      dispatch(setMessage("Votre souvenir a bien été supprimé."));
     }
     }, [just_deleted]);
   
