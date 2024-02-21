@@ -3,6 +3,7 @@ import memoriesReducer from './memoriesReducer'
 import userReducer from './userReducer';
 import memoryReducer from './memoryReducer';
 import locationsReducer from './locationsReducer';
+import messageReducer from './messageReducer';
 
 // Création du store et définition des différents states et de leurs reducers associés
 
@@ -11,7 +12,8 @@ const store = configureStore({
     memories : memoriesReducer,
     memory: memoryReducer,
     locations: locationsReducer,
-    user: userReducer
+    user: userReducer,
+    message : messageReducer
   },
 });
 

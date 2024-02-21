@@ -17,9 +17,7 @@ import Login from './components/Login/Login';
 import Profile from './components/Profile/Profile';
 import Create from './components/Create/Create';
 import Update from './components/Update/Update';
-import Unlogged_to_login from './components/Redirections/Unlogged_to_login';
-import Logged_to_home from './components/Redirections/Logged_to_home';
-import Registered_to_login from './components/Redirections/Registered_to_login';
+import PrivateRoute from './PrivateRoute';
 import Locations from './components/Locations/Locations';
 
 // Store redux
@@ -41,41 +39,27 @@ import {
 const router = createBrowserRouter(
   createRoutesFromElements(
     <>
-      <Route path="/" loader={Loader} element={<Layout />}>
-        <Route index loader={Loader} element={<Home />} />
-        <Route path="/memories" loader={Loader} element={<Memories />} />
+      <Route path="/" element={<Layout />}>
+        <Route index element={<Home />} />
+        <Route path="/memories" element={<Memories />} />
         <Route path="/memories/:id" element={<Memory />} />
         <Route path="/memories/:id/update" element={<Update />} />
         <Route
           path="/create"
           element={
-            <Unlogged_to_login>
+            <PrivateRoute>
               <Create />
-            </Unlogged_to_login>
+            </PrivateRoute>
           }
         />
-        <Route
-          path="/register"
-          element={
-            <Registered_to_login>
-              <Register />
-            </Registered_to_login>
-          }
-        />
-        <Route
-          path="/login"
-          element={
-            <Logged_to_home>
-              <Login />
-            </Logged_to_home>
-          }
-        />
+        <Route path="/register" element={<Register />} />
+        <Route path="/login" element={<Login />} />
         <Route
           path="/profile"
           element={
-            <Unlogged_to_login>
+            <PrivateRoute>
               <Profile />
-            </Unlogged_to_login>
+            </PrivateRoute>
           }
         />
         <Route path="/contributions" element={<Contributions />} />

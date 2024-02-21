@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { ChangeEvent } from 'react';
 import {
@@ -14,6 +14,8 @@ import {
   createMemoryWithoutLocation,
 } from '../../store/memoryReducer';
 import Map from '../Map/Map';
+import { useNavigate } from 'react-router-dom';
+import { setMessage } from '../../store/messageReducer';
 
 export default function Create() {
   // Lecture des states du reducer Memory
@@ -33,7 +35,14 @@ export default function Create() {
   const existingLocation = useAppSelector(
     (state) => state.memory.existingLocation
   );
-  const { error, loading } = useAppSelector((state) => state.memory);
+
+  const locationToCreate = useAppSelector(
+    (state) => state.memory.locationToCreate
+  );
+
+  const { error, loading, just_created, memoryId } = useAppSelector(
+    (state) => state.memory
+  );
 
   // Caractéristiques des inputs à mapper
   const memoryInputs = [
@@ -277,12 +286,29 @@ export default function Create() {
     dispatch(createMemoryWithoutLocation());
   };
 
+  const [showConfirmation, setShowConfirmation] = useState(false);
+
+  // Si le souvenir a été créé avec succès, enregistrement d'un message et redirection vers la liste
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (just_created) {
+      dispatch(setMessage("Votre souvenir a été créé avec succès."));
+      navigate('/memories')
+    }
+    }, [just_created]);
+
   return (
     <div>
       <h2 className="text-center text-2xl">Partager un souvenir</h2>
       <p className="text-center text-xs mt-5">* champs obligatoires</p>
-      <p className="text-center text-xs mt-5">Si un pointeur est déjà présent sur la carte à l'emplacement de votre souvenir, cliquez dessus : sa localisation sera pré-remplie. </p>
-      <p className="text-center text-xs">Dans le cas contraire, cliquez sur la carte : seules les coordonnées géographiques seront pré-remplies.</p>
+      <p className="text-center text-xs mt-5">
+        Si un pointeur est déjà présent sur la carte à l'emplacement de votre
+        souvenir, cliquez dessus : sa localisation sera pré-remplie.{' '}
+      </p>
+      <p className="text-center text-xs">
+        Dans le cas contraire, cliquez sur la carte : seules les coordonnées
+        géographiques seront pré-remplies.
+      </p>
       {/* Carte  */}
       <div>
         <Map />
@@ -397,7 +423,7 @@ export default function Create() {
       )}
 
       {/* Formulaire pour une location à créer */}
-      {!existingLocation && (
+      {locationToCreate && (
         <form
           className="flex flex-col items-center"
           onSubmit={handleSubmitLocationToCreate}
@@ -508,6 +534,22 @@ export default function Create() {
       {error && (
         <div role="alert" className="alert alert-error max-w-xs">
           <span>{error}</span>
+        </div>
+      )}
+
+      {showConfirmation && (
+        <div className="fixed inset-0 flex justify-center items-center bg-gray-700 bg-opacity-70">
+          <div className="bg-white p-8 rounded-lg">
+            <p className="mb-4">Votre souvenir a bien été créé !</p>
+            <div className="flex justify-end">
+              <button
+                className="mr-4 text-sm bg-gray-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded"
+                onClick={handleClickOK}
+              >
+                OK
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </div>
