@@ -14,10 +14,10 @@ interface UserState {
   password_check : string
   logged: boolean;
   loading: boolean;
-  error: null | string;
+  error: string;
   message : string;
-  just_registered: boolean;
-  just_deleted : boolean;
+  registered: boolean;
+  deleted : boolean;
 }
 
 export const initialState: UserState = {
@@ -33,10 +33,10 @@ export const initialState: UserState = {
   password_check: '',
   logged: false,
   loading: false,
-  error: null,
+  error: "",
   message: "",
-  just_registered: false,
-  just_deleted: false
+  registered: false,
+  deleted: false
 
 }
 
@@ -137,7 +137,7 @@ const userReducer = createReducer(initialState, (builder) => {
 
     // Register : gestion du cas "pending" 
     .addCase(register.pending, (state) => {
-      state.error = null;
+      state.error = "";
       state.loading = true;
     })
     // Register : gestion du cas "rejected" 
@@ -153,7 +153,7 @@ const userReducer = createReducer(initialState, (builder) => {
       state.email =  '',
       state.lastname = '',
       state.password = '',
-      state.just_registered = true;
+      state.registered = true;
       state.message = "Votre inscription a bien été prise en compte. Merci de vous connecter."
     })
 
@@ -166,7 +166,7 @@ const userReducer = createReducer(initialState, (builder) => {
 
     // Login : gestion du cas "pending" 
     .addCase(login.pending, (state) => {
-      state.error = null;
+      state.error = "";
       state.loading = true;
     })
     // Login : gestion du cas "rejected"
@@ -185,7 +185,7 @@ const userReducer = createReducer(initialState, (builder) => {
       state.email = email;
       state.credentials.username = '';
       state.credentials.password = '';
-      state.just_registered = false;
+      state.registered = false;
       state.logged = true;
     })
     
@@ -202,7 +202,7 @@ const userReducer = createReducer(initialState, (builder) => {
 
     // Delete : gestion du cas "pending"
     .addCase(deleteUser.pending, (state) => {
-      state.error = null;
+      state.error = "";
       state.loading = true;
     })
     // Delete : gestion du cas "rejected"
@@ -217,7 +217,7 @@ const userReducer = createReducer(initialState, (builder) => {
       state.lastname = '';
       state.email = '';
       state.logged = false;
-      state.just_deleted = true;
+      state.deleted = true;
       state.message = "Votre compte a bien été supprimé."
   })
 

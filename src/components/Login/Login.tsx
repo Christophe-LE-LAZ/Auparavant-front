@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 
 export default function Login() {
   // Lecture des states du User reducer
-  const { loading, error, just_registered, logged, just_deleted, message } = useAppSelector(
+  const { loading, error, registered, logged, deleted, message } = useAppSelector(
     (state) => state.user
   );
   const { username, password } = useAppSelector(
@@ -38,14 +38,14 @@ export default function Login() {
   return (
       <div className="flex flex-col items-center m-10 gap-5 sm:m-20">
         {/* Affichage d'un message si l'utilisateur vient juste de créer son compte */}
-        {just_registered && (
+        {registered && (
           <div role="alert" className="alert alert-success text-sm max-w-xs">
             <span>{message}</span>
           </div>
         )}
 
         {/* Affichage d'un message si l'utilisateur vient juste de supprimer son compte */}
-        {just_deleted && (
+        {deleted && (
           <div role="alert" className="alert alert-success text-sm max-w-xs">
             <span>{message}</span>
           </div>
