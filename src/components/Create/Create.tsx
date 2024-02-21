@@ -33,6 +33,11 @@ export default function Create() {
   const existingLocation = useAppSelector(
     (state) => state.memory.existingLocation
   );
+
+  const locationToCreate = useAppSelector(
+    (state) => state.memory.locationToCreate
+  );
+
   const { error, loading } = useAppSelector((state) => state.memory);
 
   // Caractéristiques des inputs à mapper
@@ -281,8 +286,14 @@ export default function Create() {
     <div>
       <h2 className="text-center text-2xl">Partager un souvenir</h2>
       <p className="text-center text-xs mt-5">* champs obligatoires</p>
-      <p className="text-center text-xs mt-5">Si un pointeur est déjà présent sur la carte à l'emplacement de votre souvenir, cliquez dessus : sa localisation sera pré-remplie. </p>
-      <p className="text-center text-xs">Dans le cas contraire, cliquez sur la carte : seules les coordonnées géographiques seront pré-remplies.</p>
+      <p className="text-center text-xs mt-5">
+        Si un pointeur est déjà présent sur la carte à l'emplacement de votre
+        souvenir, cliquez dessus : sa localisation sera pré-remplie.{' '}
+      </p>
+      <p className="text-center text-xs">
+        Dans le cas contraire, cliquez sur la carte : seules les coordonnées
+        géographiques seront pré-remplies.
+      </p>
       {/* Carte  */}
       <div>
         <Map />
@@ -397,7 +408,7 @@ export default function Create() {
       )}
 
       {/* Formulaire pour une location à créer */}
-      {!existingLocation && (
+      {locationToCreate && (
         <form
           className="flex flex-col items-center"
           onSubmit={handleSubmitLocationToCreate}

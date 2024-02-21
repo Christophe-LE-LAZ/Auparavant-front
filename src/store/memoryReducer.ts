@@ -11,6 +11,7 @@ export interface MemoryState {
   place : IPlaceToCreate
   location : ILocationToCreate
   existingLocation : boolean
+  locationToCreate : boolean
   locationId: number | null
   just_deleted : boolean
   loading: boolean
@@ -42,6 +43,7 @@ export interface MemoryState {
       longitude : ""
     },
     existingLocation : false,
+    locationToCreate : false,
     locationId : null,
     just_deleted : false,
     loading : false,
@@ -154,6 +156,7 @@ export interface MemoryState {
         state.location.zipcode = zipcode;
         state.location.latitude = latitude;
         state.location.longitude = longitude;
+        state.locationToCreate = false;
         state.existingLocation = true;
       })
       // Modification du state "location" suite au clic sur la carte (pour createMemoryWithLocation)
@@ -169,6 +172,7 @@ export interface MemoryState {
         state.location.latitude = String(lat);
         state.location.longitude = String(lng);
         state.existingLocation = false;
+        state.locationToCreate = true;
       })
       // Gestion du cas "pending" de la création d'un souvenir + place + location
       .addCase(createMemoryWithLocation.pending, (state) => {

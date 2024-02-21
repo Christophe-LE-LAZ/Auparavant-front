@@ -2,8 +2,7 @@ import { ChangeEvent, useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { changeFieldStateCred, login } from '../../store/userReducer';
 import { TInputNameCred } from '../../types/inputName';
-import { Link, Navigate } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 export default function Login() {
   // Lecture des states du User reducer
