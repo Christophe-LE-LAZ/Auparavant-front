@@ -60,7 +60,7 @@ export const register = createAsyncThunk('user/register', async (_, thunkAPI) =>
   const password = state.user.password;
   const userData = {firstname, lastname, email, password}
   // Envoi des données
-  const { data } = await axios.post('https://auparavant.fr/api/register', userData);
+  const { data } = await axios.post('https://admin.auparavant.fr/api/register', userData);
   return data;
 });
 
@@ -77,7 +77,7 @@ export const login = createAsyncThunk('user/login', async (_, thunkAPI) => {
   // Récupération des valeurs contenues dans credentials
   const credentials = state.user.credentials as ICredentials;
   // Envoi des credentials
-  const { data } = await axios.post('https://auparavant.fr/api/login_check', credentials);
+  const { data } = await axios.post('https://admin.auparavant.fr/api/login_check', credentials);
   // Configuration de l'instance d'axios avec le token reçu
   axios.defaults.headers.common = { Authorization: `Bearer ${data.token}` };
   return data.data;
@@ -92,7 +92,7 @@ export const deleteUser = createAsyncThunk('user/deleteUser', async (_, thunkAPI
   const state = thunkAPI.getState() as RootState;
   // Récupération de l'ID de l'utilisateur connecté
   const userID = state.user.id;
-  const { data } = await axios.delete(`https://auparavant.fr/api/secure/delete/user/${userID}`);
+  const { data } = await axios.delete(`https://admin.auparavant.fr/api/secure/delete/user/${userID}`);
   return data;
 });
 
@@ -107,7 +107,7 @@ export const updateUserProfile = createAsyncThunk(
     const { id, firstname, lastname, email, password } = state.user;
     const userData = { id, firstname, lastname, email, password };
     // Envoi des données
-    const { data } = await axios.put(`https://auparavant.fr/api/secure/update/user/${id}`, userData);
+    const { data } = await axios.put(`https://admin.auparavant.fr/api/secure/update/user/${id}`, userData);
     return data;
   }
 );

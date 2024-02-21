@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { ChangeEvent } from 'react';
 import {
@@ -14,6 +14,7 @@ import {
   createMemoryWithoutLocation,
 } from '../../store/memoryReducer';
 import Map from '../Map/Map';
+import { useNavigate } from 'react-router-dom';
 
 export default function Create() {
   // Lecture des states du reducer Memory
@@ -38,7 +39,7 @@ export default function Create() {
     (state) => state.memory.locationToCreate
   );
 
-  const { error, loading } = useAppSelector((state) => state.memory);
+  const { error, loading, just_created, memoryId } = useAppSelector((state) => state.memory);
 
   // Caractéristiques des inputs à mapper
   const memoryInputs = [
@@ -281,6 +282,14 @@ export default function Create() {
     e.preventDefault();
     dispatch(createMemoryWithoutLocation());
   };
+
+  // Redirection vers la page du souvenir s'il a bien été créé
+  const navigate = useNavigate();
+    useEffect(() => {
+      if (just_created) {
+      navigate(`/memories/${memoryId}`);
+      }
+    }, [just_created])
 
   return (
     <div>

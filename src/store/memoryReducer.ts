@@ -13,6 +13,8 @@ export interface MemoryState {
   existingLocation : boolean
   locationToCreate : boolean
   locationId: number | null
+  memoryId : number | null
+  just_created : boolean
   just_deleted : boolean
   loading: boolean
   error: string | null
@@ -45,6 +47,8 @@ export interface MemoryState {
     existingLocation : false,
     locationToCreate : false,
     locationId : null,
+    memoryId : null,
+    just_created : false,
     just_deleted : false,
     loading : false,
     error : null,
@@ -89,7 +93,7 @@ export interface MemoryState {
       const memoryWithLocation = {memory, place, location};
       console.log(memoryWithLocation);
       // Envoi de la requête en POST avec le state.memory dans le body
-      const { data } = await axios.post(`https://auparavant.fr/api/secure/create/memory-and-location-and-place`, memoryWithLocation);
+      const { data } = await axios.post(`https://admin.auparavant.fr/api/secure/create/memory-and-location-and-place`, memoryWithLocation);
       return data;
     }
   )
@@ -109,7 +113,7 @@ export interface MemoryState {
         const memoryWithoutLocation = {memory, place, location};
         console.log(memoryWithoutLocation);
         // Envoi de la requête en POST avec le state.memory dans le body
-        const { data } = await axios.post(`https://auparavant.fr/api/secure/create/memory-and-place`, memoryWithoutLocation);
+        const { data } = await axios.post(`https://admin.auparavant.fr/api/secure/create/memory-and-place`, memoryWithoutLocation);
         return data;
       }
     )
@@ -121,7 +125,7 @@ export interface MemoryState {
         // Récupération du state via la thunkAPI
         const state = thunkAPI.getState() as RootState;
         // Envoi de la requête en DELETE avec l'ID du souvenir en endpoint'
-        const { data } = await axios.delete(`https://auparavant.fr/api/secure/delete/memory/${memoryID}`);
+        const { data } = await axios.delete(`https://admin.auparavant.fr/api/secure/delete/memory/${memoryID}`);
         return data;
       }
         )
@@ -186,9 +190,13 @@ export interface MemoryState {
       })
       // Gestion du cas "fullfilled" de la création d'un souvenir + place + location
       .addCase(createMemoryWithLocation.fulfilled, (state, action) => {
-        // const { id, username } = action.payload;
+        const { id } = action.payload;
         state.loading = false;
+        state.memoryId = id;
+        state.just_created = true;
+        state.message = "Votre souvenir a bien été créé."
         console.log('success !');
+        console.log(action.payload);
       })
       // Gestion du cas "pending" de la création d'un souvenir + place + location
       .addCase(createMemoryWithoutLocation.pending, (state) => {
@@ -202,9 +210,13 @@ export interface MemoryState {
       })
       // Gestion du cas "fullfilled" de la création d'un souvenir + place + location
       .addCase(createMemoryWithoutLocation.fulfilled, (state, action) => {
-        // const { id, username } = action.payload;
+        const { id } = action.payload;
         state.loading = false;
+        state.memoryId = id;
+        state.just_created = true;
+        state.message = "Votre souvenir a bien été créé."
         console.log('success !');
+        console.log(action.payload);
       })
       // Gestion du cas "pending" de la suppression d'un souvenir
       .addCase(deleteMemory.pending, (state) => {

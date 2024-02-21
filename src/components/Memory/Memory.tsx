@@ -8,6 +8,7 @@ import { deleteMemory } from '../../store/memoryReducer';
 const MemoryPage = () => {
   const { id } = useParams<{ id: string }>();
   const memoriesList = useAppSelector((state) => state.memories.list);
+  const { just_created, message } = useAppSelector((state) => state.memory);
   const userId = useAppSelector((state) => state.user.id);
   const memory = memoriesList.find((memory) => memory.id.toString() === id);
   const dispatch = useAppDispatch();
@@ -27,13 +28,20 @@ const MemoryPage = () => {
 
   // Gestion du click sur Edit
   const handleDelete = () => {
-    const memoryID = memory.id
+    const memoryID = memory.id;
     console.log(memory.id);
     dispatch(deleteMemory(memoryID));
   };
-  
+
   return (
     <>
+      {/* Affichage d'un message si le souvenir vient juste d'être créé */}
+      {just_created && (
+        <div role="alert" className="alert alert-success text-sm max-w-xs">
+          <span>{message}</span>
+        </div>
+      )}
+
       <div className="flex justify-between">
         <Link to="/memories" className="link ml-10">
           Retour à la liste des souvenirs
@@ -41,12 +49,17 @@ const MemoryPage = () => {
         <div className="flex mr-10 gap-4 ">
           {memory.user.id === userId && (
             <>
-            <div className='btn btn-ghost btn-circle avatar'>
-              <img alt="edit" src={Edit} className="w-10 rounded-full"/>
-            </div>
-            <div className='btn btn-ghost btn-circle avatar'>
-              <img alt="delete" src={Delete} className="w-10 rounded-full" onClick={handleDelete} />
-            </div>
+              <div className="btn btn-ghost btn-circle avatar">
+                <img alt="edit" src={Edit} className="w-10 rounded-full" />
+              </div>
+              <div className="btn btn-ghost btn-circle avatar">
+                <img
+                  alt="delete"
+                  src={Delete}
+                  className="w-10 rounded-full"
+                  onClick={handleDelete}
+                />
+              </div>
             </>
           )}
         </div>
