@@ -41,9 +41,9 @@ import {
 const router = createBrowserRouter(
   createRoutesFromElements(
     <>
-      <Route path="/" loader={Loader} element={<Layout />}>
-        <Route index loader={Loader} element={<Home />} />
-        <Route path="/memories" loader={Loader} element={<Memories />} />
+      <Route path="/" element={<Layout />}>
+        <Route index element={<Home />} />
+        <Route path="/memories" element={<Memories />} />
         <Route path="/memories/:id" element={<Memory />} />
         <Route path="/memories/:id/update" element={<Update />} />
         <Route
@@ -65,9 +65,7 @@ const router = createBrowserRouter(
         <Route
           path="/login"
           element={
-            <Logged_to_home>
               <Login />
-            </Logged_to_home>
           }
         />
         <Route
