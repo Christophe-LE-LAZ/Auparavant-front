@@ -13,12 +13,11 @@ export interface MemoryState {
   existingLocation : boolean
   locationToCreate : boolean
   locationId: number | null
-  memoryId : number | null
+  memoryId: number | null
   just_created : boolean
   just_deleted : boolean
   loading: boolean
   error: string | null
-  message: string
 }
 
   // Déclaration de l'état initial du souvenir à créer
@@ -52,8 +51,6 @@ export interface MemoryState {
     just_deleted : false,
     loading : false,
     error : null,
-    message: ""
-
   };
 
   // Création d'une action pour la modification des valeurs du State -> Memory
@@ -128,10 +125,15 @@ export interface MemoryState {
         const { data } = await axios.delete(`https://admin.auparavant.fr/api/secure/delete/memory/${memoryID}`);
         return data;
       }
-        )
+    )
+
+  // Création d'une action pour le nettoyage du state
+  export const clearMemoryState = createAction('memory/clearMemoryState');
+  
   const memoryReducer = createReducer(initialState, (builder) => {
-    // Modification du state suite à une nouvelle inputValue dans le fieldset memory
-    builder.addCase(changeFieldStateMemory, (state, action) => {
+      builder
+      // Modification du state suite à une nouvelle inputValue dans le fieldset memory
+      .addCase(changeFieldStateMemory, (state, action) => {
         const { inputNameM, inputValueM } = action.payload;
         state.memory[inputNameM] = inputValueM;
         console.log(state.memory.title)
@@ -190,11 +192,10 @@ export interface MemoryState {
       })
       // Gestion du cas "fullfilled" de la création d'un souvenir + place + location
       .addCase(createMemoryWithLocation.fulfilled, (state, action) => {
-        const { id } = action.payload;
+        const { id } = action.payload.memory;
         state.loading = false;
-        state.memoryId = id;
         state.just_created = true;
-        state.message = "Votre souvenir a bien été créé."
+        state.memoryId = id;
         console.log('success !');
         console.log(action.payload);
       })
@@ -210,11 +211,10 @@ export interface MemoryState {
       })
       // Gestion du cas "fullfilled" de la création d'un souvenir + place + location
       .addCase(createMemoryWithoutLocation.fulfilled, (state, action) => {
-        const { id } = action.payload;
+        const { id } = action.payload.memory;
         state.loading = false;
-        state.memoryId = id;
         state.just_created = true;
-        state.message = "Votre souvenir a bien été créé."
+        state.memoryId = id;
         console.log('success !');
         console.log(action.payload);
       })
@@ -233,8 +233,32 @@ export interface MemoryState {
         // const { id, username } = action.payload;
         state.loading = false;
         state.just_deleted = true;
-        state.message = "Le souvenir a bien été supprimé."
         console.log('success !');
+      })
+      // Remise à zéro du state
+      .addCase(clearMemoryState, (state) => {
+        state.memory.title = "";
+        state.memory.content = "";
+        state.memory.picture_date = "";
+        state.memory.main_picture = "";
+        state.memory.additionnal_pictures = undefined;
+        state.place.name = "";
+        state.place.type = "";
+        state.location.area = "";
+        state.location.department = "";
+        state.location.district = "";
+        state.location.street = "";
+        state.location.city = "";
+        state.location.zipcode = null;
+        state.location.latitude = "";
+        state.location.longitude = "";
+        state.existingLocation = false;
+        state.locationToCreate = false;
+        state.locationId = null;
+        state.just_created = false;
+        state.just_deleted = false;
+        state.error = "";
+        state.loading = false;
       })
   });
 

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { ChangeEvent } from 'react';
 import {
@@ -39,7 +39,9 @@ export default function Create() {
     (state) => state.memory.locationToCreate
   );
 
-  const { error, loading, just_created, memoryId } = useAppSelector((state) => state.memory);
+  const { error, loading, just_created, memoryId } = useAppSelector(
+    (state) => state.memory
+  );
 
   // Caractéristiques des inputs à mapper
   const memoryInputs = [
@@ -283,14 +285,22 @@ export default function Create() {
     dispatch(createMemoryWithoutLocation());
   };
 
-  // Redirection vers la page du souvenir s'il a bien été créé
-  const navigate = useNavigate();
-    useEffect(() => {
-      if (just_created) {
-      navigate(`/memories/${memoryId}`);
-      }
-    }, [just_created])
+  const [showConfirmation, setShowConfirmation] = useState(false);
 
+  // Si le souvenir a été créé avec succès, affichage d'une modale
+  useEffect(() => {
+    if (just_created) {
+      setShowConfirmation(true);
+    }
+    }, [just_created]);
+
+    // Au clic sur OK, fermeture de la modale et redirection vers la liste des souvenirs
+    const navigate = useNavigate();
+    const handleClickOK = () => {
+      setShowConfirmation(false);
+      navigate('/memories')
+    }
+  
   return (
     <div>
       <h2 className="text-center text-2xl">Partager un souvenir</h2>
@@ -528,6 +538,22 @@ export default function Create() {
       {error && (
         <div role="alert" className="alert alert-error max-w-xs">
           <span>{error}</span>
+        </div>
+      )}
+
+      {showConfirmation && (
+        <div className="fixed inset-0 flex justify-center items-center bg-gray-700 bg-opacity-70">
+          <div className="bg-white p-8 rounded-lg">
+            <p className="mb-4">Votre souvenir a bien été créé !</p>
+            <div className="flex justify-end">
+              <button
+                className="mr-4 text-sm bg-gray-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded"
+                onClick={handleClickOK}
+              >
+                OK
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </div>

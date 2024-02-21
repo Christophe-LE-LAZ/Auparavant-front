@@ -11,7 +11,7 @@ const store = configureStore({
     memories : memoriesReducer,
     memory: memoryReducer,
     locations: locationsReducer,
-    user: userReducer
+    user: userReducer,
   },
 });
 

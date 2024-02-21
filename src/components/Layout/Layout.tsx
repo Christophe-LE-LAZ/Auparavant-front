@@ -1,9 +1,21 @@
-import React from 'react';
+
 import Header from '../Header/Header';
 import Footer from '../Footer/Footer';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useLocation,  } from 'react-router-dom';
+import { useEffect } from 'react';
+import { useAppDispatch } from '../../hooks';
+import { clearMemoryState } from '../../store/memoryReducer';
+
 
 export default function Layout() {
+
+  const dispatch = useAppDispatch();
+  const location = useLocation();
+
+  useEffect(() => {
+    dispatch(clearMemoryState());
+  }, [location]);
+
   return (
     <div className="relative m-auto w-auto max-w-6xl">
       <Header />

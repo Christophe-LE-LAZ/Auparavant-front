@@ -1,14 +1,15 @@
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import NotFound from '../NotFound/NotFound';
 import Delete from '../../assets/Delete.png';
 import Edit from '../../assets/Edit.png';
 import { deleteMemory } from '../../store/memoryReducer';
+import { useEffect, useState } from 'react';
 
 const MemoryPage = () => {
   const { id } = useParams<{ id: string }>();
   const memoriesList = useAppSelector((state) => state.memories.list);
-  const { just_created, message } = useAppSelector((state) => state.memory);
+  const { just_deleted } = useAppSelector((state) => state.memory);
   const userId = useAppSelector((state) => state.user.id);
   const memory = memoriesList.find((memory) => memory.id.toString() === id);
   const dispatch = useAppDispatch();
@@ -26,22 +27,35 @@ const MemoryPage = () => {
     day: '2-digit',
   });
 
-  // Gestion du click sur Edit
-  const handleDelete = () => {
-    const memoryID = memory.id;
-    console.log(memory.id);
-    dispatch(deleteMemory(memoryID));
-  };
+  const [showConfirmation, setShowConfirmation] = useState(false);
 
+  // affichage d'une demande de confirmation suite au click sur suppression
+  const handleClickDelete = () => {
+    setShowConfirmation(true);
+  }
+
+  // confirmer la suppression
+  const handleConfirmDelete = () => {
+    setShowConfirmation(false);
+    const memoryID = memory.id;
+    dispatch(deleteMemory(memoryID));
+  }
+
+  // annuler la suppression
+  const handleCancelDelete = () => {
+    setShowConfirmation(false);
+  }
+
+  // Redirection si le souvenir a bien été supprimé
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (just_deleted) {
+      navigate('/memories');
+    }
+    }, [just_deleted]);
+  
   return (
     <>
-      {/* Affichage d'un message si le souvenir vient juste d'être créé */}
-      {just_created && (
-        <div role="alert" className="alert alert-success text-sm max-w-xs">
-          <span>{message}</span>
-        </div>
-      )}
-
       <div className="flex justify-between">
         <Link to="/memories" className="link ml-10">
           Retour à la liste des souvenirs
@@ -57,7 +71,7 @@ const MemoryPage = () => {
                   alt="delete"
                   src={Delete}
                   className="w-10 rounded-full"
-                  onClick={handleDelete}
+                  onClick={handleClickDelete}
                 />
               </div>
             </>
@@ -123,6 +137,29 @@ const MemoryPage = () => {
           </div>
         </div>
       </div>
+
+      {/* Demande de confirmation pour la suppression d'un souvenir  */}
+      {showConfirmation && (
+        <div className="fixed inset-0 flex justify-center items-center bg-gray-700 bg-opacity-70">
+          <div className="bg-white p-8 rounded-lg">
+            <p className="mb-4">Etes-vous sûr de vouloir supprimer ce souvenir ?</p>
+            <div className="flex justify-end">
+              <button
+                className="mr-4 text-sm bg-gray-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded"
+                onClick={handleCancelDelete}
+              >
+                Annuler
+              </button>
+              <button
+                className="text-sm bg-gray-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded"
+                onClick={handleConfirmDelete}
+              >
+                Confirmer
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 };
