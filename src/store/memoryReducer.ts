@@ -87,7 +87,7 @@ export interface MemoryState {
       const memoryWithLocation = {memory, place, location};
       console.log(memoryWithLocation);
       // Envoi de la requête en POST avec le state.memory dans le body
-      const { data } = await axios.post(`https://auparavant.fr/api/secure/create/memory-and-location-and-place`, memoryWithLocation);
+      const { data } = await axios.post(`https://admin.auparavant.fr/api/secure/create/memory-and-location-and-place`, memoryWithLocation);
       return data;
     }
   )
@@ -107,7 +107,7 @@ export interface MemoryState {
         const memoryWithoutLocation = {memory, place, location};
         console.log(memoryWithoutLocation);
         // Envoi de la requête en POST avec le state.memory dans le body
-        const { data } = await axios.post(`https://auparavant.fr/api/secure/create/memory-and-place`, memoryWithoutLocation);
+        const { data } = await axios.post(`https://admin.auparavant.fr/api/secure/create/memory-and-place`, memoryWithoutLocation);
         return data;
       }
     )
@@ -119,7 +119,7 @@ export interface MemoryState {
         // Récupération du state via la thunkAPI
         const state = thunkAPI.getState() as RootState;
         // Envoi de la requête en DELETE avec l'ID du souvenir en endpoint'
-        const { data } = await axios.delete(`https://auparavant.fr/api/secure/delete/memory/${memoryID}`);
+        const { data } = await axios.delete(`https://admin.auparavant.fr/api/secure/delete/memory/${memoryID}`);
         return data;
       }
         )

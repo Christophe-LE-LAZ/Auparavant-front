@@ -25,7 +25,7 @@ import {
   export const fetchMemories = createAsyncThunk(
     'memories/fetchMemories',
     async () => {
-      const { data } = await axios.get(`http://13.60.26.88/api/memories`);
+      const { data } = await axios.get(`https://admin.auparavant.fr/api/memories`);
       return data;
     }
   );

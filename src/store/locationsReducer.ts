@@ -23,7 +23,7 @@ import { ILocationCreated } from '../types/location';
   export const fetchLocations = createAsyncThunk(
     'location/fetchLocations',
     async () => {
-      const { data } = await axios.get(`https://auparavant.fr/api/locations`);
+      const { data } = await axios.get(`https://admin.auparavant.fr/api/locations`);
       return data;
     }
   );
