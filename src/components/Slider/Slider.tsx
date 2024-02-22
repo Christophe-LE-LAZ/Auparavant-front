@@ -1,18 +1,28 @@
-import React from 'react'
+import React, { useEffect } from 'react';
+import { useAppSelector, useAppDispatch } from '../../hooks';
+import { fetchRandomMemory } from '../../store/randomReducer';
 
-export default function slider() {
-    return (
-      <div className='max-w-screen-xl mx-auto p-5'>
-          <div className="diff aspect-[16/9]">
-    <div className="diff-item-1">
-      <img alt="daisy" src="https://images.unsplash.com/photo-1523435324848-a7a613898152?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWgelHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1769&q=80" />
-    </div>
-    <div className="diff-item-2">
-      <img alt="daisy" src="https://images.unsplash.com/photo-1598875791852-8bb153e713f0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWgelHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2010&q=80" />
-    </div>
-    <div className="diff-resizer"></div>
-  </div>
+const Slider = () => {
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    dispatch(fetchRandomMemory());
+  }, []);
+
+  const randomPicture = useAppSelector((state) => state.randomMemoryReducer.picture);
+
+  return (
+    <div className='max-w-screen-xl mx-auto p-5'>
+      <div className="diff aspect-[16/9]">
+        <div className="diff-item-1">
+          <img className='m-auto' alt="test" src={randomPicture.picture1} />
+        </div>
+        <div className="diff-item-2">
+          <img className='m-auto' alt="test" src={randomPicture.picture2} />
+        </div>
+        <div className="diff-resizer"></div>
       </div>
-    )
-  }
-  
+    </div>
+  );
+};
+
+export default Slider;
