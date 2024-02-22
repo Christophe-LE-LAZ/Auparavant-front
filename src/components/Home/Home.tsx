@@ -1,17 +1,20 @@
-import React, { useEffect } from 'react';
 import Slider from '../Slider/Slider';
 import Map from '../Map/Map';
 import Card from '../../components/Card/Card';
 import './Home.scss';
-import { useAppSelector, useAppDispatch } from '../../hooks';
+import { useAppDispatch, useAppSelector,  } from '../../hooks';
+import { useEffect } from 'react';
 import { fetchMemories } from '../../store/memoriesReducer';
 
-// Appel à l'API à lors du chargement de la page pour la récupération des souvenirs
 export default function Home() {
+
   const dispatch = useAppDispatch();
-  useEffect(() => {
-    dispatch(fetchMemories());
-  }, []);
+
+  // Récupération des souvenirs depuis l'API
+    useEffect(() => {
+      dispatch(fetchMemories());
+    }, []);
+
 
   // Récupération des valeurs du state
   const memoriesList = useAppSelector((state) => state.memories.list);

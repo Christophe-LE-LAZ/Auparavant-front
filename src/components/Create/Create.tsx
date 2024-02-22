@@ -12,14 +12,14 @@ import {
   changeFieldStateLocation,
   createMemoryWithLocation,
   createMemoryWithoutLocation,
-} from '../../store/memoryReducer';
+} from '../../store/createMemoryReducer';
 import Map from '../Map/Map';
 import { useNavigate } from 'react-router-dom';
 import { setMessage } from '../../store/messageReducer';
 
 export default function Create() {
   // Lecture des states du reducer Memory
-  const { title, content, picture_date, main_picture, additionnal_pictures } =
+  const { title, content, picture_date, main_picture } =
     useAppSelector((state) => state.memory.memory);
   const { name, type } = useAppSelector((state) => state.memory.place);
   const {
@@ -286,16 +286,14 @@ export default function Create() {
     dispatch(createMemoryWithoutLocation());
   };
 
-  const [showConfirmation, setShowConfirmation] = useState(false);
-
   // Si le souvenir a été créé avec succès, enregistrement d'un message et redirection vers la liste
   const navigate = useNavigate();
   useEffect(() => {
     if (just_created) {
-      dispatch(setMessage("Votre souvenir a été créé avec succès."));
-      navigate('/memories')
+      dispatch(setMessage('Votre souvenir a été créé avec succès.'));
+      navigate(`/memories/${memoryId}`);
     }
-    }, [just_created]);
+  }, [just_created]);
 
   return (
     <div>
@@ -534,22 +532,6 @@ export default function Create() {
       {error && (
         <div role="alert" className="alert alert-error max-w-xs">
           <span>{error}</span>
-        </div>
-      )}
-
-      {showConfirmation && (
-        <div className="fixed inset-0 flex justify-center items-center bg-gray-700 bg-opacity-70">
-          <div className="bg-white p-8 rounded-lg">
-            <p className="mb-4">Votre souvenir a bien été créé !</p>
-            <div className="flex justify-end">
-              <button
-                className="mr-4 text-sm bg-gray-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded"
-                onClick={handleClickOK}
-              >
-                OK
-              </button>
-            </div>
-          </div>
         </div>
       )}
     </div>

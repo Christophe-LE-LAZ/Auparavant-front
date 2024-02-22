@@ -10,6 +10,6 @@ export interface IUserToCreate extends IUserBase {
   }
 
   export interface IUser extends IUserBase {
-    id : number
+    id : number | null
     roles : string[]
   }

@@ -13,7 +13,10 @@ import { useAppDispatch, useAppSelector } from '../../hooks';
 import { fetchLocations } from '../../store/locationsReducer';
 import { fetchMemories } from '../../store/memoriesReducer';
 import { Link } from 'react-router-dom';
-import { setCoordState, setLocationState } from '../../store/memoryReducer';
+import {
+  setCoordState,
+  setLocationState,
+} from '../../store/createMemoryReducer';
 
 export default function Map() {
   // Récupération des locations depuis l'API
@@ -52,7 +55,7 @@ export default function Map() {
   }, []);
 
   // Fonction de gestionnaire d'événements pour le clic sur un pointeur
-  const handleClickPopup = (event : any) => {
+  const handleClickPopup = (event: any) => {
     const currentLocation = event.sourceTarget.options.location;
     dispatch(setLocationState(currentLocation));
   };

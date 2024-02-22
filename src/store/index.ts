@@ -1,9 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit';
 import memoriesReducer from './memoriesReducer'
 import userReducer from './userReducer';
-import memoryReducer from './memoryReducer';
+import memoryReducer from './createMemoryReducer';
 import locationsReducer from './locationsReducer';
 import messageReducer from './messageReducer';
+import singleMemoryReducer from './singleMemoryReducer';
 
 // Création du store et définition des différents states et de leurs reducers associés
 
@@ -11,6 +12,7 @@ const store = configureStore({
   reducer: {
     memories : memoriesReducer,
     memory: memoryReducer,
+    singleMemory : singleMemoryReducer,
     locations: locationsReducer,
     user: userReducer,
     message : messageReducer

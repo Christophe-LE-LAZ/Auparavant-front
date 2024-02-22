@@ -8,7 +8,6 @@ import Register from './components/Register/Register';
 import AboutUs from './components/AboutUs/AboutUs';
 import Contact from './components/Contact/Contact';
 import Contributions from './components/Contributions/Contributions';
-import Loader from './components/Loader/Loader';
 import Home from './components/Home/Home';
 import FAQ from './components/FAQ/FAQ';
 import Memories from './components/Memories/Memories';

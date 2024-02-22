@@ -1,15 +1,18 @@
 import { useEffect, useState } from 'react';
 import { useAppSelector, useAppDispatch } from '../../hooks';
 import Card from '../../components/Card/Card';
-import { fetchMemories } from '../../store/memoriesReducer';
 import { clearMessage } from '../../store/messageReducer';
+import { fetchMemories } from '../../store/memoriesReducer';
 
 const Memories = () => {
+
   const dispatch = useAppDispatch();
-  // Appel de l'API lors du montage du composant
-  useEffect(() => {
-    dispatch(fetchMemories());
-  }, []);
+
+  // Récupération des souvenirs depuis l'API
+    useEffect(() => {
+      dispatch(fetchMemories());
+    }, []);
+
 
   // Récupération des valeurs du state
   const memoriesList = useAppSelector((state) => state.memories.list);
@@ -30,7 +33,7 @@ const Memories = () => {
 
   return (
     <div className="flex flex-col items-center">
-      {/* Affichage d'un message si l'utilisateur vient juste de créer ou supprimer un souvenir */}
+      {/* Affichage d'un message si l'utilisateur vient juste de supprimer un souvenir */}
       {showSuccess && (
         <div role="alert" className="flex alert alert-success text-sm max-w-sm justify-between mb-10">
           <span>{message}</span>
