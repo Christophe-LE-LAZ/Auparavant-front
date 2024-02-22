@@ -2,7 +2,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import Delete from '../../assets/Delete.png';
 import Edit from '../../assets/Edit.png';
-import { deleteMemory } from '../../store/createMemoryReducer';
+import { deleteMemory } from '../../store/singleMemoryReducer';
 import { useEffect, useState } from 'react';
 import { clearMessage, setMessage } from '../../store/messageReducer';
 import { fetchSingleMemory } from '../../store/singleMemoryReducer';
@@ -19,7 +19,7 @@ const Memory = () => {
   // Récupération des valeurs du state
   const memory = useAppSelector((state) => state.singleMemory.memory);
   const userId = useAppSelector((state) => state.user.id);
-  const { just_deleted } = useAppSelector((state) => state.memory);
+  const { just_deleted } = useAppSelector((state) => state.singleMemory);
   const { action_done, message } = useAppSelector((state) => state.message);
 
   const [showConfirmation, setShowConfirmation] = useState(false);

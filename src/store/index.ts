@@ -1,7 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
 import memoriesReducer from './memoriesReducer'
 import userReducer from './userReducer';
-import memoryReducer from './createMemoryReducer';
+import createMemoryReducer from './createMemoryReducer';
 import locationsReducer from './locationsReducer';
 import messageReducer from './messageReducer';
 import singleMemoryReducer from './singleMemoryReducer';
@@ -11,7 +11,7 @@ import singleMemoryReducer from './singleMemoryReducer';
 const store = configureStore({
   reducer: {
     memories : memoriesReducer,
-    memory: memoryReducer,
+    createMemory: createMemoryReducer,
     singleMemory : singleMemoryReducer,
     locations: locationsReducer,
     user: userReducer,

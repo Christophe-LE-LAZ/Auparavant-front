@@ -13,8 +13,6 @@ export interface IMemoryToCreate {
   title: string
   content: string
   picture_date: string
-  main_picture: string
-  additionnal_pictures: string[] | undefined
 }
 
 

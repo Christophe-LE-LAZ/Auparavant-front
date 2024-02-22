@@ -12,6 +12,7 @@ import {
   changeFieldStateLocation,
   createMemoryWithLocation,
   createMemoryWithoutLocation,
+  uploadMainPicture,
 } from '../../store/createMemoryReducer';
 import Map from '../Map/Map';
 import { useNavigate } from 'react-router-dom';
@@ -19,9 +20,6 @@ import { setMessage } from '../../store/messageReducer';
 
 export default function Create() {
   // Lecture des states du reducer Memory
-  const { title, content, picture_date, main_picture } =
-    useAppSelector((state) => state.memory.memory);
-  const { name, type } = useAppSelector((state) => state.memory.place);
   const {
     area,
     department,
@@ -31,17 +29,17 @@ export default function Create() {
     zipcode,
     latitude,
     longitude,
-  } = useAppSelector((state) => state.memory.location);
+  } = useAppSelector((state) => state.createMemory.location);
   const existingLocation = useAppSelector(
-    (state) => state.memory.existingLocation
+    (state) => state.createMemory.existingLocation
   );
 
   const locationToCreate = useAppSelector(
-    (state) => state.memory.locationToCreate
+    (state) => state.createMemory.locationToCreate
   );
 
   const { error, loading, just_created, memoryId } = useAppSelector(
-    (state) => state.memory
+    (state) => state.createMemory
   );
 
   // Caractéristiques des inputs à mapper
@@ -51,35 +49,32 @@ export default function Create() {
       name: 'title',
       type: 'text',
       required: true,
-      value: title,
     },
     {
       label: 'Description du souvenir',
       name: 'content',
       type: 'text',
       required: true,
-      value: content,
     },
     {
       label: 'Date du souvenir',
       name: 'picture_date',
       type: 'date',
       required: true,
-      value: picture_date.substring(0, 10),
     },
+  ];
+
+  const photoInputs = [
     {
       label: 'Photographie principale',
       name: 'main_picture',
-      type: 'url',
-      placeholder: 'URL',
+      type: 'file',
       required: true,
-      value: main_picture,
     },
     {
       label: 'Photographie supplémentaire',
       name: 'additionnal_pictures',
-      type: 'url',
-      placeholder: 'URL',
+      type: 'file',
       required: false,
     },
   ];
@@ -90,14 +85,12 @@ export default function Create() {
       name: 'name',
       type: 'text',
       required: false,
-      value: name,
     },
     {
       label: "Type d'endroit",
       name: 'type',
       type: 'text',
       required: true,
-      value: type,
     },
   ];
 
@@ -270,6 +263,17 @@ export default function Create() {
     dispatch(changeFieldStateLocation({ inputValueL, inputNameL }));
   };
 
+  // TODO : gestion de l'upload d'images 
+  const [image, setImage] = useState({} as File);
+
+  const handleFileChange = (e : React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+    const picture = e.target.files[0];
+    setImage(picture)
+    }
+  }
+  console.log(image);
+
   // Dispatch pour la création d'un souvenir + place + location
   const handleSubmitLocationToCreate = (
     e: React.FormEvent<HTMLFormElement>
@@ -321,34 +325,30 @@ export default function Create() {
           <div className="sm:flex gap-6">
             <div>
               {/* Le souvenir */}
-              <fieldset className="mt-10 p-5 border rounded-lg">
-                <legend className="text-lg mb-5">Votre souvenir</legend>
-                {memoryInputs.map(
-                  ({ label, name, type, value, placeholder, required }) => (
-                    <label key={name} className="form-control w-full max-w-xs">
-                      <div className="label">
-                        <span className="label-text">
-                          {label} {required && '*'}{' '}
-                        </span>
-                      </div>
-                      <input
-                        type={type}
-                        className="input input-bordered w-full max-w-xs"
-                        name={name}
-                        required={required}
-                        defaultValue={value}
-                        placeholder={placeholder}
-                        onBlur={handleBlurMemory}
-                      />
-                    </label>
-                  )
-                )}
+              <fieldset className="mt-5 p-5 border rounded-lg">
+                <legend className="text-lg">Votre souvenir</legend>
+                {memoryInputs.map(({ label, name, type, required }) => (
+                  <label key={name} className="form-control w-full max-w-xs">
+                    <div className="label">
+                      <span className="label-text">
+                        {label} {required && '*'}{' '}
+                      </span>
+                    </div>
+                    <input
+                      type={type}
+                      className="input input-bordered w-full max-w-xs"
+                      name={name}
+                      required={required}
+                      onBlur={handleBlurMemory}
+                    />
+                  </label>
+                ))}
               </fieldset>
 
               {/* Le lieu */}
-              <fieldset className="mt-10 p-5 border rounded-lg">
-                <legend className="text-lg mb-5">Le lieu</legend>
-                {placeInputs.map(({ label, name, type, value, required }) => (
+              <fieldset className="mt-5 p-5 border rounded-lg">
+                <legend className="text-lg">Le lieu</legend>
+                {placeInputs.map(({ label, name, type, required }) => (
                   <label key={name} className="form-control w-full max-w-xs">
                     <div className="label">
                       <span className="label-text">
@@ -360,8 +360,29 @@ export default function Create() {
                       className="input input-bordered w-full max-w-xs"
                       name={name}
                       required={required}
-                      defaultValue={value}
                       onBlur={handleBlurPlace}
+                    />
+                  </label>
+                ))}
+              </fieldset>
+
+              {/* Les photos */}
+              <fieldset className="mt-5 p-5 border rounded-lg">
+                <legend className="text-lg">Les photographies</legend>
+                {photoInputs.map(({ label, name, type, required }) => (
+                  <label key={name} className="form-control w-full max-w-xs">
+                    <div className="label">
+                      <span className="label-text">
+                        {label} {required && '*'}{' '}
+                      </span>
+                    </div>
+                    <input
+                      type={type}
+                      className="file-input file-input-bordered w-full max-w-xs"
+                      name={name}
+                      required={required}
+                      onChange={handleFileChange}
+                      accept="image/*"
                     />
                   </label>
                 ))}
@@ -369,8 +390,8 @@ export default function Create() {
             </div>
 
             {/* Sa localisation */}
-            <fieldset className="mt-10 p-5 border rounded-lg">
-              <legend className="text-lg mb-5">Sa localisation</legend>
+            <fieldset className="mt-5 p-5 border rounded-lg">
+              <legend className="text-lg">La localisation</legend>
               {locationInputsExistingLoc.map(
                 ({
                   label,
@@ -429,34 +450,30 @@ export default function Create() {
           <div className="sm:flex gap-6">
             <div>
               {/* Le souvenir */}
-              <fieldset className="mt-10 p-5 border rounded-lg">
-                <legend className="text-lg mb-5">Votre souvenir</legend>
-                {memoryInputs.map(
-                  ({ label, name, type, value, placeholder, required }) => (
-                    <label key={name} className="form-control w-full max-w-xs">
-                      <div className="label">
-                        <span className="label-text">
-                          {label} {required && '*'}{' '}
-                        </span>
-                      </div>
-                      <input
-                        type={type}
-                        className="input input-bordered w-full max-w-xs"
-                        name={name}
-                        required={required}
-                        defaultValue={value}
-                        placeholder={placeholder}
-                        onBlur={handleBlurMemory}
-                      />
-                    </label>
-                  )
-                )}
+              <fieldset className="mt-5 p-5 border rounded-lg">
+                <legend className="text-lg">Votre souvenir</legend>
+                {memoryInputs.map(({ label, name, type, required }) => (
+                  <label key={name} className="form-control w-full max-w-xs">
+                    <div className="label">
+                      <span className="label-text">
+                        {label} {required && '*'}{' '}
+                      </span>
+                    </div>
+                    <input
+                      type={type}
+                      className="input input-bordered w-full max-w-xs"
+                      name={name}
+                      required={required}
+                      onBlur={handleBlurMemory}
+                    />
+                  </label>
+                ))}
               </fieldset>
 
               {/* Le lieu */}
-              <fieldset className="mt-10 p-5 border rounded-lg">
-                <legend className="text-lg mb-5">Le lieu</legend>
-                {placeInputs.map(({ label, name, type, value, required }) => (
+              <fieldset className="mt-5 p-5 border rounded-lg">
+                <legend className="text-lg">Le lieu</legend>
+                {placeInputs.map(({ label, name, type, required }) => (
                   <label key={name} className="form-control w-full max-w-xs">
                     <div className="label">
                       <span className="label-text">
@@ -468,8 +485,29 @@ export default function Create() {
                       className="input input-bordered w-full max-w-xs"
                       name={name}
                       required={required}
-                      defaultValue={value}
                       onBlur={handleBlurPlace}
+                    />
+                  </label>
+                ))}
+              </fieldset>
+
+              {/* Les photos */}
+              <fieldset className="mt-5 p-5 border rounded-lg">
+                <legend className="text-lg">Les photographies</legend>
+                {photoInputs.map(({ label, name, type, required }) => (
+                  <label key={name} className="form-control w-full max-w-xs">
+                    <div className="label">
+                      <span className="label-text">
+                        {label} {required && '*'}{' '}
+                      </span>
+                    </div>
+                    <input
+                      type={type}
+                      className="file-input file-input-bordered w-full max-w-xs"
+                      name={name}
+                      required={required}
+                      onBlur={handleFileChange}
+                      accept="image/*"
                     />
                   </label>
                 ))}
@@ -477,8 +515,8 @@ export default function Create() {
             </div>
 
             {/* Sa localisation */}
-            <fieldset className="mt-10 p-5 border rounded-lg">
-              <legend className="text-lg mb-5">Sa localisation</legend>
+            <fieldset className="mt-5 p-5 border rounded-lg">
+              <legend className="text-lg">Sa localisation</legend>
               {locationInputsLocToCreate.map(
                 ({
                   label,

@@ -5,9 +5,11 @@ import {
 
 import axios from 'axios';
 import { IDataCreated } from '../types/memory';
+import { RootState } from '.';
 
   interface SingleMemoryState {
     memory : IDataCreated
+    just_deleted : boolean
     loading: boolean;
     error: null | string;
   }
@@ -45,6 +47,7 @@ import { IDataCreated } from '../types/memory';
           type: ""
         }
       },
+    just_deleted : false,
     loading: false,
     error: null
   };
@@ -58,20 +61,53 @@ import { IDataCreated } from '../types/memory';
     }
   );
 
+
+  // Suppression d'un souvenir
+  export const deleteMemory = createAsyncThunk(
+    'createMemory/deleteMemory',
+    async (memoryID : number, thunkAPI) => {
+      // Récupération du state via la thunkAPI
+      const state = thunkAPI.getState() as RootState;
+      // Envoi de la requête en DELETE avec l'ID du souvenir en endpoint'
+      const { data } = await axios.delete(`https://admin.auparavant.fr/api/secure/delete/memory/${memoryID}`);
+      return data;
+    }
+  )
+
+
   const singleMemoryReducer = createReducer(initialState, (builder) => {
-        builder
-          .addCase(fetchSingleMemory.pending, (state) => {
-            state.error = null;
-            state.loading = true;
-          })
-          .addCase(fetchSingleMemory.rejected, (state, action) => {
-            state.loading = false;
-            state.error = action.error.message as string;
-          })
-          .addCase(fetchSingleMemory.fulfilled, (state, action) => {
-            state.loading = false;
-            state.memory = action.payload;
-          })
+    builder
+      // Gestion du cas "pending" de la récupération d'un souvenir
+      .addCase(fetchSingleMemory.pending, (state) => {
+        state.error = null;
+        state.loading = true;
+      })
+      // Gestion du cas "rejected" de la récupération d'un souvenir
+      .addCase(fetchSingleMemory.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message as string;
+      })
+      // Gestion du cas "fullfilled" de la récupération d'un souvenir
+      .addCase(fetchSingleMemory.fulfilled, (state, action) => {
+        state.loading = false;
+        state.memory = action.payload;
+      })
+      // Gestion du cas "pending" de la suppression d'un souvenir
+      .addCase(deleteMemory.pending, (state) => {
+        state.error = null;
+        state.loading = true;
+      })
+      // Gestion du cas "rejected" de la suppression d'un souvenir
+      .addCase(deleteMemory.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message as string;
+      })
+      // Gestion du cas "fullfilled" de la suppression d'un souvenir
+      .addCase(deleteMemory.fulfilled, (state, action) => {
+        // const { id, username } = action.payload;
+        state.loading = false;
+        state.just_deleted = true;
+      })
       });
   
   export default singleMemoryReducer;

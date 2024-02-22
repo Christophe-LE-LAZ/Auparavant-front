@@ -26,8 +26,6 @@ export interface MemoryState {
       title: "",
       content: "",
       picture_date: "",
-      main_picture: "",
-      additionnal_pictures: undefined,
     },
     place : {
       name : "",
@@ -57,19 +55,20 @@ export interface MemoryState {
   export const changeFieldStateMemory = createAction<{
     inputValueM : string & (string[] | undefined);
     inputNameM: TInputNameMemory;
-    }>('memory/changeFieldStateMemory');
+    }>('createMemory/changeFieldStateMemory');
 
   // Création d'une action pour la modification des valeurs du State -> Place
   export const changeFieldStatePlace = createAction<{
     inputValueP : string;
     inputNameP : TInputNamePlace;
-  }>('memory/changeFieldStatePlace');
+  }>('createMemory/changeFieldStatePlace');
 
   // Création d'une action pour la modification des valeurs du State -> Location
   export const changeFieldStateLocation = createAction<{
     inputValueL : string & (number| undefined);
     inputNameL : TInputNameLocation;
-  }>('memory/changeFieldStateLocation');
+  }>('createMemory/changeFieldStateLocation');
+
 
   // Création d'une action pour la mise à jour du state avec la current location
   export const setLocationState = createAction<ILocationCreated>('memory/setLocationState');
@@ -79,14 +78,14 @@ export interface MemoryState {
   
   // Création d'un souvenir en BDD : memory + place + location
   export const createMemoryWithLocation = createAsyncThunk(
-    'memory/createMemoryWithLocation',
+    'createMemory/createMemoryWithLocation',
     async (_, thunkAPI) => {
       // Récupération du state via la thunkAPI
       const state = thunkAPI.getState() as RootState;
       // Création du body de la requête
-      const memory = state.memory.memory;
-      const place = state.memory.place;
-      const location = state.memory.location;
+      const memory = state.createMemory.memory;
+      const place = state.createMemory.place;
+      const location = state.createMemory.location;
       const memoryWithLocation = {memory, place, location};
       console.log(memoryWithLocation);
       // Envoi de la requête en POST avec le state.memory dans le body
@@ -97,16 +96,16 @@ export interface MemoryState {
 
     // Création d'un souvenir en BDD : memory + place
     export const createMemoryWithoutLocation = createAsyncThunk(
-      'memory/createMemoryWithoutLocation',
+      'createMemory/createMemoryWithoutLocation',
       async (_, thunkAPI) => {
         // Récupération du state via la thunkAPI
         const state = thunkAPI.getState() as RootState;
         // Création du body de la requête
-        const memory = state.memory.memory;
-        const name = state.memory.place.name;
-        const type = state.memory.place.type;
+        const memory = state.createMemory.memory;
+        const name = state.createMemory.place.name;
+        const type = state.createMemory.place.type;
         const place = {create_new_place : true, name, type};
-        const location = {id : state.memory.locationId};
+        const location = {id : state.createMemory.locationId};
         const memoryWithoutLocation = {memory, place, location};
         console.log(memoryWithoutLocation);
         // Envoi de la requête en POST avec le state.memory dans le body
@@ -115,20 +114,25 @@ export interface MemoryState {
       }
     )
 
-    // Suppression d'un souvenir
-    export const deleteMemory = createAsyncThunk(
-      'memory/deleteMemory',
-      async (memoryID : number, thunkAPI) => {
-        // Récupération du state via la thunkAPI
-        const state = thunkAPI.getState() as RootState;
-        // Envoi de la requête en DELETE avec l'ID du souvenir en endpoint'
-        const { data } = await axios.delete(`https://admin.auparavant.fr/api/secure/delete/memory/${memoryID}`);
-        return data;
-      }
-    )
+    // TODO : Upload de la main picture
+  export const uploadMainPicture = createAction<File>('createMemory/changePictureState');
+    // Soumission du formulaire 
+    // Récupérer le memory_id
+
+    
+    // A la soumission du formulaire, renvoyer la photo au format 
+    // {
+    //     "picture": "photo.jpg",
+    //     "memory": {
+    //       "id": 9
+    //     }
+    //   }
+    // URL : /api/secure/upload_update/main_picture/{id}
+    // retourne la memory avec une main_picture (string)
+
 
   // Création d'une action pour le nettoyage du state
-  export const clearMemoryState = createAction('memory/clearMemoryState');
+  export const clearCreateMemoryState = createAction('memory/clearMemoryState');
   
   const memoryReducer = createReducer(initialState, (builder) => {
       builder
@@ -196,8 +200,6 @@ export interface MemoryState {
         state.loading = false;
         state.just_created = true;
         state.memoryId = id;
-        console.log('success !');
-        console.log(action.payload);
       })
       // Gestion du cas "pending" de la création d'un souvenir + place + location
       .addCase(createMemoryWithoutLocation.pending, (state) => {
@@ -215,33 +217,12 @@ export interface MemoryState {
         state.loading = false;
         state.just_created = true;
         state.memoryId = id;
-        console.log('success !');
-        console.log(action.payload);
-      })
-      // Gestion du cas "pending" de la suppression d'un souvenir
-      .addCase(deleteMemory.pending, (state) => {
-        state.error = null;
-        state.loading = true;
-      })
-      // Gestion du cas "rejected" de la suppression d'un souvenir
-      .addCase(deleteMemory.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.error.message as string;
-      })
-      // Gestion du cas "fullfilled" de la suppression d'un souvenir
-      .addCase(deleteMemory.fulfilled, (state, action) => {
-        // const { id, username } = action.payload;
-        state.loading = false;
-        state.just_deleted = true;
-        console.log('success !');
       })
       // Remise à zéro du state
-      .addCase(clearMemoryState, (state) => {
+      .addCase(clearCreateMemoryState, (state) => {
         state.memory.title = "";
         state.memory.content = "";
         state.memory.picture_date = "";
-        state.memory.main_picture = "";
-        state.memory.additionnal_pictures = undefined;
         state.place.name = "";
         state.place.type = "";
         state.location.area = "";

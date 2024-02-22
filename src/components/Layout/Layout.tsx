@@ -3,16 +3,15 @@ import Footer from '../Footer/Footer';
 import { Outlet, useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useAppDispatch } from '../../hooks';
-import { clearMemoryState } from '../../store/createMemoryReducer';
-import { fetchMemories } from '../../store/memoriesReducer';
+import { clearCreateMemoryState } from '../../store/createMemoryReducer';
 
 export default function Layout() {
   const dispatch = useAppDispatch();
 
-  // Effacer le state de memory lorsqu'on change de page
+  // Effacer le state de createMemory lorsqu'on change de page
   const location = useLocation();
   useEffect(() => {
-    dispatch(clearMemoryState());
+    dispatch(clearCreateMemoryState());
   }, [location]);
 
   return (

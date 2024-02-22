@@ -46,9 +46,9 @@ const router = createBrowserRouter(
         <Route
           path="/create"
           element={
-            <PrivateRoute>
+            // <PrivateRoute>
               <Create />
-            </PrivateRoute>
+            // </PrivateRoute>
           }
         />
         <Route path="/register" element={<Register />} />
