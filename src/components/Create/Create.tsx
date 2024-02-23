@@ -38,7 +38,7 @@ export default function Create() {
     (state) => state.createMemory.locationToCreate
   );
 
-  const { error, loading, just_created, memoryId } = useAppSelector(
+  const { error, loading, just_created, memoryId, firstRequestOk } = useAppSelector(
     (state) => state.createMemory
   );
 
@@ -264,15 +264,19 @@ export default function Create() {
   };
 
   // TODO : gestion de l'upload d'images 
-  const [image, setImage] = useState({} as File);
 
+  // Stockage de la main picture dans un state
+  const [mainPicture, setMainPicture] = useState({} as File);
   const handleFileChange = (e : React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
-    const picture = e.target.files[0];
-    setImage(picture)
+      setMainPicture(e.target.files[0]);
     }
   }
-  console.log(image);
+
+  // Si la première requête a bien abouti, deuxième requête pour l'envoi de la main picture
+  if (firstRequestOk) {
+    dispatch(uploadMainPicture(mainPicture))
+  }
 
   // Dispatch pour la création d'un souvenir + place + location
   const handleSubmitLocationToCreate = (

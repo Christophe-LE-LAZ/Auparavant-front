@@ -29,7 +29,7 @@ import { RootState } from '.';
           district: "",
           street: "",
           city: "",
-          zipcode: null,
+          zipcode: undefined,
           latitude: "",
           longitude: ""
         },
@@ -61,7 +61,6 @@ import { RootState } from '.';
     }
   );
 
-
   // Suppression d'un souvenir
   export const deleteMemory = createAsyncThunk(
     'createMemory/deleteMemory',
@@ -73,7 +72,6 @@ import { RootState } from '.';
       return data;
     }
   )
-
 
   const singleMemoryReducer = createReducer(initialState, (builder) => {
     builder

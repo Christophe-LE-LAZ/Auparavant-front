@@ -5,7 +5,7 @@ export interface ILocationToCreate {
     district: string
     street : string
     city : string
-    zipcode : number | null
+    zipcode : number | undefined
     latitude : string
     longitude : string
   }

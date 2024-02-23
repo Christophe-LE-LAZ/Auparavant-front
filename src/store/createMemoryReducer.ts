@@ -13,6 +13,8 @@ export interface MemoryState {
   existingLocation : boolean
   locationToCreate : boolean
   locationId: number | null
+  firstRequestOk : boolean
+  main_picture : File | undefined
   memoryId: number | null
   just_created : boolean
   just_deleted : boolean
@@ -37,13 +39,15 @@ export interface MemoryState {
       district: "",
       street : "",
       city : "",
-      zipcode : null,
+      zipcode : undefined,
       latitude : "",
       longitude : ""
     },
     existingLocation : false,
     locationToCreate : false,
     locationId : null,
+    firstRequestOk : false,
+    main_picture : undefined,
     memoryId : null,
     just_created : false,
     just_deleted : false,
@@ -68,7 +72,6 @@ export interface MemoryState {
     inputValueL : string & (number| undefined);
     inputNameL : TInputNameLocation;
   }>('createMemory/changeFieldStateLocation');
-
 
   // Création d'une action pour la mise à jour du state avec la current location
   export const setLocationState = createAction<ILocationCreated>('memory/setLocationState');
@@ -115,21 +118,23 @@ export interface MemoryState {
     )
 
     // TODO : Upload de la main picture
-  export const uploadMainPicture = createAction<File>('createMemory/changePictureState');
-    // Soumission du formulaire 
-    // Récupérer le memory_id
 
-    
-    // A la soumission du formulaire, renvoyer la photo au format 
-    // {
-    //     "picture": "photo.jpg",
-    //     "memory": {
-    //       "id": 9
-    //     }
-    //   }
-    // URL : /api/secure/upload_update/main_picture/{id}
-    // retourne la memory avec une main_picture (string)
-
+    // Upload de la main Picture
+    export const uploadMainPicture = createAsyncThunk(
+      'createMemory/uploadMainPicture',
+      async (mainPicture : File, thunkAPI) => {
+        // Récupération du state via la thunkAPI
+        const state = thunkAPI.getState() as RootState;
+        // Création du body de la requête
+        const memoryID = state.createMemory.memoryId
+        const picture = state.createMemory.memory;
+        const memory = {id : memoryID};
+        const main_picture = {picture, memory}
+        // Envoi de la requête en POST avec la main picture et l'id du souvenir dans le body
+        const { data } = await axios.post(`https://admin.auparavant.fr/api/secure/upload_update/main_picture/${memoryID}`, main_picture);
+        return data;
+      }
+    )
 
   // Création d'une action pour le nettoyage du state
   export const clearCreateMemoryState = createAction('memory/clearMemoryState');
@@ -140,19 +145,16 @@ export interface MemoryState {
       .addCase(changeFieldStateMemory, (state, action) => {
         const { inputNameM, inputValueM } = action.payload;
         state.memory[inputNameM] = inputValueM;
-        console.log(state.memory.title)
       })
       // Modification du state suite à une nouvelle inputValue dans le fieldset place
       .addCase(changeFieldStatePlace, (state, action) => {
         const { inputNameP, inputValueP } = action.payload;
         state.place[inputNameP] = inputValueP;
-        console.log(state.place.name)
       })
       // Modification du state suite à une nouvelle inputValue dans le fieldset location
       .addCase(changeFieldStateLocation, (state, action) => {
         const { inputNameL, inputValueL } = action.payload;
         state.location[inputNameL] = inputValueL;
-        console.log(state.location.area)
       })
       // Modification du state "location" suite au clic sur un pointeur (pour createMemoryWithoutLocation)
       .addCase(setLocationState, (state, action) => {
@@ -178,7 +180,7 @@ export interface MemoryState {
         state.location.district = "";
         state.location.street = "";
         state.location.city = "";
-        state.location.zipcode = null;
+        state.location.zipcode = undefined;
         state.location.latitude = String(lat);
         state.location.longitude = String(lng);
         state.existingLocation = false;
@@ -197,8 +199,7 @@ export interface MemoryState {
       // Gestion du cas "fullfilled" de la création d'un souvenir + place + location
       .addCase(createMemoryWithLocation.fulfilled, (state, action) => {
         const { id } = action.payload.memory;
-        state.loading = false;
-        state.just_created = true;
+        state.firstRequestOk = true;
         state.memoryId = id;
       })
       // Gestion du cas "pending" de la création d'un souvenir + place + location
@@ -214,9 +215,24 @@ export interface MemoryState {
       // Gestion du cas "fullfilled" de la création d'un souvenir + place + location
       .addCase(createMemoryWithoutLocation.fulfilled, (state, action) => {
         const { id } = action.payload.memory;
+        state.firstRequestOk = true;
+        state.memoryId = id;
+      })
+      // TODO UPLOAD MAIN PICTURE
+      // Gestion du cas "pending" de l'upload de la main_picture
+      .addCase(uploadMainPicture.pending, (state) => {
+        state.error = null;
+        state.loading = true;
+      })
+      // Gestion du cas "rejected" de l'upload de la main_picture
+      .addCase(uploadMainPicture.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message as string;
+      })
+      // Gestion du cas "fullfilled" de l'upload de la main_picture
+      .addCase(uploadMainPicture.fulfilled, (state) => {
         state.loading = false;
         state.just_created = true;
-        state.memoryId = id;
       })
       // Remise à zéro du state
       .addCase(clearCreateMemoryState, (state) => {
@@ -230,7 +246,7 @@ export interface MemoryState {
         state.location.district = "";
         state.location.street = "";
         state.location.city = "";
-        state.location.zipcode = null;
+        state.location.zipcode = undefined;
         state.location.latitude = "";
         state.location.longitude = "";
         state.existingLocation = false;
