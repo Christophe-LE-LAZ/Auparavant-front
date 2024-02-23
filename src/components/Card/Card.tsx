@@ -24,7 +24,7 @@ export default function Card({ memory }: Props) {
           </h3>
           <figure className="px-7 pt-4 max-h-72 w-auto">
             <img
-              src={memory.main_picture}
+              src={`https://admin.auparavant.fr/assets/pictures/${memory.main_picture}`}
               alt=""
               className="rounded-xl w-80 h-72"
             />

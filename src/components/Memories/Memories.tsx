@@ -3,6 +3,8 @@ import { useAppSelector, useAppDispatch } from '../../hooks';
 import Card from '../../components/Card/Card';
 import { clearMessage } from '../../store/messageReducer';
 import { fetchMemories } from '../../store/memoriesReducer';
+import YearSlider from '../YearSlider/YearSlider';
+
 
 const Memories = () => {
   const dispatch = useAppDispatch();
@@ -16,6 +18,45 @@ const Memories = () => {
   const memoriesList = useAppSelector((state) => state.memories.list);
   const { action_done, message } = useAppSelector((state) => state.message);
 
+  console.log(memoriesList);
+
+  // Liste des régions représentées dans les souvenirs
+  const areaList : string[] = [];
+  memoriesList.forEach(memory => {
+    if (!areaList.includes(memory.location.area)) {
+      areaList.push(memory.location.area)
+    }
+  });
+  console.log(areaList);
+
+  // Liste des départements représentées dans les souvenirs
+  const departmentList : string[] = [];
+  memoriesList.forEach(memory => {
+    if (!departmentList.includes(memory.location.department)) {
+      departmentList.push(memory.location.department)
+    }
+  });
+  console.log(departmentList)
+
+  // Liste des villes représentées dans les souvenirs
+  const cityList : string[] = [];
+  memoriesList.forEach(memory => {
+    if (!cityList.includes(memory.location.city)) {
+      cityList.push(memory.location.city)
+    }
+  });
+  console.log(cityList)
+
+  // Liste des types de lieu représentées dans les souvenirs
+  const typeList : string[] = [];
+  memoriesList.forEach(memory => {
+    if (!typeList.includes(memory.place.type)) {
+      typeList.push(memory.place.type)
+    }
+  });
+  console.log(typeList)
+
+  // Gestion de l'affichage du message de confirmation de suppression
   const [showSuccess, setShowSuccess] = useState(false);
 
   useEffect(() => {
@@ -81,59 +122,49 @@ const Memories = () => {
               aria-label="close sidebar"
               className="drawer-overlay"
             ></label>
-            <ul className="menu p-4 w-80 min-h-full bg-base-200 text-base-content">
-              <label className="text-lg my-4">Filtrer par localisation</label>
+            <div className="p-4 w-80 min-h-full bg-base-200 text-base-content">
+              <label className="text-lg my-">Filtrer par localisation</label>
               {/* Select Région */}
-              <li className="my-2">
-                <select className="select select-bordered w-full max-w-xs">
-                  <option disabled selected>
+                <select className="select select-bordered w-full my-2 max-w-xs">
+                  <option selected>
                     Région
                   </option>
-                  <option>Région 1</option>
-                  <option>Région 2</option>
+                  {areaList.map((area) => (
+                    <option>{area}</option>
+                  ))}
                 </select>
-              </li>
               {/* Select Département */}
-              <li className="my-2">
-                <select className="select select-bordered w-full max-w-xs">
-                  <option disabled selected>
+                <select className="select select-bordered w-full my-2 max-w-xs">
+                  <option selected>
                     Département
                   </option>
-                  <option>Dep 1</option>
-                  <option>Dep 2</option>
+                  {departmentList.map((department) => (
+                    <option>{department}</option>
+                  ))}
                 </select>
-              </li>
               {/* Select Ville */}
-              <li className="my-2">
-                <select className="select select-bordered w-full max-w-xs">
-                  <option disabled selected>
+                <select className="select select-bordered w-full my-2 max-w-xs">
+                  <option selected>
                     Ville
                   </option>
-                  <option>Ville 1</option>
-                  <option>Ville 2</option>
+                  {cityList.map((city) => (
+                    <option>{city}</option>
+                  ))}
                 </select>
-              </li>
               <label className="text-lg my-4">Filtrer par type de lieu</label>
               {/* Select type de lieu */}
-              <li className="my-2">
-                <select className="select select-bordered w-full max-w-xs">
-                  <option disabled selected>
+                <select className="select select-bordered w-full my-2 max-w-xs">
+                  <option selected>
                     Type
                   </option>
-                  <option>Type 1</option>
-                  <option>Type 2</option>
+                  {typeList.map((type) => (
+                    <option>{type}</option>
+                  ))}
                 </select>
-              </li>
               <label className="text-lg my-4">Filtrer par période</label>
               {/* Double range slider année */}
-              <li className="my-2">
-                <h4>
-                  Année<span>Range</span>
-                </h4>
-                <div className=''>1700 - 2024</div>
-                <small>Période courante : 100 ans</small>
-              </li>
-            </ul>
+                <YearSlider />
+            </div>
           </div>
         </div>
       </div>
