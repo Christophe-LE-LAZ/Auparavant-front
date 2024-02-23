@@ -127,7 +127,7 @@ export interface MemoryState {
         const state = thunkAPI.getState() as RootState;
         // Création du body de la requête
         const memoryID = state.createMemory.memoryId
-        const picture = state.createMemory.memory;
+        const picture = mainPicture;
         const memory = {id : memoryID};
         const main_picture = {picture, memory}
         // Envoi de la requête en POST avec la main picture et l'id du souvenir dans le body
