@@ -5,7 +5,6 @@ import { clearMessage } from '../../store/messageReducer';
 import { fetchMemories } from '../../store/memoriesReducer';
 import YearSlider from '../YearSlider/YearSlider';
 
-
 const Memories = () => {
   const dispatch = useAppDispatch();
 
@@ -18,8 +17,6 @@ const Memories = () => {
   const memoriesList = useAppSelector((state) => state.memories.list);
   const { action_done, message } = useAppSelector((state) => state.message);
 
-  console.log(memoriesList);
-
   // Liste des régions représentées dans les souvenirs
   const areaList : string[] = [];
   memoriesList.forEach(memory => {
@@ -27,7 +24,6 @@ const Memories = () => {
       areaList.push(memory.location.area)
     }
   });
-  console.log(areaList);
 
   // Liste des départements représentées dans les souvenirs
   const departmentList : string[] = [];
@@ -36,7 +32,6 @@ const Memories = () => {
       departmentList.push(memory.location.department)
     }
   });
-  console.log(departmentList)
 
   // Liste des villes représentées dans les souvenirs
   const cityList : string[] = [];
@@ -45,7 +40,6 @@ const Memories = () => {
       cityList.push(memory.location.city)
     }
   });
-  console.log(cityList)
 
   // Liste des types de lieu représentées dans les souvenirs
   const typeList : string[] = [];
@@ -54,7 +48,6 @@ const Memories = () => {
       typeList.push(memory.place.type)
     }
   });
-  console.log(typeList)
 
   // Gestion de l'affichage du message de confirmation de suppression
   const [showSuccess, setShowSuccess] = useState(false);
@@ -130,7 +123,7 @@ const Memories = () => {
                     Région
                   </option>
                   {areaList.map((area) => (
-                    <option>{area}</option>
+                    <option key={area}>{area}</option>
                   ))}
                 </select>
               {/* Select Département */}
@@ -139,7 +132,7 @@ const Memories = () => {
                     Département
                   </option>
                   {departmentList.map((department) => (
-                    <option>{department}</option>
+                    <option key={department}>{department}</option>
                   ))}
                 </select>
               {/* Select Ville */}
@@ -148,7 +141,7 @@ const Memories = () => {
                     Ville
                   </option>
                   {cityList.map((city) => (
-                    <option>{city}</option>
+                    <option key={city}>{city}</option>
                   ))}
                 </select>
               <label className="text-lg my-4">Filtrer par type de lieu</label>
@@ -158,7 +151,7 @@ const Memories = () => {
                     Type
                   </option>
                   {typeList.map((type) => (
-                    <option>{type}</option>
+                    <option key={type}>{type}</option>
                   ))}
                 </select>
               <label className="text-lg my-4">Filtrer par période</label>
