@@ -49,15 +49,15 @@ const Memories = () => {
 
       <div>
         {/* Responsive drawer avec filtres  */}
-
         <div className="drawer lg:drawer-open">
           <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
           <div className="drawer-content flex flex-col items-center justify-center">
-            {/* Page content here */}
-
             <div className="flex justify-between items-center w-11/12 mb-5 lg:justify-center">
-              <div className='w-1/5 lg:hidden'></div>
-              <h2 className="w-3/5 text-center text-2xl">Liste des souvenirs</h2>
+              <div className="w-1/5 lg:hidden"></div>
+              <h2 className="w-3/5 text-center text-2xl">
+                Liste des souvenirs
+              </h2>
+              {/* Bouton permettant l'ouverture du drawer en version mobile */}
               <label
                 htmlFor="my-drawer-2"
                 className="btn drawer-button w-1/5 lg:hidden"
@@ -65,7 +65,7 @@ const Memories = () => {
                 Filtrer
               </label>
             </div>
-
+            {/* Card */}
             <ul className="flex flex-wrap my-5">
               {memoriesList.map((memory) => (
                 <li className="mx-auto" key={memory.id}>
@@ -74,6 +74,7 @@ const Memories = () => {
               ))}
             </ul>
           </div>
+          {/* Drawer */}
           <div className="drawer-side z-50">
             <label
               htmlFor="my-drawer-2"
@@ -81,12 +82,56 @@ const Memories = () => {
               className="drawer-overlay"
             ></label>
             <ul className="menu p-4 w-80 min-h-full bg-base-200 text-base-content">
-              {/* Sidebar content here */}
-              <li>
-                <a>Sidebar Item 1</a>
+              <label className="text-lg my-4">Filtrer par localisation</label>
+              {/* Select Région */}
+              <li className="my-2">
+                <select className="select select-bordered w-full max-w-xs">
+                  <option disabled selected>
+                    Région
+                  </option>
+                  <option>Région 1</option>
+                  <option>Région 2</option>
+                </select>
               </li>
-              <li>
-                <a>Sidebar Item 2</a>
+              {/* Select Département */}
+              <li className="my-2">
+                <select className="select select-bordered w-full max-w-xs">
+                  <option disabled selected>
+                    Département
+                  </option>
+                  <option>Dep 1</option>
+                  <option>Dep 2</option>
+                </select>
+              </li>
+              {/* Select Ville */}
+              <li className="my-2">
+                <select className="select select-bordered w-full max-w-xs">
+                  <option disabled selected>
+                    Ville
+                  </option>
+                  <option>Ville 1</option>
+                  <option>Ville 2</option>
+                </select>
+              </li>
+              <label className="text-lg my-4">Filtrer par type de lieu</label>
+              {/* Select type de lieu */}
+              <li className="my-2">
+                <select className="select select-bordered w-full max-w-xs">
+                  <option disabled selected>
+                    Type
+                  </option>
+                  <option>Type 1</option>
+                  <option>Type 2</option>
+                </select>
+              </li>
+              <label className="text-lg my-4">Filtrer par période</label>
+              {/* Double range slider année */}
+              <li className="my-2">
+                <h4>
+                  Année<span>Range</span>
+                </h4>
+                <div className=''>1700 - 2024</div>
+                <small>Période courante : 100 ans</small>
               </li>
             </ul>
           </div>
