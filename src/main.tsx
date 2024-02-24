@@ -14,7 +14,7 @@ import Memories from './components/Memories/Memories';
 import Memory from './components/Memory/Memory';
 import Login from './components/Login/Login';
 import Profile from './components/Profile/Profile';
-import Create from './components/Create/Create';
+import Share from './components/Share/Share';
 import Update from './components/Update/Update';
 import PrivateRoute from './PrivateRoute';
 import Locations from './components/Locations/Locations';
@@ -44,10 +44,10 @@ const router = createBrowserRouter(
         <Route path="/memories/:id" element={<Memory />} />
         <Route path="/memories/:id/update" element={<Update />} />
         <Route
-          path="/create"
+          path="/share"
           element={
             // <PrivateRoute>
-              <Create />
+              <Share />
             // </PrivateRoute>
           }
         />

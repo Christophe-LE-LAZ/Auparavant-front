@@ -202,17 +202,17 @@ export interface MemoryState {
         state.firstRequestOk = true;
         state.memoryId = id;
       })
-      // Gestion du cas "pending" de la création d'un souvenir + place + location
+      // Gestion du cas "pending" de la création d'un souvenir + place 
       .addCase(createMemoryWithoutLocation.pending, (state) => {
         state.error = null;
         state.loading = true;
       })
-      // Gestion du cas "rejected" de la création d'un souvenir + place + location
+      // Gestion du cas "rejected" de la création d'un souvenir + place 
       .addCase(createMemoryWithoutLocation.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message as string;
       })
-      // Gestion du cas "fullfilled" de la création d'un souvenir + place + location
+      // Gestion du cas "fullfilled" de la création d'un souvenir + place
       .addCase(createMemoryWithoutLocation.fulfilled, (state, action) => {
         const { id } = action.payload.memory;
         state.firstRequestOk = true;

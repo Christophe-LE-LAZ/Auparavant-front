@@ -17,6 +17,7 @@ import {
 import Map from '../Map/Map';
 import { useNavigate } from 'react-router-dom';
 import { setMessage } from '../../store/messageReducer';
+import Info from '../../assets/Info.png';
 
 export default function Create() {
   // Lecture des states du reducer Memory
@@ -38,9 +39,8 @@ export default function Create() {
     (state) => state.createMemory.locationToCreate
   );
 
-  const { error, loading, just_created, memoryId, firstRequestOk } = useAppSelector(
-    (state) => state.createMemory
-  );
+  const { error, loading, just_created, memoryId, firstRequestOk } =
+    useAppSelector((state) => state.createMemory);
 
   // Caractéristiques des inputs à mapper
   const memoryInputs = [
@@ -265,11 +265,11 @@ export default function Create() {
 
   // TODO Stockage de la main picture dans un state
   const [mainPicture, setMainPicture] = useState({} as File);
-  const handleFileChange = (e : React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       setMainPicture(e.target.files[0]);
     }
-  }
+  };
 
   // Dispatch pour la création d'un souvenir + place + location
   const handleSubmitLocationToCreate = (
@@ -288,10 +288,52 @@ export default function Create() {
   };
 
   // TODO Si la première requête a bien abouti, deuxième requête pour l'envoi de la main picture
-  if (firstRequestOk) {
-    dispatch(uploadMainPicture(mainPicture))
-  }
-  
+
+
+  useEffect(() => {
+    if (firstRequestOk) {
+      dispatch(uploadMainPicture(mainPicture));
+    }
+  }, [firstRequestOk]);
+
+//   let formData = new FormData();
+// formData.append("file", selectedFile);
+
+// axios.post('/bezkoder.com/upload', formData, {
+//     headers: {
+//       "Content-Type": "multipart/form-data",
+//     }
+//   });
+
+// axios.post('/bezkoder.com/upload', formData, {
+//   headers: {
+//     "Content-Type": "multipart/form-data",
+//   }
+// })
+// .then(function (response) {
+//   console.log(response.data);
+// });
+
+// const { data } = await axios.post(url);
+
+
+    // export const uploadMainPicture = createAsyncThunk(
+    //   'createMemory/uploadMainPicture',
+    //   async (mainPicture : File, thunkAPI) => {
+    //     // Récupération du state via la thunkAPI
+    //     const state = thunkAPI.getState() as RootState;
+    //     // Création du body de la requête
+    //     const memoryID = state.createMemory.memoryId
+    //     const picture = mainPicture;
+    //     const memory = {id : memoryID};
+    //     const main_picture = {picture, memory}
+    //     // Envoi de la requête en POST avec la main picture et l'id du souvenir dans le body
+    //     const { data } = await axios.post(`https://admin.auparavant.fr/api/secure/upload_update/main_picture/${memoryID}`, main_picture);
+    //     return data;
+    //   }
+    // )
+
+
   // Si le souvenir a été créé avec succès, enregistrement d'un message et redirection vers la liste
   const navigate = useNavigate();
   useEffect(() => {
@@ -302,17 +344,19 @@ export default function Create() {
   }, [just_created]);
 
   return (
-    <div>
-      <h2 className="text-center text-2xl">Partager un souvenir</h2>
-      <p className="text-center text-xs mt-5">* champs obligatoires</p>
-      <p className="text-center text-xs mt-5">
-        Si un pointeur est déjà présent sur la carte à l'emplacement de votre
-        souvenir, cliquez dessus : sa localisation sera pré-remplie.{' '}
-      </p>
-      <p className="text-center text-xs">
-        Dans le cas contraire, cliquez sur la carte : seules les coordonnées
-        géographiques seront pré-remplies.
-      </p>
+    <div className="">
+      <div className="flex flex-col items-center">
+        <h2 className="text-center text-2xl mb-2">Partager un souvenir</h2>
+        <div className="flex text-center items-center text-xs mt-5 border m-5 p-2 rounded-lg max-w-3xl">
+          <img src={Info} alt="Share" className="w-10 h-10" />
+          <p className="text-left ml-5">
+              Si un pointeur est déjà présent sur la carte à l'emplacement de
+              votre souvenir, cliquez dessus : sa localisation sera pré-remplie.
+              Dans le cas contraire, cliquez sur la carte : seules les
+              coordonnées géographiques seront pré-remplies.
+          </p>
+        </div>
+      </div>
       {/* Carte  */}
       <div>
         <Map />
@@ -324,6 +368,7 @@ export default function Create() {
           className="flex flex-col items-center"
           onSubmit={handleSubmitExistingLocation}
         >
+          <p className="text-center ml-5 text-xs mt-3">* champs obligatoires</p>
           <div className="sm:flex gap-6">
             <div>
               {/* Le souvenir */}
@@ -449,6 +494,7 @@ export default function Create() {
           className="flex flex-col items-center"
           onSubmit={handleSubmitLocationToCreate}
         >
+          <p className="text-center ml-5 text-xs mt-3">* champs obligatoires</p>
           <div className="sm:flex gap-6">
             <div>
               {/* Le souvenir */}
@@ -570,8 +616,10 @@ export default function Create() {
 
       {/* Affichage d'un message d'erreur */}
       {error && (
+        <div className='flex justify-center'>
         <div role="alert" className="alert alert-error max-w-xs">
           <span>{error}</span>
+        </div>
         </div>
       )}
     </div>
