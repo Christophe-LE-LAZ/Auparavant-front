@@ -116,7 +116,7 @@ const Memories = () => {
   };
 
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex">
       {/* Affichage d'un message si l'utilisateur vient juste de supprimer un souvenir */}
       {showSuccess && (
         <div
@@ -133,16 +133,16 @@ const Memories = () => {
         </div>
       )}
 
-      <div>
+
         {/* Responsive drawer avec filtres + contenu de la page  */}
         <div className="drawer lg:drawer-open">
           <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
-          <div className="drawer-content flex flex-col items-center justify-center">
+          <div className="drawer-content flex flex-col items-center w-full">
             {/* Titre et bouton permettant l'ouverture du drawer en version mobile */}
             <div className="flex w-full justify-center">
               <label
                 htmlFor="my-drawer-2"
-                className="btn drawer-button bg-base-300 w-24 lg:hidden"
+                className="btn drawer-button bg-base-300 w-24 mb-4 lg:hidden"
               >
                 Filtrer
               </label>
@@ -239,7 +239,7 @@ const Memories = () => {
           </div>
         </div>
       </div>
-    </div>
+
   );
 };
 

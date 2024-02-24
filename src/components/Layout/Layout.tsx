@@ -4,7 +4,6 @@ import { Outlet, useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useAppDispatch } from '../../hooks';
 import { clearMemoryState } from '../../store/createMemoryReducer';
-import { fetchMemories } from '../../store/memoriesReducer';
 
 export default function Layout() {
   const dispatch = useAppDispatch();
@@ -16,7 +15,7 @@ export default function Layout() {
   }, [location]);
 
   return (
-    <div className="relative m-auto w-auto max-w-7xl">
+    <div className="relative m-auto w-auto max-w-6xl">
       <Header />
       <div className="relative pt-40 pb-16 sm:pt-0 sm:pb-0">
         <main className="shadow-lg mt-5 pb-2 sm:mt-10">

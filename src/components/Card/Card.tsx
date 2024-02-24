@@ -15,22 +15,21 @@ export default function Card({ memory }: Props) {
 
   return (
     <Link to={`/memories/${memory.id}`}>
-      <div className="text-center mx-auto ">
-        <div className="card bg-gray-100 shadow-xl mx-2 mb-10 w-96">
-          <h2 className="text-lg font-bold lg:text-xl pt-4">{memory.title} </h2>
-          <p></p>
-          <h3 className="italic">
-            {memory.location.city}, {formattedDate}
-          </h3>
-          <figure className="px-7 pt-4 max-h-72 w-auto">
+      <div className="card bg-base-200 shadow-xl mx-2 mb-10 px-6 pt-3 w-80 h-80 text-center">
+        <h2 className="text-lg font-bold">{memory.title} </h2>
+        <h3 className="italic text-sm">
+          {memory.location.city}, {formattedDate}
+        </h3>
+        <div className="flex pt-4 justify-center align-bottom">
+          <div className="w-72 h-56 overflow-hidden">
             <img
               src={`https://admin.auparavant.fr/assets/pictures/${memory.main_picture}`}
               alt=""
-              className="rounded-xl w-80 h-72"
+              className="rounded-xl w-full h-full object-cover"
             />
-          </figure>
-          <div className="card-body items-center text-center "></div>
+          </div>
         </div>
+        <div className="card-body items-center text-center "></div>
       </div>
     </Link>
   );
