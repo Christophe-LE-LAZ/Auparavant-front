@@ -5,6 +5,8 @@ import memoryReducer from './createMemoryReducer';
 import locationsReducer from './locationsReducer';
 import messageReducer from './messageReducer';
 import singleMemoryReducer from './singleMemoryReducer';
+import filterReducer from './filterReducer';
+
 
 // Création du store et définition des différents states et de leurs reducers associés
 
@@ -15,7 +17,8 @@ const store = configureStore({
     singleMemory : singleMemoryReducer,
     locations: locationsReducer,
     user: userReducer,
-    message : messageReducer
+    message : messageReducer,
+    filter : filterReducer
   },
 });
 
