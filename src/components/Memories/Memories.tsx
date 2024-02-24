@@ -5,6 +5,7 @@ import { clearMessage } from '../../store/messageReducer';
 import { fetchMemories } from '../../store/memoriesReducer';
 import YearSlider from '../YearSlider/YearSlider';
 import {
+  resetFilters,
   setArea,
   setCity,
   setDepartment,
@@ -22,6 +23,7 @@ const Memories = () => {
   // Récupération des valeurs du state
   const memoriesList = useAppSelector((state) => state.memories.list);
   const { action_done, message } = useAppSelector((state) => state.message);
+  const filters = useAppSelector((state) => state.filter);
   const { area, department, city, type } = useAppSelector(
     (state) => state.filter
   );
@@ -58,21 +60,7 @@ const Memories = () => {
     }
   });
 
-  // Gestion de l'affichage du message de confirmation de suppression
-  const [showSuccess, setShowSuccess] = useState(false);
-
-  useEffect(() => {
-    if (action_done) {
-      setShowSuccess(true);
-    }
-  }, []);
-
-  const handleOK = () => {
-    setShowSuccess(false);
-    dispatch(clearMessage());
-  };
-
-  // TODO : gestion des filtres
+  // Fonctions de gestion des changements d'options dans les selects des filtres
 
   const handleChangeArea = (e: React.ChangeEvent<HTMLSelectElement>) => {
     dispatch(setArea(e.target.value));
@@ -91,15 +79,38 @@ const Memories = () => {
   };
 
   // Données filtrées
-  // TODO : si les states ne sont pas vides, ou equivalent
-  const filteredMemoriesList = memoriesList.filter(
-    memory =>
-      memory.location.area === area &&
-      memory.location.department === department &&
-      memory.location.city === city &&
-      memory.place.type === type
-  );
-  console.log(filteredMemoriesList);
+
+  const filteredList = memoriesList.filter((memory) => {
+    return (
+      (filters.area === '' || memory.location.area === filters.area) &&
+      (filters.department === '' ||
+        memory.location.department === filters.department) &&
+      (filters.city === '' || memory.location.city === filters.city) &&
+      (filters.type === '' || memory.place.type === filters.type)
+    );
+  });
+  console.log(filteredList);
+
+  // Fonction de réinitialisation du filtre
+  const handleClickReset = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    dispatch(resetFilters());
+  };
+
+  // Gestion de l'affichage du message de confirmation de suppression
+  const [showSuccess, setShowSuccess] = useState(false);
+
+  useEffect(() => {
+    if (action_done) {
+      setShowSuccess(true);
+    }
+  }, []);
+
+  const handleOK = () => {
+    setShowSuccess(false);
+    dispatch(clearMessage());
+  };
 
   return (
     <div className="flex flex-col items-center">
@@ -120,16 +131,16 @@ const Memories = () => {
       )}
 
       <div>
-        {/* Responsive drawer avec filtres  */}
+        {/* Responsive drawer avec filtres + contenu de la page  */}
         <div className="drawer lg:drawer-open">
           <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
           <div className="drawer-content flex flex-col items-center justify-center">
-            <div className="flex justify-between items-center w-11/12 mb-5 lg:justify-center">
+            {/* Titre et bouton permettant l'ouverture du drawer en version mobile */}
+            <div className="flex w-full justify-between items-center lg:justify-center lg:mb-5">
               <div className="w-1/5 lg:hidden"></div>
               <h2 className="w-3/5 text-center text-2xl">
                 Liste des souvenirs
               </h2>
-              {/* Bouton permettant l'ouverture du drawer en version mobile */}
               <label
                 htmlFor="my-drawer-2"
                 className="btn drawer-button w-1/5 lg:hidden"
@@ -139,7 +150,7 @@ const Memories = () => {
             </div>
             {/* Card */}
             <ul className="flex flex-wrap my-5">
-              {memoriesList.map((memory) => (
+              {filteredList.map((memory) => (
                 <li className="mx-auto" key={memory.id}>
                   <Card memory={memory} />
                 </li>
@@ -153,52 +164,78 @@ const Memories = () => {
               aria-label="close sidebar"
               className="drawer-overlay"
             ></label>
-            <div className="p-4 w-80 min-h-full bg-base-200 text-base-content">
-              <label className="text-lg my-">Filtrer par localisation</label>
+            <div className="p-8 w-80 min-h-full bg-base-200 text-base-content">
+              <label className="text-lg">Filtrer par localisation</label>
               {/* Select Région */}
               <select
                 className="select select-bordered w-full my-2 max-w-xs"
                 onChange={handleChangeArea}
+                value={area}
               >
-                <option selected>Région</option>
+                <option value={''}>Choisissez une région</option>
                 {areaList.map((area) => (
-                  <option key={area}>{area}</option>
+                  <option key={area} value={area}>
+                    {area}
+                  </option>
                 ))}
               </select>
               {/* Select Département */}
               <select
                 className="select select-bordered w-full my-2 max-w-xs"
                 onChange={handleChangeDepartment}
+                value={department}
               >
-                <option selected>Département</option>
+                <option value={''}>Choisissez un département</option>
                 {departmentList.map((department) => (
-                  <option key={department}>{department}</option>
+                  <option key={department} value={department}>
+                    {department}
+                  </option>
                 ))}
               </select>
               {/* Select Ville */}
               <select
-                className="select select-bordered w-full my-2 max-w-xs"
+                className="select select-bordered w-full mt-2 mb-8 max-w-xs"
                 onChange={handleChangeCity}
+                value={city}
               >
-                <option selected>Ville</option>
+                <option value={''}>Choisissez une ville</option>
                 {cityList.map((city) => (
-                  <option key={city}>{city}</option>
+                  <option key={city} value={city}>
+                    {city}
+                  </option>
                 ))}
               </select>
-              <label className="text-lg my-4">Filtrer par type de lieu</label>
+              <label className="text-lg">Filtrer par type de lieu</label>
               {/* Select type de lieu */}
               <select
-                className="select select-bordered w-full my-2 max-w-xs"
+                className="select select-bordered w-full mt-2 mb-8 max-w-xs"
                 onChange={handleChangeType}
+                value={type}
               >
-                <option selected>Type</option>
+                <option value={''}>Choisissez un type de lieu</option>
                 {typeList.map((type) => (
-                  <option key={type}>{type}</option>
+                  <option key={type} value={type}>
+                    {type}
+                  </option>
                 ))}
               </select>
-              <label className="text-lg my-4">Filtrer par période</label>
+              <label className="text-lg">Filtrer par période</label>
               {/* Double range slider année */}
               <YearSlider />
+              <div className="flex flex-col items-center">
+                <label
+                  htmlFor="my-drawer-2"
+                  className="btn drawer-button bg-base-300 mt-10 mb-3 lg:hidden "
+                >
+                  Afficher les souvenirs
+                </label>
+                <button
+                  className="btn bg-base-300 lg:mt-10"
+                  onClick={handleClickReset}
+                >
+                  Réinitialiser le filtre
+                </button>
+              </div>
             </div>
           </div>
         </div>

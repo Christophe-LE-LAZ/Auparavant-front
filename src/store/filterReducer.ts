@@ -29,6 +29,9 @@ export const setCity = createAction<string>('filter/setCity');
 
 // Création d'une action pour la mise à jour du state avec la région sélectionnée
 export const setType = createAction<string>('filter/setType');
+
+// Création d'une action pour la réinitialisation des filtres
+export const resetFilters = createAction('filter/resetFilters');
   
   const filterReducer = createReducer(initialState, (builder) => {
         builder
@@ -48,6 +51,12 @@ export const setType = createAction<string>('filter/setType');
             state.type = action.payload;
             console.log(state.type);
         })
+        .addCase(resetFilters, (state) => {
+          state.area = '';
+          state.department = '';
+          state.city = '';
+          state.type = '';
+      })
       });
   
   export default filterReducer;
