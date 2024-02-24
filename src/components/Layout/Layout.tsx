@@ -19,7 +19,7 @@ export default function Layout() {
     <div className="relative m-auto w-auto max-w-7xl">
       <Header />
       <div className="relative pt-40 pb-16 sm:pt-0 sm:pb-0">
-        <main className="shadow-lg mt-5 sm:mt-10">
+        <main className="shadow-lg mt-5 pb-2 sm:mt-10">
           <Outlet />
         </main>
         <Footer />

@@ -142,13 +142,13 @@ const Memories = () => {
             <div className="flex w-full justify-center">
               <label
                 htmlFor="my-drawer-2"
-                className="btn drawer-button bg-base-300 w-1/5 lg:hidden"
+                className="btn drawer-button bg-base-300 w-24 lg:hidden"
               >
                 Filtrer
               </label>
             </div>
             {/* Card */}
-            <ul className="flex flex-wrap my-5">
+            <ul className="flex flex-wrap mt-5">
               {filteredList.map((memory) => (
                 <li className="mx-auto" key={memory.id}>
                   <Card memory={memory} />
