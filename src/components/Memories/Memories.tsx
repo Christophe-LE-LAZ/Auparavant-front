@@ -24,7 +24,7 @@ const Memories = () => {
   const memoriesList = useAppSelector((state) => state.memories.list);
   const { action_done, message } = useAppSelector((state) => state.message);
   const filters = useAppSelector((state) => state.filter);
-  const { area, department, city, type } = useAppSelector(
+  const { area, department, city, type, years } = useAppSelector(
     (state) => state.filter
   );
 
@@ -81,15 +81,18 @@ const Memories = () => {
   // Données filtrées
 
   const filteredList = memoriesList.filter((memory) => {
+    // Récupération de l'année du souvenir
+    const memoryDate = new Date(memory.picture_date).getFullYear();
     return (
       (filters.area === '' || memory.location.area === filters.area) &&
       (filters.department === '' ||
         memory.location.department === filters.department) &&
       (filters.city === '' || memory.location.city === filters.city) &&
-      (filters.type === '' || memory.place.type === filters.type)
+      (filters.type === '' || memory.place.type === filters.type) &&
+      memoryDate >= filters.years[0] &&
+      memoryDate <= filters.years[1]
     );
   });
-  console.log(filteredList);
 
   // Fonction de réinitialisation du filtre
   const handleClickReset = (
@@ -136,14 +139,10 @@ const Memories = () => {
           <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
           <div className="drawer-content flex flex-col items-center justify-center">
             {/* Titre et bouton permettant l'ouverture du drawer en version mobile */}
-            <div className="flex w-full justify-between items-center lg:justify-center lg:mb-5">
-              <div className="w-1/5 lg:hidden"></div>
-              <h2 className="w-3/5 text-center text-2xl">
-                Liste des souvenirs
-              </h2>
+            <div className="flex w-full justify-center">
               <label
                 htmlFor="my-drawer-2"
-                className="btn drawer-button w-1/5 lg:hidden"
+                className="btn drawer-button bg-base-300 w-1/5 lg:hidden"
               >
                 Filtrer
               </label>
@@ -233,7 +232,7 @@ const Memories = () => {
                   className="btn bg-base-300 lg:mt-10"
                   onClick={handleClickReset}
                 >
-                  Réinitialiser le filtre
+                  Réinitialiser les filtres
                 </button>
               </div>
             </div>
