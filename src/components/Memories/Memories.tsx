@@ -148,7 +148,7 @@ const Memories = () => {
               </label>
             </div>
             {/* Card */}
-            <ul className="flex flex-wrap mt-5">
+            <ul className="flex flex-wrap">
               {filteredList.map((memory) => (
                 <li className="mx-auto" key={memory.id}>
                   <Card memory={memory} />
