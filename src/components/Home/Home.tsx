@@ -23,7 +23,7 @@ export default function Home() {
     <div className="">
       <div className="">
         <h1 className="flex justify-center text-2xl pb-5 sm:text-3xl sm:pb-10 lg:text-4xl lg:pb-14">
-          O'mais y'avait quoi avant ?
+          Auparavant
         </h1>
         <p className="pb-3 w-4/5 mx-auto text-center text-sm lg:text-base lg:leading-relaxed lg:hidden">
           Nos villes évoluent, et par conséquent nos quartiers, nos lieux

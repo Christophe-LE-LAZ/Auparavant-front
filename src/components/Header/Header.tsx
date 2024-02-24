@@ -1,9 +1,10 @@
 import React from 'react';
 import Navbar from '../Navbar/Navbar';
 import Logo from '../../assets/Logo.png';
+import Title from '../../assets/Title.png'
 import Avatar from '../../assets/Avatar.png';
 import './Header.scss';
-import { Link, NavLink } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useAppSelector, useAppDispatch } from '../../hooks';
 import { logout } from '../../store/userReducer';
 
@@ -21,10 +22,13 @@ export default function Header() {
   return (
     <header className="fixed bg-base-100 z-50 sm:static">
       {/* Mobile : logo à gauche - Desktop : logo centré */}
-      <div className="flex justify-start sm:justify-center">
+      <div className="flex justify-start lg:justify-center">
         {/* Logo avec lien vers la page d'accueil */}
         <Link to="/">
-          <img alt="Logo" src={Logo} className="ml-10 w-20 sm:w-40" />
+          <img alt="Logo" src={Logo} className="ml-10 w-20 sm:w-28 lg:w-40"/>
+        </Link>
+        <Link to="/">
+          <img alt="Title" src={Title} className="hidden mt-8 w-48 sm:flex lg:w-80" />
         </Link>
         {/* Liens de connexion / inscription si utilisateur non connecté */}
         {!logged && (
