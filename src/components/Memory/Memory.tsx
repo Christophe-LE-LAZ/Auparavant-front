@@ -121,7 +121,7 @@ const Memory = () => {
         </h1>
         {/* Image */}
         <div className="mx-8">
-          <img src={memory.main_picture} alt="" className="rounded-xl" />
+          <img src={`https://admin.auparavant.fr/assets/pictures/${memory.main_picture}`} alt="" className="rounded-xl" />
         </div>
         {/* Informations */}
         <div className="flex flex-col mt-8">

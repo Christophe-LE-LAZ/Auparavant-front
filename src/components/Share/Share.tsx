@@ -18,6 +18,7 @@ import Map from '../Map/Map';
 import { useNavigate } from 'react-router-dom';
 import { setMessage } from '../../store/messageReducer';
 import Info from '../../assets/Info.png';
+import axios from 'axios';
 
 export default function Create() {
   // Lecture des states du reducer Memory
@@ -264,6 +265,7 @@ export default function Create() {
   };
 
   // TODO Stockage de la main picture dans un state
+
   const [mainPicture, setMainPicture] = useState({} as File);
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
@@ -289,50 +291,23 @@ export default function Create() {
 
   // TODO Si la première requête a bien abouti, deuxième requête pour l'envoi de la main picture
 
+  // useEffect(() => {
+  //   if (firstRequestOk) {
+  //     dispatch(uploadMainPicture(mainPicture));
+  //   }
+  // }, [firstRequestOk]);
 
   useEffect(() => {
     if (firstRequestOk) {
-      dispatch(uploadMainPicture(mainPicture));
+      const memory = {id : memoryId};
+      const main_picture = {mainPicture, memory};
+      console.log(main_picture);
+      axios.post(`https://admin.auparavant.fr/api/secure/upload_update/main_picture/${memoryId}`, main_picture)
+      .then(function (response) {
+        console.log(response.data);
+      });
     }
   }, [firstRequestOk]);
-
-//   let formData = new FormData();
-// formData.append("file", selectedFile);
-
-// axios.post('/bezkoder.com/upload', formData, {
-//     headers: {
-//       "Content-Type": "multipart/form-data",
-//     }
-//   });
-
-// axios.post('/bezkoder.com/upload', formData, {
-//   headers: {
-//     "Content-Type": "multipart/form-data",
-//   }
-// })
-// .then(function (response) {
-//   console.log(response.data);
-// });
-
-// const { data } = await axios.post(url);
-
-
-    // export const uploadMainPicture = createAsyncThunk(
-    //   'createMemory/uploadMainPicture',
-    //   async (mainPicture : File, thunkAPI) => {
-    //     // Récupération du state via la thunkAPI
-    //     const state = thunkAPI.getState() as RootState;
-    //     // Création du body de la requête
-    //     const memoryID = state.createMemory.memoryId
-    //     const picture = mainPicture;
-    //     const memory = {id : memoryID};
-    //     const main_picture = {picture, memory}
-    //     // Envoi de la requête en POST avec la main picture et l'id du souvenir dans le body
-    //     const { data } = await axios.post(`https://admin.auparavant.fr/api/secure/upload_update/main_picture/${memoryID}`, main_picture);
-    //     return data;
-    //   }
-    // )
-
 
   // Si le souvenir a été créé avec succès, enregistrement d'un message et redirection vers la liste
   const navigate = useNavigate();

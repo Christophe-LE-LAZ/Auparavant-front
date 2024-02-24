@@ -130,6 +130,7 @@ export interface MemoryState {
         const picture = mainPicture;
         const memory = {id : memoryID};
         const main_picture = {picture, memory}
+        console.log(main_picture)
         // Envoi de la requête en POST avec la main picture et l'id du souvenir dans le body
         const { data } = await axios.post(`https://admin.auparavant.fr/api/secure/upload_update/main_picture/${memoryID}`, main_picture);
         return data;
@@ -233,6 +234,7 @@ export interface MemoryState {
       .addCase(uploadMainPicture.fulfilled, (state) => {
         state.loading = false;
         state.just_created = true;
+        console.log('yeah !')
       })
       // Remise à zéro du state
       .addCase(clearCreateMemoryState, (state) => {
