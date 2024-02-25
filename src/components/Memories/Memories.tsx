@@ -116,24 +116,25 @@ const Memories = () => {
   };
 
   return (
-    <div className="flex">
-      {/* Affichage d'un message si l'utilisateur vient juste de supprimer un souvenir */}
-      {showSuccess && (
-        <div
-          role="alert"
-          className="flex alert alert-success text-sm max-w-sm justify-between mb-10"
-        >
-          <span>{message}</span>
-          <button
-            className="text-sm bg-white font-bold py-1 px-2 rounded"
-            onClick={handleOK}
+    <>
+      <div className='flex justify-center'>
+        {/* Affichage d'un message si l'utilisateur vient juste de supprimer un souvenir */}
+        {showSuccess && (
+          <div
+            role="alert"
+            className="flex alert alert-success text-sm max-w-sm justify-between mb-10"
           >
-            OK
-          </button>
-        </div>
-      )}
-
-
+            <span>{message}</span>
+            <button
+              className="text-sm bg-white font-bold py-1 px-2 rounded"
+              onClick={handleOK}
+            >
+              OK
+            </button>
+          </div>
+        )}
+      </div>
+      <div className="flex">
         {/* Responsive drawer avec filtres + contenu de la page  */}
         <div className="drawer lg:drawer-open">
           <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
@@ -239,7 +240,7 @@ const Memories = () => {
           </div>
         </div>
       </div>
-
+    </>
   );
 };
 
