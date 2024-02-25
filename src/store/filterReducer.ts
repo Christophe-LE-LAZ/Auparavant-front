@@ -2,6 +2,7 @@ import {
     createAction,
     createReducer,
   } from '@reduxjs/toolkit';
+import { IDataCreated } from '../types/memory';
 
 interface filterState {
   area : string,
@@ -11,8 +12,9 @@ interface filterState {
   years : number[],
   input : string,
   searchedInput : string
-  filteredData : boolean
-  searchedData : boolean
+  isFiltered : boolean
+  isSearched : boolean
+  results : IDataCreated[] | []
 }
 
 // Déclaration de l'état initial 
@@ -24,32 +26,27 @@ export const initialState: filterState = {
   years : [1700, 2050],
   input : "",
   searchedInput : "",
-  filteredData : false,
-  searchedData : false
+  isFiltered : false,
+  isSearched : false,
+  results : []
 };
 
-// Création d'une action pour la mise à jour du state avec la région sélectionnée
+// Actions pour la mise à jour du state avec les filtres sélectionnés
 export const setArea = createAction<string>('filter/setArea');
-
-// Création d'une action pour la mise à jour du state avec la région sélectionnée
 export const setDepartment = createAction<string>('filter/setDepartment');
-
-// Création d'une action pour la mise à jour du state avec la région sélectionnée
 export const setCity = createAction<string>('filter/setCity');
-
-// Création d'une action pour la mise à jour du state avec la région sélectionnée
 export const setType = createAction<string>('filter/setType');
-
-// Création d'une action pour la mise à jour du state avec la période sélectionnée
 export const setYears = createAction<number[]>('filter/setYears');
 
-// Création d'une action pour la mise à jour du state avec l'input de la searchbar (onChange)
+// Actions pour la mise à jour du state avec l'input de la searchbar (onChange / onKeyDown)
 export const setInput = createAction<string>('filter/setInput');
-
-// Création d'une action pour la mise à jour du state avec l'input de la searchbar (onKeyDown)
 export const setSearchedInput = createAction<string>('filter/setSearchedInput');
 
-// Création d'une action pour la réinitialisation des filtres
+// Actions pour le stockage des données filtrées / recherchées dans le state
+export const filterMemories = createAction<IDataCreated[]>('filter/filterMemories');
+export const searchMemories = createAction<IDataCreated[]>('filter/searchMemories');
+
+// Action pour la réinitialisation des filtres
 export const resetFilters = createAction('filter/resetFilters');
   
 // Création du reducer
@@ -60,37 +57,43 @@ const filterReducer = createReducer(initialState, (builder) => {
   })
   .addCase(setSearchedInput, (state, action) => {
     state.searchedInput = action.payload;
-    state.filteredData = false;
-    state.searchedData = true;
+    state.isFiltered = false;
+    state.isSearched = true;
   })
   .addCase(setArea, (state, action) => {
     state.area = action.payload;
-    state.filteredData = true;
-    state.searchedData = false;
+    state.isFiltered = true;
+    state.isSearched = false;
     state.input = ''
   })
   .addCase(setDepartment, (state, action) => {
     state.department = action.payload;
-    state.filteredData = true;
-    state.searchedData = false;
+    state.isFiltered = true;
+    state.isSearched = false;
     state.input = ''
   })
   .addCase(setCity, (state, action) => {
     state.city = action.payload;
-    state.filteredData = true;
-    state.searchedData = false;
+    state.isFiltered = true;
+    state.isSearched = false;
     state.input = ''
   })
   .addCase(setType, (state, action) => {
     state.type = action.payload;
-    state.filteredData = true;
-    state.searchedData = false;
+    state.isFiltered = true;
+    state.isSearched = false;
     state.input = ''
   })
   .addCase(setYears, (state, action) => {
     state.years = action.payload;
-    state.filteredData = true;
-    state.searchedData = false;
+    state.isFiltered = true;
+    state.isSearched = false;
+  })
+  .addCase(filterMemories, (state, action) => {
+    state.results = action.payload;
+  })
+  .addCase(searchMemories, (state, action) => {
+    state.results = action.payload;
   })
   .addCase(resetFilters, (state) => {
     state.area = '';
@@ -100,6 +103,9 @@ const filterReducer = createReducer(initialState, (builder) => {
     state.years = [1700, 2050];
     state.input = '';
     state.searchedInput = '';
+    state.isFiltered = false;
+    state.isSearched = false;
+    state.results = []
   })
 });
   

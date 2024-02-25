@@ -30,8 +30,8 @@ const Memories = () => {
     city,
     type,
     searchedInput,
-    filteredData,
-    searchedData,
+    isFiltered,
+    isSearched,
   } = useAppSelector((state) => state.filter);
 
   // Liste des régions représentées dans les souvenirs
@@ -67,19 +67,15 @@ const Memories = () => {
   });
 
   // Fonctions de gestion des changements d'options dans les selects des filtres
-
   const handleChangeArea = (e: React.ChangeEvent<HTMLSelectElement>) => {
     dispatch(setArea(e.target.value));
   };
-
   const handleChangeDepartment = (e: React.ChangeEvent<HTMLSelectElement>) => {
     dispatch(setDepartment(e.target.value));
   };
-
   const handleChangeCity = (e: React.ChangeEvent<HTMLSelectElement>) => {
     dispatch(setCity(e.target.value));
   };
-
   const handleChangeType = (e: React.ChangeEvent<HTMLSelectElement>) => {
     dispatch(setType(e.target.value));
   };
@@ -102,25 +98,20 @@ const Memories = () => {
   // Données filtrées à l'aide de la barre de recherche
   const searchedResults = memoriesList.filter((memory) => {
     const searchedInputLC = searchedInput.toLowerCase();
-    // Parcourir les propriétés de l'objet memory
     for (const key in memory) {
-      // Parcourir les propriétés de l'objet interne
       for (const innerKey in memory[key]) {
-        // Vérifier si la valeur de la propriété contient le mot de recherche
         if (
           typeof memory[key][innerKey] === 'string' &&
           memory[key][innerKey].toLowerCase().includes(searchedInputLC)
         ) {
-          return true; // Conserver l'objet dans les résultats de recherche
+          return true;
         }
       }
     }
-    return false; // Ne pas conserver l'objet dans les résultats de recherche
+    return false; 
   });
 
-  console.log(searchedData);
-
-  // Fonction de réinitialisation du filtre
+  // Réinitialisation du filtre
   const handleClickReset = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
@@ -180,9 +171,10 @@ const Memories = () => {
                 Effacer les filtres
               </button>
             </div>
-            {/* Card */}
+
+            {/* Souvenirs */}
             {/* Si aucune recherche et aucun filtre, affichage de la liste complète */}
-            {(!filteredData && !searchedData) && (
+            {!isFiltered && !isSearched && (
               <ul className="flex flex-wrap">
                 {memoriesList.map((memory) => (
                   <li className="mx-auto" key={memory.id}>
@@ -192,7 +184,7 @@ const Memories = () => {
               </ul>
             )}
             {/* Si filtres, affichage des résultats filtrés */}
-            {filteredData && (
+            {isFiltered && (
               <ul className="flex flex-wrap">
                 {filteredResults.map((memory) => (
                   <li className="mx-auto" key={memory.id}>
@@ -200,9 +192,9 @@ const Memories = () => {
                   </li>
                 ))}
               </ul>
-            )}   
+            )}
             {/* Si recherche, affichage des résultats de la recherche */}
-            {searchedData && (
+            {isSearched && (
               <ul className="flex flex-wrap">
                 {searchedResults.map((memory) => (
                   <li className="mx-auto" key={memory.id}>
@@ -210,7 +202,7 @@ const Memories = () => {
                   </li>
                 ))}
               </ul>
-            )}   
+            )}
           </div>
 
           {/* Drawer */}
