@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Slider from 'react-slider';
 import './YearSlider.scss';
 import { useAppDispatch, useAppSelector } from '../../hooks';
@@ -16,9 +16,9 @@ export default function YearSlider() {
   const [values, setValues] = useState([MIN, MAX]);
 
   // Mise à jour du state redux
-  useEffect(() => {
+  const handleSliderChange = () => {
     dispatch(setYears(values));
-  }, [values]);
+  }
 
   return (
     <div className="flex flex-col">
@@ -29,6 +29,7 @@ export default function YearSlider() {
       <Slider
         className="slider"
         onChange={setValues}
+        onAfterChange={handleSliderChange}
         value={years}
         min={MIN}
         max={MAX}
