@@ -4,23 +4,23 @@ import Home from '../../assets/Home.png';
 import See from '../../assets/See.png';
 import Share from '../../assets/Share.png';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { setSearchInput } from '../../store/filterReducer';
+import { setInput, setSearchedInput } from '../../store/filterReducer';
 
 export default function Navbar() {
   // Récupération des valeurs du state
-  const searchInput = useAppSelector((state) => state.filter.searchInput);
+  const { input, searchedInput } = useAppSelector((state) => state.filter);
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
   const handleChangeSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch(setSearchInput(e.target.value));
+    dispatch(setInput(e.target.value));
   };
 
   const handleSearch = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
+      dispatch(setSearchedInput(input));
       navigate(`/memories`);
-      console.log(searchInput);
     }
   };
 
@@ -53,6 +53,7 @@ export default function Navbar() {
             type="text"
             className="grow"
             placeholder="Rechercher..."
+            value={input}
             onChange={handleChangeSearch}
             onKeyDown={handleSearch}
           />

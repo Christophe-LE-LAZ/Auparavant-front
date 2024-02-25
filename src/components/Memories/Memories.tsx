@@ -24,9 +24,15 @@ const Memories = () => {
   const memoriesList = useAppSelector((state) => state.memories.list);
   const { action_done, message } = useAppSelector((state) => state.message);
   const filters = useAppSelector((state) => state.filter);
-  const { area, department, city, type, years } = useAppSelector(
-    (state) => state.filter
-  );
+  const {
+    area,
+    department,
+    city,
+    type,
+    searchedInput,
+    filteredData,
+    searchedData,
+  } = useAppSelector((state) => state.filter);
 
   // Liste des régions représentées dans les souvenirs
   const areaList: string[] = [];
@@ -78,9 +84,8 @@ const Memories = () => {
     dispatch(setType(e.target.value));
   };
 
-  // Données filtrées
-
-  const filteredList = memoriesList.filter((memory) => {
+  // Données filtrées à l'aide des filtres de recherche
+  const filteredResults = memoriesList.filter((memory) => {
     // Récupération de l'année du souvenir
     const memoryDate = new Date(memory.picture_date).getFullYear();
     return (
@@ -93,6 +98,27 @@ const Memories = () => {
       memoryDate <= filters.years[1]
     );
   });
+
+  // Données filtrées à l'aide de la barre de recherche
+  const searchedResults = memoriesList.filter((memory) => {
+    const searchedInputLC = searchedInput.toLowerCase();
+    // Parcourir les propriétés de l'objet memory
+    for (const key in memory) {
+      // Parcourir les propriétés de l'objet interne
+      for (const innerKey in memory[key]) {
+        // Vérifier si la valeur de la propriété contient le mot de recherche
+        if (
+          typeof memory[key][innerKey] === 'string' &&
+          memory[key][innerKey].toLowerCase().includes(searchedInputLC)
+        ) {
+          return true; // Conserver l'objet dans les résultats de recherche
+        }
+      }
+    }
+    return false; // Ne pas conserver l'objet dans les résultats de recherche
+  });
+
+  console.log(searchedData);
 
   // Fonction de réinitialisation du filtre
   const handleClickReset = (
@@ -117,7 +143,7 @@ const Memories = () => {
 
   return (
     <>
-      <div className='flex justify-center'>
+      <div className="flex justify-center">
         {/* Affichage d'un message si l'utilisateur vient juste de supprimer un souvenir */}
         {showSuccess && (
           <div
@@ -140,23 +166,53 @@ const Memories = () => {
           <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
           <div className="drawer-content flex flex-col items-center w-full">
             {/* Titre et bouton permettant l'ouverture du drawer en version mobile */}
-            <div className="flex w-full justify-center">
+            <div className="flex w-full justify-center lg:justify-end">
               <label
                 htmlFor="my-drawer-2"
                 className="btn drawer-button bg-base-300 w-24 mb-4 lg:hidden"
               >
                 Filtrer
               </label>
+              <button
+                className="btn bg-base-300 ml-5 lg:mb-5 lg:mr-10"
+                onClick={handleClickReset}
+              >
+                Effacer les filtres
+              </button>
             </div>
             {/* Card */}
-            <ul className="flex flex-wrap">
-              {filteredList.map((memory) => (
-                <li className="mx-auto" key={memory.id}>
-                  <Card memory={memory} />
-                </li>
-              ))}
-            </ul>
+            {/* Si aucune recherche et aucun filtre, affichage de la liste complète */}
+            {(!filteredData && !searchedData) && (
+              <ul className="flex flex-wrap">
+                {memoriesList.map((memory) => (
+                  <li className="mx-auto" key={memory.id}>
+                    <Card memory={memory} />
+                  </li>
+                ))}
+              </ul>
+            )}
+            {/* Si filtres, affichage des résultats filtrés */}
+            {filteredData && (
+              <ul className="flex flex-wrap">
+                {filteredResults.map((memory) => (
+                  <li className="mx-auto" key={memory.id}>
+                    <Card memory={memory} />
+                  </li>
+                ))}
+              </ul>
+            )}   
+            {/* Si recherche, affichage des résultats de la recherche */}
+            {searchedData && (
+              <ul className="flex flex-wrap">
+                {searchedResults.map((memory) => (
+                  <li className="mx-auto" key={memory.id}>
+                    <Card memory={memory} />
+                  </li>
+                ))}
+              </ul>
+            )}   
           </div>
+
           {/* Drawer */}
           <div className="drawer-side z-50">
             <label
@@ -233,7 +289,7 @@ const Memories = () => {
                   className="btn bg-base-300 lg:mt-10"
                   onClick={handleClickReset}
                 >
-                  Réinitialiser les filtres
+                  Effacer les filtres
                 </button>
               </div>
             </div>
