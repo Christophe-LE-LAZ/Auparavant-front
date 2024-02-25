@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
   MapContainer,
   TileLayer,
@@ -60,26 +60,58 @@ export default function Map() {
     dispatch(setLocationState(currentLocation));
   };
 
+  // État pour stocker le type de lieu sélectionné
+  const [selectedType, setSelectedType] = useState('');
+
+  // Filtrer la liste des lieux en fonction du type de lieu sélectionné
+  const filteredLocations = locationsList.filter((location) => {
+    const memoriesInLocation = memoriesList.filter((memory) => memory.location.id === location.id);
+    const typesInLocation = memoriesInLocation.map((memory) => memory.place.type);
+    return typesInLocation.includes(selectedType) || selectedType === '';
+  });
+
+  // Créer une liste de types de lieux uniques
+  const typeList: string[] = [];
+  memoriesList.forEach((memory) => {
+    if (!typeList.includes(memory.place.type)) {
+      typeList.push(memory.place.type);
+    }
+  });
+
   return (
     <div className="p-5 m-auto">
+      <div className='flex justify-center mt-4'>
+      {/* Sélecteur pour choisir le type de lieu */}
+      <select
+        className="select select-bordered w-full mt-2 mb-8 max-w-xs"
+        onChange={(e) => setSelectedType(e.target.value)}
+        value={selectedType}
+      >
+        <option value={''}>Choisissez un type de lieu</option>
+        {typeList.map((type) => (
+          <option key={type} value={type}>
+            {type}
+          </option>
+        ))}
+      </select>
+      </div>
       <MapContainer center={[48.8566, 2.3522]} zoom={13}>
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-        {/* On mappe sur la liste des locations pour afficher un marqueur pour chacune */}
-        {locationsList.map((location) => (
+        {/* On mappe sur la liste des locations filtrées pour afficher un marqueur pour chacune */}
+        {filteredLocations.map((location) => (
           <div key={location.id}>
             <Marker
               location={location}
               position={[Number(location.latitude), Number(location.longitude)]}
               eventHandlers={{ click: handleClickPopup }}
             >
-              {/* On mappe sur la liste des souvenirs pour afficher le titre du souvenir s'ils correspondent à la bonne location */}
-
+              {/* On mappe sur la liste des souvenirs pour afficher le titre du souvenir s'ils correspondent à la bonne location et au bon type de lieu*/}
               <Popup>
                 {memoriesList.map((memory) => {
-                  if (location.id === memory.location.id) {
+                  if (location.id === memory.location.id && (selectedType === '' || memory.place.type === selectedType)) {
                     return (
                       <Link to={`/memories/${memory.id}`} key={memory.id}>
                         <p>{memory.title}</p>
