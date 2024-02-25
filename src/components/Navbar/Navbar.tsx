@@ -1,10 +1,29 @@
 import './Navbar.scss';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import Home from '../../assets/Home.png';
 import See from '../../assets/See.png';
 import Share from '../../assets/Share.png';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { setSearchInput } from '../../store/filterReducer';
 
 export default function Navbar() {
+  // Récupération des valeurs du state
+  const searchInput = useAppSelector((state) => state.filter.searchInput);
+
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
+  const handleChangeSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    dispatch(setSearchInput(e.target.value));
+  };
+
+  const handleSearch = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      navigate(`/memories`);
+      console.log(searchInput);
+    }
+  };
+
   return (
     <nav className="flex justify-center">
       {/* Navbar version Desktop */}
@@ -28,17 +47,31 @@ export default function Navbar() {
           Partager un souvenir
         </NavLink>
         {/* Barre de recherche */}
-        <div className="flex flex-col">
+
+        <label className="input input-bordered flex items-center gap-2 w-screen sm:w-40 lg:w-auto">
           <input
             type="text"
+            className="grow"
             placeholder="Rechercher..."
-            className="input input-bordered w-screen  sm:w-40 md:w-auto"
+            onChange={handleChangeSearch}
+            onKeyDown={handleSearch}
           />
-        </div>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 16 16"
+            fill="currentColor"
+            className="w-4 h-4 opacity-70"
+          >
+            <path
+              fillRule="evenodd"
+              d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z"
+              clipRule="evenodd"
+            />
+          </svg>
+        </label>
       </div>
 
       {/* Navbar version Mobile  */}
-      {/* TODO : voir comment enlever la classe active pour /memories quand on est sur /memories/create*/}
       <div className="btm-nav sm:hidden">
         <NavLink to="/">
           <img alt="Home-logo" src={Home} className="w-6" />
