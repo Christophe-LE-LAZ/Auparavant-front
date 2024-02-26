@@ -2,7 +2,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import Delete from '../../assets/Delete.png';
 import Edit from '../../assets/Edit.png';
-import { deleteMemory } from '../../store/createMemoryReducer';
+import { deleteMemory } from '../../store/singleMemoryReducer';
 import { useEffect, useState } from 'react';
 import { clearMessage, setMessage } from '../../store/messageReducer';
 import { fetchSingleMemory } from '../../store/singleMemoryReducer';
@@ -10,6 +10,7 @@ import { fetchSingleMemory } from '../../store/singleMemoryReducer';
 const Memory = () => {
   const { id } = useParams<{ id: string }>();
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   // Récupération des souvenirs depuis l'API
   useEffect(() => {
@@ -19,7 +20,6 @@ const Memory = () => {
   // Récupération des valeurs du state
   const memory = useAppSelector((state) => state.singleMemory.memory);
   const userId = useAppSelector((state) => state.user.id);
-  const { just_deleted } = useAppSelector((state) => state.memory);
   const { action_done, message } = useAppSelector((state) => state.message);
 
   const [showConfirmation, setShowConfirmation] = useState(false);
@@ -42,22 +42,18 @@ const Memory = () => {
   const handleConfirmDelete = () => {
     setShowConfirmation(false);
     const memoryID = memory.id;
-    dispatch(deleteMemory(memoryID as number));
+    dispatch(deleteMemory(memoryID as number))
+    .unwrap()
+    .then(() => {
+      navigate('/memories');
+      dispatch(setMessage('Votre souvenir a bien été supprimé.'));
+    });
   };
 
   // annuler la suppression
   const handleCancelDelete = () => {
     setShowConfirmation(false);
   };
-
-  // Redirection si le souvenir a bien été supprimé et enregistrement d'un message
-  const navigate = useNavigate();
-  useEffect(() => {
-    if (just_deleted) {
-      navigate('/memories');
-      dispatch(setMessage('Votre souvenir a bien été supprimé.'));
-    }
-  }, [just_deleted]);
 
   const [showSuccess, setShowSuccess] = useState(false);
 
@@ -121,7 +117,7 @@ const Memory = () => {
         </h1>
         {/* Image */}
         <div className="mx-8">
-          <img src={memory.main_picture} alt="" className="rounded-xl" />
+          <img src={`https://admin.auparavant.fr/assets/pictures/${memory.main_picture}`} alt="" className="rounded-xl" />
         </div>
         {/* Informations */}
         <div className="flex flex-col mt-8">
