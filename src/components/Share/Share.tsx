@@ -274,7 +274,6 @@ export default function Share() {
     }
   };
 
-  
   // Dispatch pour la création d'un souvenir + place + location
   // + nouvel appel à l'API pour l'upload de la main picture
   const handleSubmitLocationToCreate = (
