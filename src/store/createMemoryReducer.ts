@@ -14,9 +14,6 @@ export interface MemoryState {
   locationToCreate : boolean
   locationId: number | null
   main_picture : File | undefined
-  memoryId: number | null
-  just_created : boolean
-  just_deleted : boolean
   loading: boolean
   error: string | null
 }
@@ -46,9 +43,6 @@ export interface MemoryState {
     locationToCreate : false,
     locationId : null,
     main_picture : undefined,
-    memoryId : null,
-    just_created : false,
-    just_deleted : false,
     loading : false,
     error : null,
   };
@@ -72,10 +66,10 @@ export interface MemoryState {
   }>('createMemory/changeFieldStateLocation');
 
   // Création d'une action pour la mise à jour du state avec la current location
-  export const setLocationState = createAction<ILocationCreated>('memory/setLocationState');
+  export const setLocationState = createAction<ILocationCreated>('createMemory/setLocationState');
 
   // Création d'une action pour la mise à jour du state avec la current location
-  export const setCoordState = createAction<{lat : number, lng : number}>('memory/setCoordState');
+  export const setCoordState = createAction<{lat : number, lng : number}>('createMemory/setCoordState');
   
   // Création d'un souvenir en BDD : memory + place + location
   export const createMemoryWithLocation = createAsyncThunk(
@@ -115,8 +109,11 @@ export interface MemoryState {
       }
     )
 
+  // Création d'une action pour la mise à jour des states après la création d'un souvenir 
+  export const createdMemory = createAction('createMemory/createdMemory');
+
   // Création d'une action pour le nettoyage du state
-  export const clearCreateMemoryState = createAction('memory/clearMemoryState');
+  export const clearCreateMemoryState = createAction('createMemory/clearMemoryState');
   
   const memoryReducer = createReducer(initialState, (builder) => {
       builder
@@ -177,8 +174,7 @@ export interface MemoryState {
       })
       // Gestion du cas "fullfilled" de la création d'un souvenir + place + location
       .addCase(createMemoryWithLocation.fulfilled, (state, action) => {
-        const { id } = action.payload.memory;
-        state.memoryId = id;
+        console.log('Souvenir créé, en attente de la photographie principale')
       })
       // Gestion du cas "pending" de la création d'un souvenir + place 
       .addCase(createMemoryWithoutLocation.pending, (state) => {
@@ -192,8 +188,12 @@ export interface MemoryState {
       })
       // Gestion du cas "fullfilled" de la création d'un souvenir + place
       .addCase(createMemoryWithoutLocation.fulfilled, (state, action) => {
-        const { id } = action.payload.memory;
-        state.memoryId = id;
+        console.log('Souvenir créé, en attente de la photographie principale')
+      })
+      // Modification du state suite à la création effective d'un souvenir en BDD
+      .addCase(createdMemory, (state, action) => {
+        state.loading = false;
+        state.error = null;
       })
       // Remise à zéro du state
       .addCase(clearCreateMemoryState, (state) => {
@@ -213,8 +213,6 @@ export interface MemoryState {
         state.existingLocation = false;
         state.locationToCreate = false;
         state.locationId = null;
-        state.just_created = false;
-        state.just_deleted = false;
         state.error = "";
         state.loading = false;
       })

@@ -12,6 +12,7 @@ import {
   changeFieldStateLocation,
   createMemoryWithLocation,
   createMemoryWithoutLocation,
+  createdMemory,
 } from '../../store/createMemoryReducer';
 import Map from '../Map/Map';
 import { useNavigate } from 'react-router-dom';
@@ -39,7 +40,7 @@ export default function Share() {
     (state) => state.createMemory.locationToCreate
   );
 
-  const { error, loading, just_created, memoryId } =
+  const { error, loading } =
     useAppSelector((state) => state.createMemory);
 
   // Caractéristiques des inputs à mapper
@@ -241,6 +242,7 @@ export default function Share() {
   ];
 
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   // Envoi des valeurs entrées dans la partie Souvenir vers le state
   const handleBlurMemory = (e: ChangeEvent<HTMLInputElement>) => {
@@ -263,16 +265,6 @@ export default function Share() {
     dispatch(changeFieldStateLocation({ inputValueL, inputNameL }));
   };
 
-
-
-  // Dispatch pour la création d'un souvenir + place + location
-  const handleSubmitLocationToCreate = (
-    e: React.FormEvent<HTMLFormElement>
-  ) => {
-    e.preventDefault();
-    dispatch(createMemoryWithLocation());
-  };
-
   // Stockage de la main picture dans un state
 
   const [mainPicture, setMainPicture] = useState({} as File);
@@ -280,6 +272,31 @@ export default function Share() {
     if (e.target.files) {
       setMainPicture(e.target.files[0]);
     }
+  };
+
+  
+  // Dispatch pour la création d'un souvenir + place + location
+  // + nouvel appel à l'API pour l'upload de la main picture
+  const handleSubmitLocationToCreate = (
+    e: React.FormEvent<HTMLFormElement>
+  ) => {
+    e.preventDefault();
+    dispatch(createMemoryWithLocation())
+    .unwrap()
+    .then((response) => {
+      const formData = new FormData();
+      formData.append('main_picture', mainPicture);
+      axios.post(`https://admin.auparavant.fr/api/secure/upload_update/main_picture/${response.memory.id}`, formData,         {
+        headers: {
+          'content-type': 'multipart/form-data',
+        }})
+      .then((response) => {
+        dispatch(createdMemory())
+        dispatch(setMessage('Votre souvenir a été créé avec succès.'));
+        navigate(`/memories/${response.data.memory.id}`);
+        console.log(response)
+      });
+    });
   };
 
   // Dispatch pour la création d'un souvenir + place
@@ -291,35 +308,20 @@ export default function Share() {
     dispatch(createMemoryWithoutLocation())
     .unwrap()
     .then((response) => {
-      console.log(response.memory.id)
-      console.log(mainPicture)
-
-      const memory_id = response.memory.id.toString() as string;
       const formData = new FormData();
-      formData.append('file', mainPicture);
-      formData.append('memory', memory_id);
-
-      console.log(formData)
-
+      formData.append('main_picture', mainPicture);
       axios.post(`https://admin.auparavant.fr/api/secure/upload_update/main_picture/${response.memory.id}`, formData,         {
         headers: {
           'content-type': 'multipart/form-data',
         }})
-      .then((response) => {
-        console.log(response.data);
+      .then(() => {
+        dispatch(createdMemory())
+        dispatch(setMessage('Votre souvenir a été créé avec succès.'));
+        navigate(`/memories/${response.memory.id}`);
+        console.log(response)
       });
     });
   };
-
-  // Si le souvenir a été créé avec succès, enregistrement d'un message et redirection vers la liste
-  // TODO A mettre sous forme d'un .then
-  const navigate = useNavigate();
-  useEffect(() => {
-    if (just_created) {
-      dispatch(setMessage('Votre souvenir a été créé avec succès.'));
-      navigate(`/memories/${memoryId}`);
-    }
-  }, [just_created]);
 
   return (
     <div className="">
