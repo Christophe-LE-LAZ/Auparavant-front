@@ -1,4 +1,4 @@
-import { ChangeEvent } from 'react';
+import { ChangeEvent, useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import {
   changeFieldStateRegister,
@@ -6,7 +6,7 @@ import {
   passwordCheck,
 } from '../../store/userReducer';
 import { TInputNameRegister } from '../../types/inputName';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 export default function Register() {
   // Lecture des states du User reducer
@@ -18,6 +18,7 @@ export default function Register() {
     password_check,
     loading,
     error,
+    registered
   } = useAppSelector((state) => state.user);
 
   const dispatch = useAppDispatch();
@@ -37,6 +38,15 @@ export default function Register() {
     e.preventDefault();
     dispatch(register());
   };
+
+  // Redirection vers la page de connexion si l'inscription a réussi
+  const navigate = useNavigate();
+    useEffect(() => {
+      if (registered) {
+      navigate("/login");
+      }
+    }, [registered])
+  
 
   return (
     <div className="flex flex-col items-center m-10 gap-5 sm:m-10">

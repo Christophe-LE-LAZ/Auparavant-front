@@ -1,17 +1,20 @@
-import React, { useEffect } from 'react';
 import Slider from '../Slider/Slider';
 import Map from '../Map/Map';
 import Card from '../../components/Card/Card';
 import './Home.scss';
-import { useAppSelector, useAppDispatch } from '../../hooks';
+import { useAppDispatch, useAppSelector,  } from '../../hooks';
+import { useEffect } from 'react';
 import { fetchMemories } from '../../store/memoriesReducer';
 
-// Appel à l'API à lors du chargement de la page pour la récupération des souvenirs
 export default function Home() {
+
   const dispatch = useAppDispatch();
-  useEffect(() => {
-    dispatch(fetchMemories());
-  }, []);
+
+  // Récupération des souvenirs depuis l'API
+    useEffect(() => {
+      dispatch(fetchMemories());
+    }, []);
+
 
   // Récupération des valeurs du state
   const memoriesList = useAppSelector((state) => state.memories.list);
@@ -20,7 +23,7 @@ export default function Home() {
     <div className="">
       <div className="">
         <h1 className="flex justify-center text-2xl pb-5 sm:text-3xl sm:pb-10 lg:text-4xl lg:pb-14">
-          O'mais y'avait quoi avant ?
+          Auparavant
         </h1>
         <p className="pb-3 w-4/5 mx-auto text-center text-sm lg:text-base lg:leading-relaxed lg:hidden">
           Nos villes évoluent, et par conséquent nos quartiers, nos lieux
@@ -56,7 +59,7 @@ export default function Home() {
       <h2 className="text-center mt-5 mb-10 text-xl sm:text-2xl lg:text-3xl">
         Les derniers souvenirs ajoutés
       </h2>
-      <div className="lg:grid grid-cols-3 flex-row ">
+      <div className="flex flex-wrap justify-center gap-5">
         {memoriesList.slice(0, 3).map((memory) => (
           <Card key={memory.id} memory={memory} />
         ))}

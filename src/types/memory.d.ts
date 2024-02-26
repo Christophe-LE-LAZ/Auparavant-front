@@ -32,16 +32,20 @@ export interface IDataCreated extends IMemoryCreated {
   picture : IPictureCreated[] | []
 }
 
-export interface IMemoryCreated extends IMemoryToCreate {
-  id: number
+export interface IMemoryCreated  {
+  id: number | null
+  title: string
+  content: string
+  picture_date: string
+  main_picture: string
 }
 
 export interface IPlaceCreated extends IPlaceToCreate { 
-  id : number
+  id : number | null
 }
 
 export interface IPictureCreated {
-  id : number
+  id : number | null
   picture : string
 }
 
