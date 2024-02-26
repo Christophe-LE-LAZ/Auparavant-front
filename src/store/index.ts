@@ -3,6 +3,9 @@ import memoriesReducer from './memoriesReducer'
 import userReducer from './userReducer';
 import memoryReducer from './createMemoryReducer';
 import locationsReducer from './locationsReducer';
+
+import randomMemoryReducer from './randomReducer';
+
 import messageReducer from './messageReducer';
 import singleMemoryReducer from './singleMemoryReducer';
 import filterReducer from './filterReducer';
@@ -17,8 +20,12 @@ const store = configureStore({
     singleMemory : singleMemoryReducer,
     locations: locationsReducer,
     user: userReducer,
+
+    randomMemoryReducer: randomMemoryReducer,
+
     message : messageReducer,
     filter : filterReducer
+
   },
 });
 
