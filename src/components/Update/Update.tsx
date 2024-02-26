@@ -1,16 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { ChangeEvent } from 'react';
-import {
-  TInputNameMemory,
-  TInputNamePlace,
-} from '../../types/inputName';
+import { TInputNameMemory, TInputNamePlace } from '../../types/inputName';
 import {
   changeFieldStateMemory,
   changeFieldStatePlace,
-  createMemoryWithoutLocation,
-  createdMemory,
-} from '../../store/createMemoryReducer';
+  updateMemory,
+  updatedMemory,
+} from '../../store/updateMemoryReducer';
 import { useNavigate, useParams } from 'react-router-dom';
 import { setMessage } from '../../store/messageReducer';
 import axios from 'axios';
@@ -24,7 +21,16 @@ export default function Update() {
     dispatch(fetchSingleMemory(Number(id)));
   }, []);
 
-  // Lecture des states du reducer Memory
+  // Lecture des states
+  const { title, content, picture_date } = useAppSelector(
+    (state) => state.singleMemory.memory
+  );
+  const memoryId = useAppSelector((state) => state.singleMemory.memory.id);
+  const { name, type } = useAppSelector(
+    (state) => state.singleMemory.memory.place
+  );
+  const placeId = useAppSelector((state) => state.singleMemory.memory.place.id);
+
   const {
     area,
     department,
@@ -36,34 +42,32 @@ export default function Update() {
     longitude,
   } = useAppSelector((state) => state.singleMemory.memory.location);
 
-  const { title, content, picture_date, main_picture } = useAppSelector(
-    (state) => state.singleMemory.memory
-  );
+  const { error, loading } = useAppSelector((state) => state.updateMemory);
 
-  const { name, type } = useAppSelector((state) => state.singleMemory.memory.place);        
+  // Formattage de la date de l'image
+  const formattedDate = picture_date.substring(0, 10);
 
-  // TODO : loading et error pour update
-  const { error, loading } = useAppSelector((state) => state.createMemory);
-
-  // TODO : ajouter defaultValue pour titre, description, date, nom de l'endroit, type d'endroit
   // Caractéristiques des inputs à mapper
   const memoryInputs = [
     {
       label: 'Titre du souvenir',
       name: 'title',
       type: 'text',
+      defaultValue: title,
       required: true,
     },
     {
       label: 'Description du souvenir',
       name: 'content',
       type: 'text',
+      defaultValue: content,
       required: true,
     },
     {
       label: 'Date du souvenir',
       name: 'picture_date',
       type: 'date',
+      defaultValue: formattedDate,
       required: true,
     },
   ];
@@ -88,12 +92,14 @@ export default function Update() {
       label: "Nom de l'endroit",
       name: 'name',
       type: 'text',
+      defaultValue: name,
       required: false,
     },
     {
       label: "Type d'endroit",
       name: 'type',
       type: 'text',
+      defaultValue: type,
       required: true,
     },
   ];
@@ -174,15 +180,13 @@ export default function Update() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  // TODO : créer une AsyncThunk spéciale update
   // Envoi des valeurs entrées dans la partie Souvenir vers le state
   const handleBlurMemory = (e: ChangeEvent<HTMLInputElement>) => {
-    const inputValueM = e.target.value as string & (string[] | undefined);
+    const inputValueM = e.target.value as string;
     const inputNameM = e.target.name as TInputNameMemory;
     dispatch(changeFieldStateMemory({ inputValueM, inputNameM }));
   };
 
-  // TODO : créer une AsyncThunk spéciale update
   // Envoi des valeurs entrées dans la partie Lieu vers le state
   const handleBlurPlace = (e: ChangeEvent<HTMLInputElement>) => {
     const inputValueP = e.target.value as string;
@@ -191,7 +195,6 @@ export default function Update() {
   };
 
   // Stockage de la main picture dans un state
-
   const [mainPicture, setMainPicture] = useState({} as File);
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
@@ -200,16 +203,16 @@ export default function Update() {
   };
 
   // Dispatch pour la modification d'un souvenir
-  // TODO : création AsyncThunk spéciale update + voir la gestio des photos ?
   const handleSubmitUpdateMemory = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    dispatch(createMemoryWithoutLocation())
+    const IDs = [memoryId, placeId];
+    dispatch(updateMemory(IDs))
       .unwrap()
       .then((response) => {
         const formData = new FormData();
         formData.append('main_picture', mainPicture);
         axios
-          .post(
+          .put(
             `https://admin.auparavant.fr/api/secure/upload_update/main_picture/${response.memory.id}`,
             formData,
             {
@@ -219,8 +222,8 @@ export default function Update() {
             }
           )
           .then(() => {
-            dispatch(createdMemory());
-            dispatch(setMessage('Votre souvenir a été créé avec succès.'));
+            dispatch(updatedMemory());
+            dispatch(setMessage('Votre souvenir a été modifié avec succès.'));
             navigate(`/memories/${response.memory.id}`);
             console.log(response);
           });
@@ -242,43 +245,49 @@ export default function Update() {
             {/* Le souvenir */}
             <fieldset className="mt-5 p-5 border rounded-lg">
               <legend className="text-lg">Votre souvenir</legend>
-              {memoryInputs.map(({ label, name, type, required }) => (
-                <label key={name} className="form-control w-full max-w-xs">
-                  <div className="label">
-                    <span className="label-text">
-                      {label} {required && '*'}{' '}
-                    </span>
-                  </div>
-                  <input
-                    type={type}
-                    className="input input-bordered w-full max-w-xs"
-                    name={name}
-                    required={required}
-                    onBlur={handleBlurMemory}
-                  />
-                </label>
-              ))}
+              {memoryInputs.map(
+                ({ label, name, type, defaultValue, required }) => (
+                  <label key={name} className="form-control w-full max-w-xs">
+                    <div className="label">
+                      <span className="label-text">
+                        {label} {required && '*'}{' '}
+                      </span>
+                    </div>
+                    <input
+                      type={type}
+                      className="input input-bordered w-full max-w-xs"
+                      name={name}
+                      required={required}
+                      defaultValue={defaultValue}
+                      onBlur={handleBlurMemory}
+                    />
+                  </label>
+                )
+              )}
             </fieldset>
 
             {/* Le lieu */}
             <fieldset className="mt-5 p-5 border rounded-lg">
               <legend className="text-lg">Le lieu</legend>
-              {placeInputs.map(({ label, name, type, required }) => (
-                <label key={name} className="form-control w-full max-w-xs">
-                  <div className="label">
-                    <span className="label-text">
-                      {label} {required && '*'}
-                    </span>
-                  </div>
-                  <input
-                    type={type}
-                    className="input input-bordered w-full max-w-xs"
-                    name={name}
-                    required={required}
-                    onBlur={handleBlurPlace}
-                  />
-                </label>
-              ))}
+              {placeInputs.map(
+                ({ label, name, type, defaultValue, required }) => (
+                  <label key={name} className="form-control w-full max-w-xs">
+                    <div className="label">
+                      <span className="label-text">
+                        {label} {required && '*'}
+                      </span>
+                    </div>
+                    <input
+                      type={type}
+                      className="input input-bordered w-full max-w-xs"
+                      name={name}
+                      required={required}
+                      defaultValue={defaultValue}
+                      onBlur={handleBlurPlace}
+                    />
+                  </label>
+                )
+              )}
             </fieldset>
 
             {/* Les photos */}

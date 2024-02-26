@@ -8,15 +8,13 @@ export interface IDataToCreate {
   place : IPlaceToCreate
 }
 
-// Typage de la partie "memory" de ce qu'on envoie à l'API
+// Typage de la partie "memory" de ce qu'on envoie à l'API pour la création
 export interface IMemoryToCreate {
   title: string
   content: string
   picture_date: string
 }
-
-
-// Typage de la partie "place" de ce qu'on envoie à l'API
+// Typage de la partie "place" de ce qu'on envoie à l'API pour la création
 export interface IPlaceToCreate {
   name : string
   type : string

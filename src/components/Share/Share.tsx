@@ -246,7 +246,7 @@ export default function Share() {
 
   // Envoi des valeurs entrées dans la partie Souvenir vers le state
   const handleBlurMemory = (e: ChangeEvent<HTMLInputElement>) => {
-    const inputValueM = e.target.value as string & (string[] | undefined);
+    const inputValueM = e.target.value as string;
     const inputNameM = e.target.name as TInputNameMemory;
     dispatch(changeFieldStateMemory({ inputValueM, inputNameM }));
   };
