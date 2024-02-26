@@ -108,7 +108,7 @@ const Memories = () => {
         }
       }
     }
-    return false; 
+    return false;
   });
 
   // Réinitialisation du filtre
@@ -134,29 +134,28 @@ const Memories = () => {
 
   return (
     <>
-      <div className="flex justify-center">
-        {/* Affichage d'un message si l'utilisateur vient juste de supprimer un souvenir */}
-        {showSuccess && (
-          <div
-            role="alert"
-            className="flex alert alert-success text-sm max-w-sm justify-between mb-10"
-          >
-            <span>{message}</span>
-            <button
-              className="text-sm bg-white font-bold py-1 px-2 rounded"
-              onClick={handleOK}
-            >
-              OK
-            </button>
-          </div>
-        )}
-      </div>
       <div className="flex">
         {/* Responsive drawer avec filtres + contenu de la page  */}
         <div className="drawer lg:drawer-open">
           <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
           <div className="drawer-content flex flex-col items-center w-full">
-            {/* Titre et bouton permettant l'ouverture du drawer en version mobile */}
+            {/* Affichage d'un message si l'utilisateur vient juste de supprimer un souvenir - version mobile */}
+            {showSuccess && (
+              <div
+                role="alert"
+                className="flex alert alert-success text-sm max-w-sm  justify-between mb-8 lg:hidden"
+              >
+                <span>{message}</span>
+                <button
+                  className="text-sm bg-white font-bold py-1 px-2 rounded"
+                  onClick={handleOK}
+                >
+                  OK
+                </button>
+              </div>
+            )}
+
+            {/* Bouton permettant l'ouverture du drawer en version mobile */}
             <div className="flex w-full justify-center lg:justify-end">
               <label
                 htmlFor="my-drawer-2"
@@ -164,6 +163,22 @@ const Memories = () => {
               >
                 Filtrer
               </label>
+              {/* Affichage d'un message si l'utilisateur vient juste de supprimer un souvenir - version desktop */}
+              {showSuccess && (
+                <div
+                  role="alert"
+                  className="hidden lg:flex alert alert-success text-sm max-w-sm justify-between mb-10 ml-10"
+                >
+                  <span>{message}</span>
+                  <button
+                    className="text-sm bg-white font-bold py-1 px-2 rounded "
+                    onClick={handleOK}
+                  >
+                    OK
+                  </button>
+                </div>
+              )}
+
               <button
                 className="btn bg-base-300 ml-5 lg:mb-5 lg:mr-10"
                 onClick={handleClickReset}

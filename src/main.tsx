@@ -46,9 +46,9 @@ const router = createBrowserRouter(
         <Route
           path="/share"
           element={
-            // <PrivateRoute>
+            <PrivateRoute>
               <Share />
-            // </PrivateRoute>
+            </PrivateRoute>
           }
         />
         <Route path="/register" element={<Register />} />

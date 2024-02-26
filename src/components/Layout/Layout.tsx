@@ -14,6 +14,11 @@ export default function Layout() {
     dispatch(clearCreateMemoryState());
   }, [location]);
 
+  // Remonter tout en haut de la page lorsqu'on change de page
+  useEffect(() => {
+    window.scroll(0, 0);
+  }, [location]);
+
   return (
     <div className="relative m-auto w-auto max-w-6xl">
       <Header />
