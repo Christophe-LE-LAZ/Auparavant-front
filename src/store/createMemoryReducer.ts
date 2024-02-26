@@ -13,7 +13,6 @@ export interface MemoryState {
   existingLocation : boolean
   locationToCreate : boolean
   locationId: number | null
-  firstRequestOk : boolean
   main_picture : File | undefined
   memoryId: number | null
   just_created : boolean
@@ -46,7 +45,6 @@ export interface MemoryState {
     existingLocation : false,
     locationToCreate : false,
     locationId : null,
-    firstRequestOk : false,
     main_picture : undefined,
     memoryId : null,
     just_created : false,
@@ -117,26 +115,6 @@ export interface MemoryState {
       }
     )
 
-    // TODO : Upload de la main picture
-
-    // Upload de la main Picture
-    export const uploadMainPicture = createAsyncThunk(
-      'createMemory/uploadMainPicture',
-      async (mainPicture : File, thunkAPI) => {
-        // Récupération du state via la thunkAPI
-        const state = thunkAPI.getState() as RootState;
-        // Création du body de la requête
-        const memoryID = state.createMemory.memoryId
-        const picture = mainPicture;
-        const memory = {id : memoryID};
-        const main_picture = {picture, memory}
-        console.log(main_picture)
-        // Envoi de la requête en POST avec la main picture et l'id du souvenir dans le body
-        const { data } = await axios.post(`https://admin.auparavant.fr/api/secure/upload_update/main_picture/${memoryID}`, main_picture);
-        return data;
-      }
-    )
-
   // Création d'une action pour le nettoyage du state
   export const clearCreateMemoryState = createAction('memory/clearMemoryState');
   
@@ -200,7 +178,6 @@ export interface MemoryState {
       // Gestion du cas "fullfilled" de la création d'un souvenir + place + location
       .addCase(createMemoryWithLocation.fulfilled, (state, action) => {
         const { id } = action.payload.memory;
-        state.firstRequestOk = true;
         state.memoryId = id;
       })
       // Gestion du cas "pending" de la création d'un souvenir + place 
@@ -216,25 +193,7 @@ export interface MemoryState {
       // Gestion du cas "fullfilled" de la création d'un souvenir + place
       .addCase(createMemoryWithoutLocation.fulfilled, (state, action) => {
         const { id } = action.payload.memory;
-        state.firstRequestOk = true;
         state.memoryId = id;
-      })
-      // TODO UPLOAD MAIN PICTURE
-      // Gestion du cas "pending" de l'upload de la main_picture
-      .addCase(uploadMainPicture.pending, (state) => {
-        state.error = null;
-        state.loading = true;
-      })
-      // Gestion du cas "rejected" de l'upload de la main_picture
-      .addCase(uploadMainPicture.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.error.message as string;
-      })
-      // Gestion du cas "fullfilled" de l'upload de la main_picture
-      .addCase(uploadMainPicture.fulfilled, (state) => {
-        state.loading = false;
-        state.just_created = true;
-        console.log('yeah !')
       })
       // Remise à zéro du state
       .addCase(clearCreateMemoryState, (state) => {

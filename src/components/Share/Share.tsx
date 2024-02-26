@@ -12,7 +12,6 @@ import {
   changeFieldStateLocation,
   createMemoryWithLocation,
   createMemoryWithoutLocation,
-  uploadMainPicture,
 } from '../../store/createMemoryReducer';
 import Map from '../Map/Map';
 import { useNavigate } from 'react-router-dom';
@@ -20,7 +19,7 @@ import { setMessage } from '../../store/messageReducer';
 import Info from '../../assets/Info.png';
 import axios from 'axios';
 
-export default function Create() {
+export default function Share() {
   // Lecture des states du reducer Memory
   const {
     area,
@@ -40,7 +39,7 @@ export default function Create() {
     (state) => state.createMemory.locationToCreate
   );
 
-  const { error, loading, just_created, memoryId, firstRequestOk } =
+  const { error, loading, just_created, memoryId } =
     useAppSelector((state) => state.createMemory);
 
   // Caractéristiques des inputs à mapper
@@ -264,14 +263,7 @@ export default function Create() {
     dispatch(changeFieldStateLocation({ inputValueL, inputNameL }));
   };
 
-  // TODO Stockage de la main picture dans un state
 
-  const [mainPicture, setMainPicture] = useState({} as File);
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      setMainPicture(e.target.files[0]);
-    }
-  };
 
   // Dispatch pour la création d'un souvenir + place + location
   const handleSubmitLocationToCreate = (
@@ -281,35 +273,46 @@ export default function Create() {
     dispatch(createMemoryWithLocation());
   };
 
+  // Stockage de la main picture dans un state
+
+  const [mainPicture, setMainPicture] = useState({} as File);
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      setMainPicture(e.target.files[0]);
+    }
+  };
+
   // Dispatch pour la création d'un souvenir + place
+  // + nouvel appel à l'API pour l'upload de la main picture
   const handleSubmitExistingLocation = (
     e: React.FormEvent<HTMLFormElement>
   ) => {
     e.preventDefault();
-    dispatch(createMemoryWithoutLocation());
-  };
+    dispatch(createMemoryWithoutLocation())
+    .unwrap()
+    .then((response) => {
+      console.log(response.memory.id)
+      console.log(mainPicture)
 
-  // TODO Si la première requête a bien abouti, deuxième requête pour l'envoi de la main picture
+      const memory_id = response.memory.id.toString() as string;
+      const formData = new FormData();
+      formData.append('file', mainPicture);
+      formData.append('memory', memory_id);
 
-  // useEffect(() => {
-  //   if (firstRequestOk) {
-  //     dispatch(uploadMainPicture(mainPicture));
-  //   }
-  // }, [firstRequestOk]);
+      console.log(formData)
 
-  useEffect(() => {
-    if (firstRequestOk) {
-      const memory = {id : memoryId};
-      const main_picture = {mainPicture, memory};
-      console.log(main_picture);
-      axios.post(`https://admin.auparavant.fr/api/secure/upload_update/main_picture/${memoryId}`, main_picture)
-      .then(function (response) {
+      axios.post(`https://admin.auparavant.fr/api/secure/upload_update/main_picture/${response.memory.id}`, formData,         {
+        headers: {
+          'content-type': 'multipart/form-data',
+        }})
+      .then((response) => {
         console.log(response.data);
       });
-    }
-  }, [firstRequestOk]);
+    });
+  };
 
   // Si le souvenir a été créé avec succès, enregistrement d'un message et redirection vers la liste
+  // TODO A mettre sous forme d'un .then
   const navigate = useNavigate();
   useEffect(() => {
     if (just_created) {
