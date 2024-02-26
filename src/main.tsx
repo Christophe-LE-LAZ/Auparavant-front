@@ -42,7 +42,7 @@ const router = createBrowserRouter(
         <Route index element={<Home />} />
         <Route path="/memories" element={<Memories />} />
         <Route path="/memories/:id" element={<Memory />} />
-        <Route path="/memories/:id/update" element={<Update />} />
+        <Route path="/memories/:id/edit" element={<Update />} />
         <Route
           path="/share"
           element={

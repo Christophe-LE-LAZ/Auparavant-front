@@ -77,9 +77,11 @@ const Memory = () => {
         <div className="flex mr-10 gap-4 ">
           {memory.user.id === userId && (
             <>
+            <Link to={`/memories/${memory.id}/edit`}>
               <div className="btn btn-ghost btn-circle avatar">
                 <img alt="edit" src={Edit} className="w-10 rounded-full" />
               </div>
+            </Link>
               <div className="btn btn-ghost btn-circle avatar">
                 <img
                   alt="delete"
