@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import {
   MapContainer,
   TileLayer,
@@ -19,20 +19,17 @@ import {
 } from '../../store/createMemoryReducer';
 
 export default function Map() {
-  // Récupération des locations depuis l'API
+  // Récupération des locations et des memories depuis l'API
   const dispatch = useAppDispatch();
   useEffect(() => {
     dispatch(fetchLocations());
-  }, []);
-
-  // Récupération des souvenirs depuis l'API
-  useEffect(() => {
     dispatch(fetchMemories());
   }, []);
 
   // Récupération de la liste des locations
   const locationsList = useAppSelector((state) => state.locations.list);
 
+  // Récupération de la liste des memories
   const memoriesList = useAppSelector((state) => state.memories.list);
 
   // Composant pour gérer les événements de clic sur la carte
@@ -55,9 +52,8 @@ export default function Map() {
   }, []);
 
   // Fonction de gestionnaire d'événements pour le clic sur un pointeur
-  const handleClickPopup = (event: any) => {
-    const currentLocation = event.sourceTarget.options.location;
-    dispatch(setLocationState(currentLocation));
+  const handleClickPopup = (event: LeafletMouseEvent, location: any) => {
+    dispatch(setLocationState(location));
   };
 
   // État pour stocker le type de lieu sélectionné
@@ -65,36 +61,17 @@ export default function Map() {
 
   // Filtrer la liste des lieux en fonction du type de lieu sélectionné
   const filteredLocations = locationsList.filter((location) => {
-    const memoriesInLocation = memoriesList.filter((memory) => memory.location.id === location.id);
-    const typesInLocation = memoriesInLocation.map((memory) => memory.place.type);
+    const memoriesInLocation = memoriesList.filter(
+      (memory) => memory.location.id === location.id
+    );
+    const typesInLocation = memoriesInLocation.map(
+      (memory) => memory.place.type
+    );
     return typesInLocation.includes(selectedType) || selectedType === '';
-  });
-
-  // Créer une liste de types de lieux uniques
-  const typeList: string[] = [];
-  memoriesList.forEach((memory) => {
-    if (!typeList.includes(memory.place.type)) {
-      typeList.push(memory.place.type);
-    }
   });
 
   return (
     <div className="p-5 m-auto">
-      <div className='flex justify-center mt-4'>
-      {/* Sélecteur pour choisir le type de lieu */}
-      <select
-        className="select select-bordered w-full mt-2 mb-8 max-w-xs"
-        onChange={(e) => setSelectedType(e.target.value)}
-        value={selectedType}
-      >
-        <option value={''}>Choisissez un type de lieu</option>
-        {typeList.map((type) => (
-          <option key={type} value={type}>
-            {type}
-          </option>
-        ))}
-      </select>
-      </div>
       <MapContainer center={[48.8566, 2.3522]} zoom={13}>
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -104,26 +81,31 @@ export default function Map() {
         {filteredLocations.map((location) => (
           <div key={location.id}>
             <Marker
-              location ={location as any}
               position={[Number(location.latitude), Number(location.longitude)]}
-              eventHandlers={{ click: handleClickPopup }}
+              eventHandlers={{
+                click: (event: LeafletMouseEvent) =>
+                  handleClickPopup(event, location),
+              }}
             >
               {/* On mappe sur la liste des souvenirs pour afficher le titre du souvenir s'ils correspondent à la bonne location et au bon type de lieu*/}
               <Popup>
                 {memoriesList.map((memory) => {
-                  if (location.id === memory.location.id && (selectedType === '' || memory.place.type === selectedType)) {
+                  if (
+                    location.id === memory.location.id &&
+                    (selectedType === '' || memory.place.type === selectedType)
+                  ) {
                     return (
                       <Link to={`/memories/${memory.id}`} key={memory.id}>
                         <p>{memory.title}</p>
                       </Link>
                     );
                   }
+                  return null;
                 })}
               </Popup>
             </Marker>
           </div>
         ))}
-
         <MapClickHandler onClick={handleMapClick} />
       </MapContainer>
     </div>
