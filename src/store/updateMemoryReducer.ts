@@ -53,14 +53,15 @@ import { TInputNameMemory, TInputNamePlace } from '../types/inputName';
         const title = state.updateMemory.memory.title;
         const content = state.updateMemory.memory.content;
         const picture_date = state.updateMemory.memory.picture_date;
-        const memory = {id : IDs[0], title, content, picture_date};
         const name = state.updateMemory.place.name;
         const type = state.updateMemory.place.type;
-        const place = {updated_place : true, id : IDs[1], name, type};
+        const memory = {id : IDs[0], title, content, picture_date};
+        const place = {id : IDs[1], name, type};
         const memoryToUpdate = {memory, place};
         console.log(memoryToUpdate);
         // Envoi de la requête en PUT 
         const { data } = await axios.put(`https://admin.auparavant.fr/api/secure/update/memory-and-place/${IDs[0]}`, memoryToUpdate);
+        console.log(data)
         return data;
       }
     )
@@ -79,6 +80,8 @@ import { TInputNameMemory, TInputNamePlace } from '../types/inputName';
       .addCase(changeFieldStatePlace, (state, action) => {
         const { inputNameP, inputValueP } = action.payload;
         state.place[inputNameP] = inputValueP;
+        console.log(state.place.name)
+        console.log(state.place.type)
       })
         // Gestion du cas "pending" de la création d'un souvenir + place + location
       .addCase(updateMemory.pending, (state) => {
@@ -92,7 +95,7 @@ import { TInputNameMemory, TInputNamePlace } from '../types/inputName';
       })
       // Gestion du cas "fullfilled" de la création d'un souvenir + place + location
       .addCase(updateMemory.fulfilled, () => {
-        console.log('Souvenir modifié, en attente de la photographie principale')
+        console.log('Souvenir modifié')
       })
         // Modification du state suite à la création effective d'un souvenir en BDD
       .addCase(updatedMemory, (state) => {

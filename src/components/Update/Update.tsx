@@ -18,18 +18,19 @@ export default function Update() {
 
   // Récupération du souvenir depuis l'API
   useEffect(() => {
-    dispatch(fetchSingleMemory(Number(id)));
+    const memoryId = Number(id);
+    dispatch(fetchSingleMemory(memoryId as number));
   }, []);
 
   // Lecture des states
   const { title, content, picture_date } = useAppSelector(
     (state) => state.singleMemory.memory
   );
-  const memoryId = useAppSelector((state) => state.singleMemory.memory.id);
+  const memoryID = useAppSelector((state) => state.singleMemory.memory.id);
   const { name, type } = useAppSelector(
     (state) => state.singleMemory.memory.place
   );
-  const placeId = useAppSelector((state) => state.singleMemory.memory.place.id);
+  const placeID = useAppSelector((state) => state.singleMemory.memory.place.id);
 
   const {
     area,
@@ -77,7 +78,7 @@ export default function Update() {
       label: 'Photographie principale',
       name: 'main_picture',
       type: 'file',
-      required: true,
+      required: false,
     },
     {
       label: 'Photographie supplémentaire',
@@ -205,28 +206,36 @@ export default function Update() {
   // Dispatch pour la modification d'un souvenir
   const handleSubmitUpdateMemory = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const IDs = [memoryId, placeId];
+    const IDs = [memoryID, placeID];
     dispatch(updateMemory(IDs))
       .unwrap()
       .then((response) => {
-        const formData = new FormData();
-        formData.append('main_picture', mainPicture);
-        axios
-          .put(
-            `https://admin.auparavant.fr/api/secure/upload_update/main_picture/${response.memory.id}`,
-            formData,
-            {
-              headers: {
-                'content-type': 'multipart/form-data',
-              },
-            }
-          )
-          .then(() => {
+        if (mainPicture) {
+          const formData = new FormData();
+          formData.append('main_picture', mainPicture);
+          axios
+            .post(
+              `https://admin.auparavant.fr/api/secure/upload_update/main_picture/${id}`,
+              formData,
+              {
+                headers: {
+                  'content-type': 'multipart/form-data',
+                },
+              }
+            )
+            .then((response) => {
             dispatch(updatedMemory());
             dispatch(setMessage('Votre souvenir a été modifié avec succès.'));
-            navigate(`/memories/${response.memory.id}`);
+            navigate(`/memories/${response.data.memory.id}`);
             console.log(response);
-          });
+            })
+            ;
+        } else {
+          dispatch(updatedMemory());
+          dispatch(setMessage('Votre souvenir a été modifié avec succès.'));
+          navigate(`/memories/${response.memory.id}`);
+          console.log(response);
+        }
       });
   };
 

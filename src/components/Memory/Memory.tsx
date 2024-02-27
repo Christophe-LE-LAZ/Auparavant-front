@@ -14,7 +14,8 @@ const Memory = () => {
 
   // Récupération des souvenirs depuis l'API
   useEffect(() => {
-    dispatch(fetchSingleMemory(Number(id)));
+    const memoryId = Number(id);
+    dispatch(fetchSingleMemory(memoryId));
   }, []);
 
   // Récupération des valeurs du state
