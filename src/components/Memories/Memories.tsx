@@ -12,6 +12,7 @@ import {
   setType,
 } from '../../store/filterReducer';
 import Loader from '../Loader/Loader';
+import { IDataCreated } from '../../types/memory';
 
 const Memories = () => {
   const dispatch = useAppDispatch();
@@ -100,17 +101,17 @@ const Memories = () => {
   // Données filtrées à l'aide de la barre de recherche
   const searchedResults = memoriesList.filter((memory) => {
     const searchedInputLC = searchedInput.toLowerCase();
-    for (const key in memory) {
-      for (const innerKey in memory[key]) {
-        if (
-          typeof memory[key][innerKey] === 'string' &&
-          memory[key][innerKey].toLowerCase().includes(searchedInputLC)
-        ) {
-          return true;
-        }
-      }
-    }
-    return false;
+    if (memory.title.toLowerCase().includes(searchedInputLC)) {return true}
+    if (memory.content.toLowerCase().includes(searchedInputLC)) {return true}
+    if (memory.place.name.toLowerCase().includes(searchedInputLC)) {return true}
+    if (memory.place.type.toLowerCase().includes(searchedInputLC)) {return true}
+    if (memory.location.area.toLowerCase().includes(searchedInputLC)) {return true}
+    if (memory.location.department.toLowerCase().includes(searchedInputLC)) {return true}
+    if (memory.location.city.toLowerCase().includes(searchedInputLC)) {return true}
+    if (memory.location.district.toLowerCase().includes(searchedInputLC)) {return true}
+    if (memory.location.street.toLowerCase().includes(searchedInputLC)) {return true}
+    if (memory.user.firstname.toLowerCase().includes(searchedInputLC)) {return true}
+    if (memory.user.lastname.toLowerCase().includes(searchedInputLC)) {return true}
   });
 
   // Réinitialisation du filtre

@@ -71,7 +71,7 @@ export default function Map() {
         {locationsList.map((location) => (
           <div key={location.id}>
             <Marker
-              location={location}
+              location ={location as any}
               position={[Number(location.latitude), Number(location.longitude)]}
               eventHandlers={{ click: handleClickPopup }}
             >
