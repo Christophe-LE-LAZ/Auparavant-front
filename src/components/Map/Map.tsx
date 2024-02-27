@@ -80,21 +80,7 @@ export default function Map() {
 
   return (
     <div className="p-5 m-auto">
-      <div className='flex justify-center mt-4'>
-      {/* Sélecteur pour choisir le type de lieu */}
-      <select
-        className="select select-bordered w-full mt-2 mb-8 max-w-xs"
-        onChange={(e) => setSelectedType(e.target.value)}
-        value={selectedType}
-      >
-        <option value={''}>Choisissez un type de lieu</option>
-        {typeList.map((type) => (
-          <option key={type} value={type}>
-            {type}
-          </option>
-        ))}
-      </select>
-      </div>
+
       <MapContainer center={[48.8566, 2.3522]} zoom={13}>
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
