@@ -49,7 +49,7 @@ export interface MemoryState {
 
   // Création d'une action pour la modification des valeurs du State -> Memory
   export const changeFieldStateMemory = createAction<{
-    inputValueM : string & (string[] | undefined);
+    inputValueM : string;
     inputNameM: TInputNameMemory;
     }>('createMemory/changeFieldStateMemory');
 

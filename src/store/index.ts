@@ -3,12 +3,11 @@ import memoriesReducer from './memoriesReducer'
 import userReducer from './userReducer';
 import createMemoryReducer from './createMemoryReducer';
 import locationsReducer from './locationsReducer';
-
-import randomMemoryReducer from './randomReducer';
-
+import randomMemoryReducer from './randomMemoryReducer';
 import messageReducer from './messageReducer';
 import singleMemoryReducer from './singleMemoryReducer';
 import filterReducer from './filterReducer';
+import updateMemoryReducer from './updateMemoryReducer';
 
 
 // Création du store et définition des différents states et de leurs reducers associés
@@ -16,16 +15,14 @@ import filterReducer from './filterReducer';
 const store = configureStore({
   reducer: {
     memories : memoriesReducer,
-    createMemory: createMemoryReducer,
-    singleMemory : singleMemoryReducer,
+    randomMemory: randomMemoryReducer,
     locations: locationsReducer,
+    singleMemory : singleMemoryReducer,
+    createMemory: createMemoryReducer,
+    updateMemory: updateMemoryReducer,
     user: userReducer,
-
-    randomMemoryReducer: randomMemoryReducer,
-
     message : messageReducer,
     filter : filterReducer
-
   },
 });
 

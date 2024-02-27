@@ -9,7 +9,6 @@ import { RootState } from '.';
 
   interface SingleMemoryState {
     memory : IDataCreated
-    just_deleted : boolean
     loading: boolean;
     error: null | string;
   }
@@ -47,7 +46,6 @@ import { RootState } from '.';
           type: ""
         }
       },
-    just_deleted : false,
     loading: false,
     error: null
   };
@@ -101,10 +99,8 @@ import { RootState } from '.';
         state.error = action.error.message as string;
       })
       // Gestion du cas "fullfilled" de la suppression d'un souvenir
-      .addCase(deleteMemory.fulfilled, (state, action) => {
-        // const { id, username } = action.payload;
+      .addCase(deleteMemory.fulfilled, (state) => {
         state.loading = false;
-        state.just_deleted = true;
       })
       });
   

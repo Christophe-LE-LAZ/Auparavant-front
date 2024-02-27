@@ -15,7 +15,8 @@ const Memory = () => {
 
   // Récupération des souvenirs depuis l'API
   useEffect(() => {
-    dispatch(fetchSingleMemory(Number(id)));
+    const memoryId = Number(id);
+    dispatch(fetchSingleMemory(memoryId));
   }, []);
 
   // Récupération des valeurs du state
@@ -71,30 +72,45 @@ const Memory = () => {
 
   return (
     <>
-      {loading ? (
-        <Loader />
-      ) : (
-        <>
-          <div className="flex justify-between">
-            <Link to="/memories" className="link ml-10">
-              Retour à la liste des souvenirs
+      <div className="flex justify-between">
+        <Link to="/memories" className="link ml-10">
+          Retour à la liste des souvenirs
+        </Link>
+        <div className="flex mr-10 gap-4 ">
+          {memory.user.id === userId && (
+            <>
+            <Link to={`/memories/${memory.id}/edit`}>
+              <div className="btn btn-ghost btn-circle avatar">
+                <img alt="edit" src={Edit} className="w-10 rounded-full" />
+              </div>
             </Link>
-            <div className="flex mr-10 gap-4 ">
-              {memory.user.id === userId && (
-                <>
-                  <div className="btn btn-ghost btn-circle avatar">
-                    <img alt="edit" src={Edit} className="w-10 rounded-full" />
-                  </div>
-                  <div className="btn btn-ghost btn-circle avatar">
-                    <img
-                      alt="delete"
-                      src={Delete}
-                      className="w-10 rounded-full"
-                      onClick={handleClickDelete}
-                    />
-                  </div>
-                </>
-              )}
+              <div className="btn btn-ghost btn-circle avatar">
+                <img
+                  alt="delete"
+                  src={Delete}
+                  className="w-10 rounded-full"
+                  onClick={handleClickDelete}
+                />
+              </div>
+            </>
+          )}
+        </div>
+      </div>
+      <div className="max-w-lg mx-auto">
+        {/* Affichage d'un message si l'utilisateur vient juste de créer un souvenir */}
+        {showSuccess && (
+          <div className="flex justify-center">
+            <div
+              role="alert"
+              className="flex alert alert-success text-sm max-w-sm justify-between my-5"
+            >
+              <span>{message}</span>
+              <button
+                className="text-sm bg-white font-bold py-1 px-2 rounded"
+                onClick={handleOK}
+              >
+                OK
+              </button>
             </div>
           </div>
           <div className="max-w-lg mx-auto">
