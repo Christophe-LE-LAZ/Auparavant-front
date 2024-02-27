@@ -15,5 +15,5 @@ export default function Unlogged_to_login({ children }: PageProps) {
     return <Navigate to="/login" />;
   }
 
-  return children;
+  return children as JSX.Element;
 }
