@@ -56,7 +56,7 @@ import { TInputNameMemory, TInputNamePlace } from '../types/inputName';
         const name = state.updateMemory.place.name;
         const type = state.updateMemory.place.type;
         const memory = {id : IDs[0], title, content, picture_date};
-        const place = {id : IDs[1], name, type};
+        const place = {update_place: true, id : IDs[1], name, type};
         const memoryToUpdate = {memory, place};
         console.log(memoryToUpdate);
         // Envoi de la requête en PUT 
