@@ -98,20 +98,20 @@ const Memories = () => {
     );
   });
 
-  // Données filtrées à l'aide de la barre de recherche
+ // Données filtrées à l'aide de la barre de recherche
   const searchedResults = memoriesList.filter((memory) => {
     const searchedInputLC = searchedInput.toLowerCase();
-    if (memory.title.toLowerCase().includes(searchedInputLC)) {return true}
-    if (memory.content.toLowerCase().includes(searchedInputLC)) {return true}
-    if (memory.place.name.toLowerCase().includes(searchedInputLC)) {return true}
-    if (memory.place.type.toLowerCase().includes(searchedInputLC)) {return true}
-    if (memory.location.area.toLowerCase().includes(searchedInputLC)) {return true}
-    if (memory.location.department.toLowerCase().includes(searchedInputLC)) {return true}
-    if (memory.location.city.toLowerCase().includes(searchedInputLC)) {return true}
-    if (memory.location.district.toLowerCase().includes(searchedInputLC)) {return true}
-    if (memory.location.street.toLowerCase().includes(searchedInputLC)) {return true}
-    if (memory.user.firstname.toLowerCase().includes(searchedInputLC)) {return true}
-    if (memory.user.lastname.toLowerCase().includes(searchedInputLC)) {return true}
+      if (memory.title?.toLowerCase().includes(searchedInputLC)) {return true}
+      if (memory.content?.toLowerCase().includes(searchedInputLC)) {return true}
+      if (memory.place.name?.toLowerCase().includes(searchedInputLC)) {return true}
+      if (memory.place.type?.toLowerCase().includes(searchedInputLC)) {return true}
+      if (memory.location.area?.toLowerCase().includes(searchedInputLC)) {return true}
+      if (memory.location.department?.toLowerCase().includes(searchedInputLC)) {return true}
+      if (memory.location.city?.toLowerCase().includes(searchedInputLC)) {return true}
+      if (memory.location.district?.toLowerCase().includes(searchedInputLC)) {return true}
+      if (memory.location.street?.toLowerCase().includes(searchedInputLC)) {return true}
+      if (memory.user.firstname?.toLowerCase().includes(searchedInputLC)) {return true}
+      if (memory.user.lastname?.toLowerCase().includes(searchedInputLC)) {return true}
   });
 
   // Réinitialisation du filtre
