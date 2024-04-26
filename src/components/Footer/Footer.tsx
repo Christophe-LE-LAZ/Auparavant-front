@@ -11,13 +11,13 @@ export default function Footer() {
         <NavLink to="/about-us" className="link link-hover row-start-1">
           A propos
         </NavLink>
-        <NavLink to="/contact" className="link link-hover">
+        <NavLink to="" className="link link-hover">
           Contact
         </NavLink>
-        <NavLink to="/disclaimer" className="link link-hover">
+        <NavLink to="" className="link link-hover">
           Mentions légales
         </NavLink>
-        <NavLink to="/faq" className="link link-hover">
+        <NavLink to="" className="link link-hover">
           FAQ
         </NavLink>
       </nav>

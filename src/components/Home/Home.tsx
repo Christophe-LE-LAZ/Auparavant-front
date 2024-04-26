@@ -25,7 +25,7 @@ export default function Home() {
         <h1 className="flex justify-center text-2xl pb-5 sm:text-3xl sm:pb-10 lg:text-4xl lg:pb-14">
           Auparavant
         </h1>
-        <p className="pb-3 w-4/5 mx-auto text-center text-sm lg:text-base lg:leading-relaxed lg:hidden">
+        <p className="pb-3 w-4/5 mx-auto text-center text-sm lg:hidden">
           Nos villes évoluent, et par conséquent nos quartiers, nos lieux
           préférés également... Saurions nous dire ce qu'il y avait avant à tel
           endroit ? Probablement que non. Après avoir constaté cela, on
@@ -38,7 +38,7 @@ export default function Home() {
       <div className="lg:hidden">
         <Slider />
       </div>
-      <div className="hidden lg:grid lg:grid-cols-3 lg:text-base lg:leading-relaxed">
+      <div className="hidden lg:grid lg:grid-cols-3 text-justify leading-loose">
         <p className="p-5">
           Nos villes évoluent, et par conséquent nos quartiers, nos lieux
           préférés également... Saurions nous dire ce qu'il y avait avant à tel
